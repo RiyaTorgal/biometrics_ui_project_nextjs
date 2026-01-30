@@ -1,4 +1,4 @@
-@import "tailwindcss";
+/* @import "tailwindcss";
 
 :root {
   --background: #ffffff;
@@ -23,4 +23,260 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+} */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =========================================================
+   BASE THEME — SUKSHMADARSHINI (LIGHT)
+   Palette:
+   Indigo   #31356F
+   Saffron  #DD860F
+   Gold     #F2AB5C
+   Slate    #43575D
+   Red      #FF0000
+   ========================================================= */
+
+@layer base {
+  :root {
+    --background: 210 20% 98%;
+    --foreground: 230 35% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 230 35% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 230 35% 15%;
+
+    /* Primary – Deep Indigo */
+    --primary: 235 38% 31%; /* #31356F */
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary – Soft Gold */
+    --secondary: 36 85% 66%; /* #F2AB5C */
+    --secondary-foreground: 230 35% 15%;
+
+    --tertiary:235 46% 45%;
+    --tertiary-foreground: 235 77% 59%;
+
+    /* Muted – Slate */
+    --muted: 200 15% 90%;
+    --muted-foreground: 200 18% 30%; /* #43575D */
+
+    /* Accent – Saffron */
+    --accent: 34 84% 46%; /* #DD860F */
+    --accent-foreground: 0 0% 100%;
+
+    /* Destructive – Red */
+    --destructive: 0 100% 50%; /* #FF0000 */
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 200 15% 85%;
+    --input: 200 15% 85%;
+    --ring: 235 38% 31%;
+
+    --radius: 0.75rem;
+
+    /* ================== Custom Tokens ================== */
+
+    --gradient-hero: radial-gradient(
+      circle,
+      /* hsl(235 38% 31%) 10%,
+      hsl(34 84% 46%) 55%,
+      hsl(36 85% 66%) 100% */
+      hsl(235 38% 18%) 10%,
+      hsl(235 38% 31%) 50%,
+      hsl(235 46% 45%) 100%
+    );
+
+    --gradient-hero-dark: linear-gradient(
+      135deg,
+      hsl(235 30% 12%) 0%,
+      hsl(235 38% 18%) 50%,
+      hsl(200 18% 22%) 100%
+    );
+
+    --gradient-accent: linear-gradient(
+      135deg,
+      /* hsl(235 38% 31%) 0%,
+      hsl(34 84% 46%) 60%,
+      hsl(36 85% 66%) 100% */
+      hsl(235 38% 18%) 10%,
+      hsl(235 38% 31%) 50%,
+      hsl(235 46% 45%) 100%
+    );
+
+    --gradient-card: linear-gradient(
+      180deg,
+      hsl(0 0% 100%) 0%,
+      hsl(210 20% 97%) 100%
+    );
+
+    --shadow-soft: 0 6px 28px -6px hsl(235 38% 31% / 0.18);
+    --shadow-glow: 0 0 42px -10px hsl(34 84% 46% / 0.35);
+
+    /* Sidebar */
+    --sidebar-background: 210 20% 96%;
+    --sidebar-foreground: 230 35% 20%;
+    --sidebar-primary: 235 38% 31%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 36 85% 92%;
+    --sidebar-accent-foreground: 230 35% 20%;
+    --sidebar-border: 200 15% 85%;
+    --sidebar-ring: 34 84% 46%;
+  }
+
+  /* =====================================================
+     DARK MODE — SAME PALETTE, DIFFERENT HIERARCHY
+     ===================================================== */
+
+  .dark {
+    --background: 235 30% 10%;
+    --foreground: 0 0% 96%;
+
+    --card: 235 28% 14%;
+    --card-foreground: 0 0% 96%;
+
+    --popover: 235 28% 14%;
+    --popover-foreground: 0 0% 96%;
+
+    --primary: 36 85% 66%; /* Gold */
+    --primary-foreground: 235 30% 10%;
+
+    --secondary: 235 38% 31%; /* Indigo */
+    --secondary-foreground: 0 0% 96%;
+
+    --muted: 235 20% 20%;
+    --muted-foreground: 200 18% 65%;
+
+    --accent: 34 84% 46%; /* Saffron */
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 90% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 235 20% 22%;
+    --input: 235 20% 22%;
+    --ring: 36 85% 66%;
+
+    --sidebar-background: 235 30% 12%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 36 85% 66%;
+    --sidebar-primary-foreground: 235 30% 10%;
+    --sidebar-accent: 235 20% 20%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 235 20% 22%;
+    --sidebar-ring: 34 84% 46%;
+  }
+}
+
+/* =========================================================
+   BASE STYLES
+   ========================================================= */
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+  }
+}
+
+/* =========================================================
+   COMPONENTS
+   ========================================================= */
+
+@layer components {
+  .gradient-hero {
+    background: var(--gradient-hero);
+  }
+
+  .gradient-accent {
+    background: var(--gradient-accent);
+  }
+
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+  }
+
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .text-gradient {
+    background: var(--gradient-accent);
+    background-size: 70% 70%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .glass-card {
+    @apply bg-card/80 backdrop-blur-xl border border-border/50;
+  }
+
+  .dna-pattern {
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2331356F' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+}
+
+/* =========================================================
+   UTILITIES & ANIMATIONS
+   ========================================================= */
+
+@layer utilities {
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-pulse-slow {
+    animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .animate-gradient {
+    background-size: 200% 200%;
+    animation: gradient 8s ease infinite;
+  }
+
+  .animate-fade-up {
+    animation: fadeUp 0.6s ease-out forwards;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.5s ease-out forwards;
+  }
+}
+
+/* ================== Keyframes ================== */
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes fadeUp {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleIn {
+  0% { opacity: 0; transform: scale(0.95); }
+  100% { opacity: 1; transform: scale(1); }
 }
