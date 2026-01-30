@@ -2,7 +2,7 @@
 import "./globals.css"
 import {Navbar} from "./components/Navbar"
 import {Footer} from "./components/Footer"
-import { AuthProvider } from "./contexts/AuthContext"
+// import { AuthProvider } from "./contexts/AuthContext"
 
 export default function RootLayout({ children }) {
   return (
@@ -12,9 +12,9 @@ export default function RootLayout({ children }) {
         {children}
         <Footer /> */}
         <Navbar />
-          <AuthProvider>
+          {/* <AuthProvider> */}
             {children}
-          </AuthProvider>
+          {/* </AuthProvider> */}
         <Footer />
       </body>
     </html>

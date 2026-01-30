@@ -6,11 +6,11 @@ import { Button } from "../components/ui/button";
 import Image from "next/image";
 
 const navLinks = [
-  { label: "About us", href: "#about", isRoute: false },
-  { label: "Trainings", href: "#trainings", isRoute: false },
-  { label: "Events", href: "#events", isRoute: false },
-  { label: "Resources", href: "#resources", isRoute: false },
-  { label: "Learning Portal", href: "/learning", isRoute: true },
+  { label: "About us", href: "#about", },
+  { label: "Trainings", href: "#trainings", },
+  { label: "Events", href: "#events", },
+  { label: "Resources", href: "#resources",},
+  { label: "Learning Portal", href: "/learning" },
 ];
 
 export function Navbar() {
