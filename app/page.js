@@ -4,6 +4,7 @@ import {AboutSection} from "./components/AboutSection"
 import {ServicesSection} from "./components/ServicesSection"
 import {TrainingsSection} from "./components/TrainingsSection"
 import {EventsSection} from "./components/EventsSection"
+import {FounderInfo} from "./components/FounderInfo"
 // import {GallerySection} from "./components/GallerySection"
 import {StatsSection} from "./components/StatsSection"
 import {ResourcesSection} from "./components/ResourcesSection"
@@ -14,6 +15,7 @@ export default function HomePage() {
     <>
       <HeroSection />
       <AboutSection />
+      <FounderInfo />
       <ServicesSection />
       <TrainingsSection />
       <EventsSection />

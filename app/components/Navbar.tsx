@@ -10,7 +10,7 @@ const navLinks = [
   { label: "Trainings", href: "#trainings", },
   { label: "Events", href: "#events", },
   { label: "Resources", href: "#resources",},
-  { label: "Learning Portal", href: "/learning" },
+  // { label: "Learning Portal", href: "/learning" },
 ];
 
 export function Navbar() {

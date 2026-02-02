@@ -3,6 +3,7 @@ import { Calendar, Clock, Users, ArrowRight } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
 import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/badge";
+import Link from "next/link";
 
 const trainings = [
   {
@@ -108,10 +109,16 @@ export function TrainingsSection() {
                     <span className="text-secondary font-medium">{training.upcoming}</span>
                   </div>
                 </div>
-                <Button variant="outline" className="group/btn">
+                {/* <Button variant="outline" className="group/btn">
                   Learn More
                   <ArrowRight className="w-4 h-4 ml-1 group-hover/btn:translate-x-1 transition-transform" />
-                </Button>
+                </Button> */}
+                <Link href="/learning">
+                  <Button variant="outline" className="group/btn">
+                    Learn More
+                    <ArrowRight className="w-4 h-4 ml-1 group-hover/btn:translate-x-1 transition-transform" />
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
           ))}
