@@ -46,6 +46,9 @@ body {
   :root {
     --background: 210 20% 98%;
     --foreground: 230 35% 15%;
+    /* color: hsl(210, 69%, 66%) */
+
+    --footer-background: 210, 69%, 66%;
 
     --card: 0 0% 100%;
     --card-foreground: 230 35% 15%;
@@ -99,6 +102,13 @@ body {
       hsl(235 30% 12%) 0%,
       hsl(235 38% 18%) 50%,
       hsl(200 18% 22%) 100%
+    );
+
+    --gradient-footer: linear-gradient(
+      180deg,
+    hsl(0, 0%, 100%) 20%,
+    hsl(236, 83%, 93%) 50%,
+    hsl(235, 44%, 65%) 120%
     );
 
     --gradient-accent: linear-gradient(
@@ -213,6 +223,10 @@ body {
   .shadow-glow {
     box-shadow: var(--shadow-glow);
   }
+  
+  .gradient-footer {
+    background: var(--gradient-footer);
+  }
 
   .text-gradient {
     background: var(--gradient-accent);
@@ -220,6 +234,10 @@ body {
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+  }
+
+  .footer-bg {
+    background-color: hsl(var(--footer-background));
   }
 
   .glass-card {

@@ -34,8 +34,11 @@ export function Navbar() {
               className="object-contain"
             />
             <div className="flex flex-col">
-              <span className="font-display font-bold text-xl text-foreground">
+              {/* <span className="font-display font-bold text-xl text-foreground">
                 SukshmaDarshini
+              </span> */}
+              <span className="font-display font-bold text-xl">
+                Sukshma<span className="text-secondary">Darshini</span>™
               </span>
               <span className="text-xs text-muted-foreground">
                 Insight Beyond Vision
