@@ -202,7 +202,7 @@ export function Footer() {
                 className="object-contain"
               /> */}
               <span className="font-display font-bold text-xl">
-                Sukshma<span className="text-secondary">Darshini</span>™
+                Sukshmadarshini<span className="text-secondary"></span>™
               </span>
             </div>
             <p className="text-foreground/60 text-sm leading-relaxed mb-6">

@@ -9,7 +9,7 @@ const navLinks = [
   { label: "About us", href: "#about", },
   { label: "Trainings", href: "#trainings", },
   { label: "Events", href: "#events", },
-  { label: "Resources", href: "#resources",},
+  // { label: "Resources", href: "#resources",},
   // { label: "Learning Portal", href: "/learning" },
 ];
 
@@ -38,7 +38,7 @@ export function Navbar() {
                 SukshmaDarshini
               </span> */}
               <span className="font-display font-bold text-xl">
-                Sukshma<span className="text-secondary">Darshini</span>™
+                Sukshmadarshini <span className="text-secondary"></span>™
               </span>
               <span className="text-xs text-muted-foreground">
                 Insight Beyond Vision
