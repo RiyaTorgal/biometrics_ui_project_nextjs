@@ -1,14 +1,14 @@
 "use client"
-import { GraduationCap, BookOpen, FlaskConical } from "lucide-react";
+import { GraduationCap, BookOpen, FlaskConical, Presentation } from "lucide-react";
 // import heroScientist from "./assets/hero-scientist.jpg";
 import { Button } from "./ui/button";
 import Image from "next/image";
 
 const features = [
   {
-    icon: GraduationCap,
-    title: "Hands-on Multi-Omics Workshops",
-    description: "Practical, application-driven multi-omics workshops led by scientists with deep domain expertise and active research experience at the forefront of biologics R&D",
+    icon: Presentation,
+    title: "Hands-on Workshops",
+    description: "Practical, application and data-drivem workshops led by scientists with deep domain expertise and active research experience at the forefront of biologics R&D",
   },
   {
     icon: BookOpen,
@@ -19,6 +19,11 @@ const features = [
     icon: FlaskConical,
     title: "Experimental Design & Consultation",
     description: "Strategic consultation on experimental ensuring robust, biologics development—ensuring robust, interpretable, and decision-ready data",
+  },
+  {
+    icon: GraduationCap,
+    title: "Educational Consulatations and Partnerships",
+    description: "Academic guidance and strategic partnerships to support students and early-career researchers aspiring to excel in Europe’s research ecosystem",
   },
 ];
 
@@ -33,7 +38,7 @@ export function HeroSection() {
         {/* Background image */}
         <div className=" absolute inset-0 w-full h-full">
           <Image 
-            src="/hero-scientist.jpg" 
+            src="/hero-scientistAgri.jpg" 
             alt="Scientist analyzing data" 
             fill
             className="object-cover object-right"
@@ -46,18 +51,14 @@ export function HeroSection() {
             {/* Left Content */}
             <div className="text-primary-foreground">
               <h1 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
-                Accelerating Biologics & Omics-Driven Research
+                Transforming Agriculture Through Proteomics & Empowering Global Science Careers
               </h1>
               {/* <h3 className="font-display text-xl md:text-2xl lg:text-3xl font-bold mb-6 leading-tight">
                 In Partnership with 3DCC x Biologics Goa
               </h3> */}
               <p className="text-lg md:text-xl text-primary-foreground/90 max-w-xl">
                 {/* Industry-ready training and experimental strategy to generate robust, interpretable, and decision ready biological data */}
-                Insight Beyond Vision - Empowering students, scientists & industry professionals globally
-              </p>
-              <p className="text-lg md:text-xl text-primary-foreground/90 max-w-xl">
-                {/* Industry-ready training and experimental strategy to generate robust, interpretable, and decision ready biological data */}
-                Hands-on training and cutting-edge biologics research through data-driven approaches and applied consultation
+                Specialized Agri-Proteomics training, biotechnology skill development, and strategic academic guidance for students aspiring to excel in Europe’s research ecosystem.
               </p>
               <a href="#trainings" className="flex items-center gap-3">
               <div className="text-center mt-12">
@@ -81,14 +82,14 @@ export function HeroSection() {
 
       {/* Feature Cards */}
       <div className="container mx-auto px-4 py-16">
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-4 gap-6">
           {features.map((feature, index) => (
             <div
               key={feature.title}
               className="bg-card rounded-2xl p-6 shadow-soft hover:shadow-lg transition-all duration-300 animate-fade-up"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              <div className="flex items-start gap-4 mb-4">
+              <div className="flex items-center  gap-4 mb-4">
                 <div className="w-12 h-12 rounded-xl gradient-accent flex items-center justify-center flex-shrink-0">
                   <feature.icon className="w-6 h-6 text-primary-foreground" />
                 </div>

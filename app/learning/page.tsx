@@ -584,6 +584,8 @@ import {
   Download,
   Clock,
   BookOpen,
+  // Presentation,
+  Projector,
   Video,
   ChevronRight,
   Lock,
@@ -607,6 +609,7 @@ import {
 } from "../components/ui/card";
 import { Badge } from "../components/ui/badge";
 import CourseDetailDialog from "../components/CourseDetailDialog";
+import WorkshopDetailDialog from "../components/WorkshopDetailDialogue";
 import { Progress } from "../components/ui/progress";
 import {
   Tabs,
@@ -626,8 +629,22 @@ import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { useToast } from "../hooks/use-toast";
 import Image from "next/image";
+import { title } from "process";
 
 /* ------------------ DATA ------------------ */
+
+const workshops = [
+  {
+    id: 1,
+    title: "Hands-on Genomics Workshop",
+    duration: "3 hours",
+    description: "Practical workshop on genomic data analysis and interpretation",
+    thumbnail:
+      "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=400&h=225&fit=crop",
+    completed: false,
+    locked: false,
+  }
+];
 
 const trainingVideos = [
   {
@@ -873,17 +890,89 @@ export default function LearningPage() {
 
       {/* CONTENT */}
       <main className="container mx-auto px-4 py-8 space-y-8">
-        <Tabs defaultValue="videos" className="w-full">
-          <TabsList className="grid w-full max-w-md mx-auto grid-cols-2">
+        <Tabs defaultValue="workshop" className="w-full">
+          <TabsList className="grid w-full max-w-xl mx-auto grid-cols-3">
+            <TabsTrigger value="workshop">
+              <Projector className="mr-2 h-5 w-5" />
+              Offline Workshops
+            </TabsTrigger>
             <TabsTrigger value="videos">
-              <Video className="mr-2 h-4 w-4" />
+              <Video className="mr-2 h-5 w-5" />
               Training Videos
             </TabsTrigger>
             <TabsTrigger value="materials">
-              <FileText className="mr-2 h-4 w-4" />
+              <FileText className="mr-2 h-5 w-5" />
               Study Materials
             </TabsTrigger>
           </TabsList>
+
+          <TabsContent value="workshop" className="mt-8">
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {workshops.map((video, index) => (
+                // <Card 
+                //   key={video.id} 
+                //   className="group hover:shadow-xl transition-all duration-300 overflow-hidden border-2 hover:border-primary/50"
+                // >
+                <Card 
+                  key={video.id} 
+                  className={`overflow-hidden transition-all duration-300 cursor-pointer ${
+                    video.locked 
+                      ? "opacity-60" 
+                      : "hover:shadow-lg hover:-translate-y-1"
+                  }`}
+                  // onClick={() => setSelectedVideo(video)}
+                >
+                  <div className="relative h-48 w-full overflow-hidden bg-muted" 
+                  onClick={() => setSelectedVideo(video)}>
+                    <Image
+                      src={video.thumbnail}
+                      alt={video.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      
+                    />
+                    {!isEnrolled && (
+                      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">
+                        <Lock className="w-8 h-8 text-white" />
+                      </div>
+                    )}
+                    <div className="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded-full flex items-center gap-1">
+                      <Clock className="w-3 h-3" />
+                      {video.duration}
+                    </div>
+                  </div>
+                  <CardContent className="pt-4 space-y-3">
+                    <div className="flex items-start justify-between gap-2">
+                      <h3 className="font-semibold text-lg leading-tight">{video.title}</h3>
+                      <Badge variant="secondary" className="text-xs">
+                        #{index + 1}
+                      </Badge>
+                    </div>
+                    <p className="text-sm text-muted-foreground line-clamp-2">
+                      {video.description}
+                    </p>
+                    <Button 
+                      onClick={() => setSelectedVideo(video)}
+                      variant={isVideoEnrolled(video.id) ? "default" : "secondary"}
+                      className="w-full"
+                    >
+                      {isVideoEnrolled(video.id) ? (
+                        <>
+                          <Play className="w-4 h-4 mr-2" />
+                          Watch Now
+                        </>
+                      ) : (
+                        <>
+                          <Lock className="w-4 h-4 mr-2" />
+                          Enroll to Access
+                        </>
+                      )}
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
 
           <TabsContent value="videos" className="mt-8">
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -1156,7 +1245,7 @@ export default function LearningPage() {
       </Dialog>
     </div>
 
-    <CourseDetailDialog
+    <WorkshopDetailDialog
         video={selectedVideo}
         open={!!selectedVideo}
         onOpenChange={(open) => { if (!open) setSelectedVideo(null); }}
