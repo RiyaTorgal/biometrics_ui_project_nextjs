@@ -22,7 +22,7 @@ const features = [
   },
   {
     icon: GraduationCap,
-    title: "Educational Consulatations and Partnerships",
+    title: "Educational Consultations and Partnerships",
     description: "Academic guidance and strategic partnerships to support students and early-career researchers aspiring to excel in Europe’s research ecosystem",
   },
 ];
