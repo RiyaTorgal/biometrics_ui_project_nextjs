@@ -152,14 +152,14 @@ import Image from "next/image";
 const footerLinks = {
   services: [
     { label: "Genomics", href: "#" },
-    { label: "Transcriptomics", href: "#" },
+    // { label: "Transcriptomics", href: "#" },
     { label: "Proteomics", href: "#" },
-    { label: "Metabolomics", href: "#" },
+    // { label: "Metabolomics", href: "#" },
   ],
   company: [
-    { label: "About Us", href: "#about" },
+    { label: "Our Team", href: "#`" },
     { label: "Careers", href: "#" },
-    { label: "Blog", href: "#" },
+    // { label: "Blog", href: "#" },
     { label: "Contact", href: "#contact" },
   ],
   legal: [
@@ -178,7 +178,7 @@ export function Footer() {
   return (
     
     <>
-    <footer className="gradient-footer  text-foreground py-16">
+    <footer className="gradient-footer pt- pb-10 text-foreground">
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           {/* Brand */}

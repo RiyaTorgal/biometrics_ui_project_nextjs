@@ -26,10 +26,10 @@ export function ContactSection() {
   return (
     <section
       id="contact"
-      className="relative mt-28 overflow-hidden"
+      className="relative py-24 overflow-hidden"
     >
       {/* Soft wave background */}
-      <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-primary/10 to-transparent" />
+      <div className="absolute inset-x-0 bottom-24 h-44 bg-gradient-to-t from-primary/10 to-transparent" />
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid lg:grid-cols-2 gap-16 items-start">

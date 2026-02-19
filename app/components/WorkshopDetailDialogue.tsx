@@ -178,7 +178,7 @@ export default function WorkshopDetailDialog({ video, open, onOpenChange, isEnro
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    phone: "",
+    // phone: "",
     organization: "",
   });
 
@@ -239,7 +239,10 @@ export default function WorkshopDetailDialog({ video, open, onOpenChange, isEnro
       
       // Reset forms
       setEnrollmentStep("form");
-      setFormData({ name: "", email: "", phone: "", organization: "" });
+      setFormData({ name: "", 
+                    email: "", 
+                    // phone: "", 
+                    organization: "" });
       setPaymentData({ cardNumber: "", expiryDate: "", cvv: "", cardholderName: "" });
       
       // Notify parent to update enrollment status
@@ -437,7 +440,7 @@ export default function WorkshopDetailDialog({ video, open, onOpenChange, isEnro
                 </div>
               </div>
 
-              <div className="space-y-2">
+              {/* <div className="space-y-2">
                 <Label htmlFor="phone">Phone Number *</Label>
                 <div className="relative">
                   <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -451,7 +454,7 @@ export default function WorkshopDetailDialog({ video, open, onOpenChange, isEnro
                     required
                   />
                 </div>
-              </div>
+              </div> */}
 
               <div className="space-y-2">
                 <Label htmlFor="organization">Organization (Optional)</Label>

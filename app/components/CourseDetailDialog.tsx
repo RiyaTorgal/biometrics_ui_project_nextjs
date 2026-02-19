@@ -170,7 +170,7 @@ export default function CourseDetailDialog({ video, open, onOpenChange, isEnroll
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    phone: "",
+    // phone: "",
     organization: "",
   });
 
@@ -231,7 +231,10 @@ export default function CourseDetailDialog({ video, open, onOpenChange, isEnroll
       
       // Reset forms
       setEnrollmentStep("form");
-      setFormData({ name: "", email: "", phone: "", organization: "" });
+      setFormData({ name: "", 
+                    email: "", 
+                    // phone: "", 
+                    organization: "" });
       setPaymentData({ cardNumber: "", expiryDate: "", cvv: "", cardholderName: "" });
       
       // Notify parent to update enrollment status
@@ -414,7 +417,7 @@ export default function CourseDetailDialog({ video, open, onOpenChange, isEnroll
                 </div>
               </div>
 
-              <div className="space-y-2">
+              {/* <div className="space-y-2">
                 <Label htmlFor="phone">Phone Number *</Label>
                 <div className="relative">
                   <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -428,7 +431,7 @@ export default function CourseDetailDialog({ video, open, onOpenChange, isEnroll
                     required
                   />
                 </div>
-              </div>
+              </div> */}
 
               <div className="space-y-2">
                 <Label htmlFor="organization">Organization (Optional)</Label>
