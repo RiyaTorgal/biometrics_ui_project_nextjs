@@ -10,6 +10,7 @@ import { Expertise } from "./components/Expertise"
 // import {StatsSection} from "./components/StatsSection"
 import {ResourcesSection} from "./components/ResourcesSection"
 import {ContactSection} from "./components/ContactSection"
+import { EuropeanAdvisory } from "./components/EuropeanAdvisory"
 
 export default function HomePage() {
   return (
@@ -18,6 +19,7 @@ export default function HomePage() {
       <AboutSection />
       <Expertise />
       {/* <ServicesSection /> */}
+      <EuropeanAdvisory />
       <TrainingsSection />
       <EventsSection />
       {/* <GallerySection /> */}
