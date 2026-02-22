@@ -151,20 +151,20 @@ import Image from "next/image";
 
 const footerLinks = {
   services: [
-    { label: "Genomics", href: "#" },
+    { label: "Genomics", href: "/#" },
     // { label: "Transcriptomics", href: "#" },
-    { label: "Proteomics", href: "#" },
+    { label: "Proteomics", href: "/#" },
     // { label: "Metabolomics", href: "#" },
   ],
   company: [
-    { label: "Our Team", href: "#`" },
-    { label: "Careers", href: "#" },
+    { label: "Our Team", href: "/#" },
+    { label: "Careers", href: "/#" },
     // { label: "Blog", href: "#" },
-    { label: "Contact", href: "#contact" },
+    { label: "Contact", href: "/#contact" },
   ],
   legal: [
-    { label: "Privacy Policy", href: "#" },
-    { label: "Terms of Service", href: "#" },
+    { label: "Privacy Policy", href: "/privacyPolicy" },
+    { label: "Terms of Service", href: "/#" },
   ],
 };
 

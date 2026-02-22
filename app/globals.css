@@ -64,6 +64,9 @@ body {
     --secondary: 36 85% 66%; /* #F2AB5C */
     --secondary-foreground: 230 35% 15%;
 
+    --i: hsl(47, 100%, 77%);
+    --init:47, 100%, 77%; 
+
     --tertiary:235 46% 45%;
     --tertiary-foreground: 235 77% 59%;
 

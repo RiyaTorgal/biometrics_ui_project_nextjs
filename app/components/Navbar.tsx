@@ -4,18 +4,19 @@ import { Menu, X, Eye } from "lucide-react";
 import { Button } from "../components/ui/button";
 // import  EyeIcon  from "./assets/Screenshot_2026-01-27_201728-removebg-preview.png"
 import Image from "next/image";
+import Link from "next/link";
 
 const navLinks = [
-  { label: "About us", href: "#about", },
-  { label: "Expertise", href: "#expertise", },
-  { label: "Workshops", href: "#trainings", },
+  { label: "About us", href: "/#about", },
+  { label: "Expertise", href: "/#expertise", },
+  { label: "Workshops", href: "/#trainings", },
   // { label: "Agri-Proteomics", href: "#",},
   // { label: "Biotech Training", href: "#",},
-  { label: "Core Focus", href: "#home", },
-  { label: "Events", href: "#events", },
-  { label: "European Science Advisory", href: "#european-advisory",},
-  { label: "Resources", href: "#resources",},
-  { label: "Contact", href: "#contact",},
+  { label: "Core Focus", href: "/#home", },
+  { label: "Events", href: "/#events", },
+  { label: "European Science Advisory", href: "/#european-advisory",},
+  { label: "Resources", href: "/#resources",},
+  { label: "Contact", href: "/#contact",},
 ];
 
 export function Navbar() {
@@ -36,7 +37,7 @@ export function Navbar() {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <a href="#home" className="flex items-center gap-3" onClick={(e) => handleNavClick(e, "#home")}>
+          <Link href="/#home" className="flex items-center gap-3" onClick={(e) => handleNavClick(e, "/#home")}>
             {/* <div className="w-12 h-12 rounded-full gradient-accent flex items-center justify-center relative">
               <Eye className="w-6 h-6 text-primary-foreground" />
               <div className="absolute inset-0 rounded-full border-2 border-secondary/30 animate-pulse-slow" />
@@ -59,7 +60,7 @@ export function Navbar() {
                 Insight Beyond Vision
               </span>
             </div>
-          </a>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
@@ -73,12 +74,12 @@ export function Navbar() {
                 {link.label}
               </a>
             ))}
-            <a href="#contact" className="flex items-center gap-3" onClick={(e) => handleNavClick(e, "#contact")}>
+            <Link href="/#contact" className="flex items-center gap-3" onClick={(e) => handleNavClick(e, "/#contact")}>
             <Button className="rounded-full px-4 bg-secondary hover:bg-secondary/90 text-secondary-foreground"
             >
               Enquire Today
             </Button>
-            </a>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -105,11 +106,11 @@ export function Navbar() {
                   {link.label}
                 </a>
               ))}
-              <a href="#contact" className="flex items-center gap-3" onClick={(e) => { handleNavClick(e, "#contact"); setIsOpen(false); }}>
+              <Link href="/#contact" className="flex items-center gap-3" onClick={(e) => { handleNavClick(e, "/#contact"); setIsOpen(false); }}>
                 <Button className="w-full mt-2 rounded-full bg-secondary hover:bg-secondary/90 text-secondary-foreground">
                   Enquire Today
                 </Button>
-              </a>
+              </Link>
             </div>
           </div>
         )}
