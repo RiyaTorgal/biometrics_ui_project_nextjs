@@ -222,15 +222,15 @@ export function AboutSection() {
               About 
               <span className="text-gradient block">Sukshmadarshini™</span>
             </h2>
-            
             <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-              Sukshmadarshini™ is a specialized scientific platform focused on advancing Agri-Proteomics and empowering biotechnology students with globally relevant research skills.
+              <span className="text-gradient font-bold">Sukshmadarshini™ </span>
+               is a specialized scientific platform focused on advancing Agri-Proteomics and empowering biotechnology students and farmers with globally relevant research skills.
             </p>
             <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-              Founded with a vision to bridge molecular agriculture, translational proteomics, and international academic pathways, Sukshmadarshini™ operates at the intersection of science, data, and career transformation.
+              Founded by <span className="text-gradient font-bold">Dr. Priyadarshini Tilak</span> , Sukshmadarshini™ was created with a vision to bridge molecular agriculture, translational proteomics, and international academic pathways. The platform operates at the intersection of science, data, and career transformation.
             </p>
             <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-              We recognize that while academic foundations are strong, students often require deeper exposure to applied research methodologies, advanced analytical platforms, and global research expectations. Our programs are designed to close this gap — equipping learners with the precision, confidence, and technical clarity needed to succeed in competitive research environments.
+              We recognize that while academic foundations are strong, students often require deeper exposure to applied research methodologies, advanced analytical platforms, and global research expectations. Our programs are designed to close this gap equipping learners with the precision, confidence, and technical clarity needed to succeed in competitive research environments.
             </p>
             {/* <div className="grid md:grid-cols-2 gap-2">
               {coreServices.map((service, index) => {
