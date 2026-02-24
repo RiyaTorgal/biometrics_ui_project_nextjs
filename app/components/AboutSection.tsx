@@ -265,56 +265,15 @@ export function AboutSection() {
           {/* Right Visual */}
           <div className="relative">
             <div className="relative aspect-video max-w-md mx-auto">
-              {/* Main card */}
-              {/* <div className="absolute inset-4 rounded-3xl gradient-accent shadow-glow animate-scale-in overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-transparent to-primary/30" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <svg viewBox="0 0 200 200" className="w-3/4 h-3/4 opacity-20">
-                    <defs>
-                      <linearGradient id="helixGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="white" stopOpacity="0.8" />
-                        <stop offset="100%" stopColor="white" stopOpacity="0.2" />
-                      </linearGradient>
-                    </defs>
-                    <path
-                      d="M40 100 Q70 60, 100 100 T160 100"
-                      fill="none"
-                      stroke="url(#helixGrad)"
-                      strokeWidth="2"
-                      className="animate-pulse-slow"
-                    />
-                    <path
-                      d="M40 100 Q70 140, 100 100 T160 100"
-                      fill="none"
-                      stroke="url(#helixGrad)"
-                      strokeWidth="2"
-                      className="animate-pulse-slow"
-                      style={{ animationDelay: '0.5s' }}
-                    />
-                    {[45, 75, 105, 135].map((x, i) => (
-                      <circle
-                        key={x}
-                        cx={x}
-                        cy={100 + (i % 2 === 0 ? -15 : 15)}
-                        r="4"
-                        fill="white"
-                        opacity="0.8"
-                        className="animate-pulse-slow"
-                        style={{ animationDelay: `${i * 0.2}s` }}
-                      />
-                    ))}
-                  </svg>
-                </div>
-              </div> */}
               <div className="absolute inset-0 flex items-center justify-center">
                 <AnimatedLogo />
               </div>
               
               
               {/* Floating elements */}
-              <div className="absolute -top-4 -right-4 w-24 h-24 rounded-2xl glass-card shadow-soft flex items-center justify-center animate-float">
+              {/* <div className="absolute -top-4 -right-4 w-24 h-24 rounded-2xl glass-card shadow-soft flex items-center justify-center animate-float">
                 <span className="font-display font-bold text-2xl text-primary">DNA</span>
-              </div>
+              </div> */}
               <div className="absolute -bottom-4 -left-4 w-32 h-20 rounded-2xl glass-card shadow-soft flex items-center justify-center animate-float" style={{ animationDelay: '-2s' }}>
                 <span className="font-display font-bold text-lg text-accent">Genomics</span>
               </div>

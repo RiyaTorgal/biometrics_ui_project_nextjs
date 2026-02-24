@@ -279,7 +279,7 @@ export function Footer() {
         <div className="pt-8 border-t border-background/10">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-foreground/50 text-sm">
-              © {new Date().getFullYear()} SukshmaDarshini™. All rights reserved.
+              © {new Date().getFullYear()} Sukshmadarshini™. All rights reserved.
             </p>
             <p className="text-foreground/50 text-sm">
               Registered with MSME under Startup India Initiative
