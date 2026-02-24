@@ -3,14 +3,15 @@ import {HeroSection} from "./components/HeroSection"
 import {AboutSection} from "./components/AboutSection"
 import {ServicesSection} from "./components/ServicesSection"
 import {TrainingsSection} from "./components/TrainingsSection"
-import {EventsSection} from "./components/EventsSection"
+// import {EventsSection} from "./components/EventsSection"
 // import {FounderInfo} from "./components/FounderInfo"
 import { Expertise } from "./components/Expertise"
 // import {GallerySection} from "./components/GallerySection"
 // import {StatsSection} from "./components/StatsSection"
-import {ResourcesSection} from "./components/ResourcesSection"
+// import {ResourcesSection} from "./components/ResourcesSection"
 import {ContactSection} from "./components/ContactSection"
-import { EuropeanAdvisory } from "./components/EuropeanAdvisory"
+// import { EuropeanAdvisory } from "./components/EuropeanAdvisory"
+import { CoreFocusSection } from "./components/CoreFocus"
 
 export default function HomePage() {
   return (
@@ -19,12 +20,13 @@ export default function HomePage() {
       <AboutSection />
       <Expertise />
       {/* <ServicesSection /> */}
-      <EuropeanAdvisory />
+      <CoreFocusSection />
+      {/* <EuropeanAdvisory /> */}
       <TrainingsSection />
-      <EventsSection />
+      {/* <EventsSection /> */}
       {/* <GallerySection /> */}
       {/* <StatsSection /> */}
-      <ResourcesSection />
+      {/* <ResourcesSection /> */}
       <ContactSection />
     </>
   )

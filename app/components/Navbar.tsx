@@ -12,10 +12,10 @@ const navLinks = [
   { label: "Workshops", href: "/#trainings", },
   // { label: "Agri-Proteomics", href: "#",},
   // { label: "Biotech Training", href: "#",},
-  { label: "Core Focus", href: "/#home", },
+  { label: "Core Focus", href: "/#core-focus", },
   { label: "Events", href: "/#events", },
-  { label: "European Science Advisory", href: "/#european-advisory",},
-  { label: "Resources", href: "/#resources",},
+  // { label: "European Science Advisory", href: "/#european-advisory",},
+  // { label: "Resources", href: "/#resources",},
   { label: "Contact", href: "/#contact",},
 ];
 

@@ -74,7 +74,7 @@ export function TrainingsSection() {
         </div>
 
         {/* Trainings Grid */}
-        <div className="grid md:grid-cols-2 gap-6">
+        {/* <div className="grid md:grid-cols-2 gap-6">
           {trainings.map((training, index) => (
             <Card
               key={training.title}
@@ -109,10 +109,10 @@ export function TrainingsSection() {
                     <span className="text-secondary font-medium">{training.upcoming}</span>
                   </div>
                 </div>
-                {/* <Button variant="outline" className="group/btn">
+                <Button variant="outline" className="group/btn">
                   Learn More
                   <ArrowRight className="w-4 h-4 ml-1 group-hover/btn:translate-x-1 transition-transform" />
-                </Button> */}
+                </Button>
                 <Link href="/learning">
                   <Button variant="outline" className="group/btn">
                     Learn More
@@ -122,7 +122,7 @@ export function TrainingsSection() {
               </CardContent>
             </Card>
           ))}
-        </div>
+        </div> */}
 
         {/* CTA */}
         <div className="text-center mt-12">

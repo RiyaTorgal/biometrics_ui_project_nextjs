@@ -8,17 +8,17 @@ const features = [
   {
     icon: Presentation,
     title: "Hands-on Workshops",
-    description: "Practical, application and data-drivem workshops led by scientists with deep domain expertise and active research experience at the forefront of biologics R&D",
+    description: "Application focused, data-driven training led by domain experts actively shaping the future of biologics research and development.",
   },
   {
     icon: BookOpen,
     title: "Customized Training Programs",
-    description: "Training designed to fit your specific level of expertise, technical background, and end goal—from foundational principles to advanced, applied workflows",
+    description: "Training tailored to your level of expertise, technical background, and goals from foundational principles to advanced, applied workflows.",
   },
   {
     icon: FlaskConical,
     title: "Experimental Design & Consultation",
-    description: "Strategic consultation on experimental ensuring robust, biologics development—ensuring robust, interpretable, and decision-ready data",
+    description: "Strategic consultation on experimental design to ensure robust, interpretable, and decision-ready data for biologics development.",
   },
   {
     icon: GraduationCap,
