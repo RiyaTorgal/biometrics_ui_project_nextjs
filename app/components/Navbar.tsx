@@ -10,13 +10,13 @@ const navLinks = [
   { label: "About us", href: "/#about", },
   { label: "Expertise", href: "/#expertise", },
   { label: "Workshops", href: "/#trainings", },
+  { label: "Contact", href: "/#contact",},
+  // { label: "Events", href: "/#events", },
   // { label: "Agri-Proteomics", href: "#",},
   // { label: "Biotech Training", href: "#",},
-  { label: "Core Focus", href: "/#core-focus", },
-  { label: "Events", href: "/#events", },
+  // { label: "Core Focus", href: "/#core-focus", },
   // { label: "European Science Advisory", href: "/#european-advisory",},
   // { label: "Resources", href: "/#resources",},
-  { label: "Contact", href: "/#contact",},
 ];
 
 export function Navbar() {
@@ -53,8 +53,8 @@ export function Navbar() {
               {/* <span className="font-display font-bold text-xl text-foreground">
                 SukshmaDarshini
               </span> */}
-              <span className="font-display font-bold text-xl">
-                Sukshmadarshini <span className="text-secondary"></span>™
+              <span className="font-display font-bold sm:text-md md:text-md text-xl">
+                Sukshmadarshini™
               </span>
               <span className="text-xs text-muted-foreground">
                 Insight Beyond Vision
@@ -63,7 +63,7 @@ export function Navbar() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-8 ">
             {navLinks.map((link) => (
               <a
                 key={link.label}

@@ -5,130 +5,42 @@ import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/badge";
 import Link from "next/link";
 
-const trainings = [
-  {
-    title: "Introduction to Multi-Omics Analysis",
-    duration: "3 Days",
-    participants: "15-20",
-    level: "Beginner",
-    description: "Foundation course covering genomics, transcriptomics, and proteomics fundamentals with hands-on data analysis.",
-    upcoming: "Feb 15-17, 2026",
-  },
-  {
-    title: "Advanced Bioinformatics Pipeline Development",
-    duration: "5 Days",
-    participants: "10-15",
-    level: "Advanced",
-    description: "Deep dive into building scalable bioinformatics workflows using industry-standard tools and best practices.",
-    upcoming: "Mar 3-7, 2026",
-  },
-  {
-    title: "Single-Cell RNA Sequencing Workshop",
-    duration: "4 Days",
-    participants: "12-15",
-    level: "Intermediate",
-    description: "Comprehensive training on scRNA-seq experimental design, data processing, and biological interpretation.",
-    upcoming: "Mar 20-23, 2026",
-  },
-  {
-    title: "Metabolomics for Drug Discovery",
-    duration: "3 Days",
-    participants: "15-20",
-    level: "Intermediate",
-    description: "Learn metabolite profiling techniques and their application in pharmaceutical research and biomarker discovery.",
-    upcoming: "Apr 8-10, 2026",
-  },
-];
-
-const getLevelColor = (level: string) => {
-  switch (level) {
-    case "Beginner":
-      return "bg-green-100 text-green-800 border-green-200";
-    case "Intermediate":
-      return "bg-amber-100 text-amber-800 border-amber-200";
-    case "Advanced":
-      return "bg-red-100 text-red-800 border-red-200";
-    default:
-      return "bg-muted text-muted-foreground";
-  }
-};
 
 export function TrainingsSection() {
   return (
     <section id="trainings" className="py-24 bg-background relative overflow-hidden">
+
+      {/* Background pattern */}
+      <div className="absolute inset-0 opacity-[0.05]">
+        <div className="absolute inset-0" style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+        }} />
+      </div>
+
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary mb-6">
+          <div className="relative inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary mb-6">
             <Users className="w-4 h-4" />
-            <span className="text-sm font-semibold">Training Programs</span>
+            <span className="text-sm font-semibold">Workshops and Trainings</span>
           </div>
           <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6">
             Upcoming Hands-on
-            <span className="text-gradient"> Workshops</span>
+            <span className="text-gradient"> Workshops and Trainings</span>
           </h2>
           <p className="text-lg text-muted-foreground">
-            Industry-ready training programs designed by scientists with deep domain expertise 
+            Industry-ready Workshops and Training programs designed by scientists with deep domain expertise 
             and active research experience at the forefront of biologics R&D.
           </p>
         </div>
 
-        {/* Trainings Grid */}
-        {/* <div className="grid md:grid-cols-2 gap-6">
-          {trainings.map((training, index) => (
-            <Card
-              key={training.title}
-              className="group bg-card hover:shadow-soft transition-all duration-300 border-border/50 hover:border-primary/30 animate-fade-up"
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              <CardHeader>
-                <div className="flex items-start justify-between gap-4 mb-2">
-                  <CardTitle className="font-display text-xl group-hover:text-primary transition-colors">
-                    {training.title}
-                  </CardTitle>
-                  <Badge variant="outline" className={getLevelColor(training.level)}>
-                    {training.level}
-                  </Badge>
-                </div>
-                <CardDescription className="text-muted-foreground text-base">
-                  {training.description}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-4">
-                  <div className="flex items-center gap-1.5">
-                    <Clock className="w-4 h-4 text-primary" />
-                    <span>{training.duration}</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <Users className="w-4 h-4 text-primary" />
-                    <span>{training.participants} participants</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <Calendar className="w-4 h-4 text-secondary" />
-                    <span className="text-secondary font-medium">{training.upcoming}</span>
-                  </div>
-                </div>
-                <Button variant="outline" className="group/btn">
-                  Learn More
-                  <ArrowRight className="w-4 h-4 ml-1 group-hover/btn:translate-x-1 transition-transform" />
-                </Button>
-                <Link href="/learning">
-                  <Button variant="outline" className="group/btn">
-                    Learn More
-                    <ArrowRight className="w-4 h-4 ml-1 group-hover/btn:translate-x-1 transition-transform" />
-                  </Button>
-                </Link>
-              </CardContent>
-            </Card>
-          ))}
-        </div> */}
-
         {/* CTA */}
-        <div className="text-center mt-12">
-          <Button size="lg" className="rounded-full px-8 bg-secondary hover:bg-secondary/90 text-secondary-foreground">
-            View All Training Programs
-          </Button>
+        <div className="relative text-center mt-12">
+           <a href="/learning">
+            <Button size="lg" className="rounded-full px-8 bg-secondary hover:bg-secondary/90 text-secondary-foreground">
+              View All Programs
+            </Button>
+          </a>
         </div>
       </div>
     </section>

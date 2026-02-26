@@ -84,63 +84,11 @@ export function Expertise() {
             </h2>
             
             <p className="text-lg text-muted-foreground mb-4 leading-relaxed">
-              Sukshmadarshini™ specializes in Agri-Proteomics, advanced proteomics workflow consulting, and biotechnology skill development. Our multidisciplinary team brings expertise across plant proteomics, molecular biology, LC–MS/MS workflows (DDA & DIA), genomics, immunology, and regulatory sciences, ensuring scientifically rigorous and globally aligned outcomes.
+              <span className="text-gradient font-bold">Sukshmadarshini™ </span>specializes in Agri-Proteomics, advanced proteomics workflow consulting, and biotechnology skill development. Our expertise spans plant proteomics, molecular biology, LC–MS/MS workflows (DDA & DIA), and genomics ensuring scientifically rigorous and globally aligned outcomes.
             </p>
             <p className="text-lg text-muted-foreground mb-4 leading-relaxed">
-              We actively foster collaborative bridges between Indian and German universities, supporting knowledge exchange, academic alignment, and cross-border research opportunities. Through analytical precision, structured training, and international mentorship, we prepare researchers and students for impactful scientific careers in Europe and beyond.
-            </p>
-            {/* <div className="space-y-3 mb-6">
-              {[
-                "Expert in LC-MS/MS (DDA & DIA), biomarkers & biologics",
-                "Built high-impact training & EdTech programs",
-                "Trusted by biotech, clinical & academic partners",
-                "Turns omics data into actionable business insights"
-              ].map((point, idx) => (
-                <div key={idx} className="flex items-start gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span className="text-muted-foreground">{point}</span>
-                </div>
-              ))}
-            </div> */}
-            
-            <div className="bg-primary/5 border-l-4 border-primary p-4 rounded-r-lg mb-6">
-              <h3 className="font-bold text-foreground mb-2 flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-primary" />
-                Mission
-              </h3>
-              <p className="text-muted-foreground">
-                To advance agricultural innovation through applied proteomics and to empower biotechnology students with globally relevant scientific skills aligned with European research standards.
-              </p>
-            </div>
-            
-            {/* <div className="grid md:grid-cols-2 gap-2">
-              {coreServices.map((service, index) => {
-                const { Icon, heading, content } = service;
-                
-                return (
-                  <div
-                    key={heading}
-                    className="flex items-start gap-4 animate-fade-up p-4 rounded-lg hover:bg-accent/5 transition-colors border-2 border-border/50"
-                    style={{ animationDelay: `${index * 0.1}s` }}
-                  >
-                    Icon Container
-                    <div className="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
-                      <Icon className="w-6 h-6 text-accent" />
-                    </div>
-                    
-                    Content Container
-                    <div className="flex-1">
-                      <h3 className="text-lg font-bold text-foreground mb-2">
-                        {heading}
-                      </h3>
-                      <p className="text-sm text-muted-foreground leading-relaxed">
-                        {content}
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div> */}
+              We cultivate collaborative bridges between Indian and European academic ecosystems, supporting knowledge exchange, research alignment, and cross-border opportunities. Through analytical precision, structured training, and guided mentorship, we enable students and researchers to build strong, research-oriented careers.
+            </p>            
           </div>
         </div>
       </div>

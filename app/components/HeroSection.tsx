@@ -38,7 +38,7 @@ export function HeroSection() {
         {/* Background image */}
         <div className=" absolute inset-0 w-full h-full">
           <Image 
-            src="/hero-scientistAgri.jpg" 
+            src="/agri-proteomics2.png" 
             alt="Scientist analyzing data" 
             fill
             className="object-cover object-right"
@@ -51,16 +51,14 @@ export function HeroSection() {
             {/* Left Content */}
             <div className="text-primary-foreground">
               <h1 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
-                Transforming Agriculture Through Proteomics & Empowering Global Science Careers
+                {/* Transforming Agriculture Through Proteomics & Empowering Global Science Careers */}
+                Applied Science for Modern Agriculture
               </h1>
-              {/* <h3 className="font-display text-xl md:text-2xl lg:text-3xl font-bold mb-6 leading-tight">
-                In Partnership with 3DCC x Biologics Goa
-              </h3> */}
               <p className="text-lg md:text-xl text-primary-foreground/90 max-w-xl">
-                {/* Industry-ready training and experimental strategy to generate robust, interpretable, and decision ready biological data */}
-                Specialized Agri-Proteomics training, biotechnology skill development, and strategic academic guidance for students aspiring to excel in Europe’s research ecosystem.
+                {/* Specialized Agri-Proteomics training, biotechnology skill development, and strategic academic guidance for students aspiring to excel in Europe’s research ecosystem. */}
+                Agri-Proteomics training and biotechnology skill development designed for research-focused learners and future-ready agricultural innovators.
               </p>
-              <a href="#trainings" className="flex items-center gap-3">
+              <a href="/learning" className="flex items-center gap-3">
               <div className="text-center mt-12">
                 <Button variant="outline" size="lg" className="rounded-md px-8 bg-secondary hover:bg-transparent text-secondary-foreground  border-2 border-secondary hover:border-secondary">
                   Register For Upcoming Workshops
