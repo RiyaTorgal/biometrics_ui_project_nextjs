@@ -121,8 +121,10 @@ body {
       hsl(36 85% 66%) 100% */
       hsl(235 38% 18%) 10%,
       hsl(235 38% 31%) 50%,
-      hsl(235 46% 45%) 100%
+      hsl(235 46% 45%) 90%
     );
+
+    --bold: hsl(235 38% 31%);
 
     --gradient-card: linear-gradient(
       180deg,
@@ -219,6 +221,10 @@ body {
     background: var(--gradient-accent);
   }
 
+  .textBold {
+    color: var(--bold);
+  }
+
   .shadow-soft {
     box-shadow: var(--shadow-soft);
   }
@@ -233,7 +239,7 @@ body {
 
   .text-gradient {
     background: var(--gradient-accent);
-    background-size: 70% 70%;
+    background-size:  100%;
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
