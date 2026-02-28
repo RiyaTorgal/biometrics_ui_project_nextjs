@@ -8,11 +8,6 @@ const stats = [
 export function StatsSection() {
   return (
     <section className="py-20 gradient-hero relative overflow-hidden">
-      {/* Background blur */}
-      {/* <div className="absolute inset-0">
-        <div className="absolute top-1/2 left-1/4 w-64 h-64 rounded-full bg-secondary/30 blur-3xl" />
-        <div className="absolute top-1/2 right-1/4 w-64 h-64 rounded-full bg-accent/30 blur-3xl" />
-      </div> */}
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">

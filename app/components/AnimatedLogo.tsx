@@ -79,7 +79,7 @@ export function AnimatedLogo() {
   }, []);
 
   return (
-    <div className="relative w-full flex items-center justify-center">
+    <div className="relative w-2/3 md:w-full flex items-center justify-center">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 297 181"

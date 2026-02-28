@@ -157,8 +157,8 @@ const footerLinks = {
     // { label: "Metabolomics", href: "#" },
   ],
   company: [
-    { label: "Our Team", href: "/#" },
-    { label: "Careers", href: "/#" },
+    // { label: "Our Team", href: "/#" },
+    { label: "Careers", href: "/careers" },
     // { label: "Blog", href: "#" },
     { label: "Contact", href: "/#contact" },
   ],
@@ -206,8 +206,7 @@ export function Footer() {
               </span>
             </div>
             <p className="text-foreground/60 text-sm leading-relaxed mb-6">
-              Premier bioanalytical and bioinformatics service provider transforming 
-              biological research through multiomics solutions.
+              An emerging Agri-Proteomics venture empowering sustainable agriculture, translational biotech skills.
             </p>
             <div className="flex gap-3">
               {socialLinks.map((social) => (
