@@ -1,48 +1,738 @@
+// "use client";
+
+// import { useState, useEffect } from "react";
+// import Link from "next/link";
+// import {
+//   Eye,
+//   Play,
+//   FileText,
+//   Download,
+//   Clock,
+//   BookOpen,
+//   // Presentation,
+//   Projector,
+//   Video,
+//   ChevronRight,
+//   Lock,
+//   CheckCircle,
+//   CreditCard,
+//   Mail,
+//   User,
+//   Phone,
+//   X,
+//   Sparkles,
+//   ArrowRight,
+//   GraduationCap,
+//   Briefcase,
+//   Users,
+// } from "lucide-react";
+
+// import { Button } from "../components/ui/button";
+// import {
+//   Card,
+//   CardContent,
+//   CardDescription,
+//   CardHeader,
+//   CardTitle,
+// } from "../components/ui/card";
+// import { Badge } from "../components/ui/badge";
+// import CourseDetailDialog from "../components/CourseDetailDialog";
+// import WorkshopDetailDialog from "../components/WorkshopDetailDialogue";
+// import { Progress } from "../components/ui/progress";
+// import {
+//   Tabs,
+//   TabsContent,
+//   TabsList,
+//   TabsTrigger,
+// } from "../components/ui/tabs";
+// import { ScrollArea } from "../components/ui/scroll-area";
+// import {
+//   Dialog,
+//   DialogContent,
+//   DialogDescription,
+//   DialogHeader,
+//   DialogTitle,
+// } from "../components/ui/dialog";
+// import { Input } from "../components/ui/input";
+// import { Label } from "../components/ui/label";
+// import { useToast } from "../hooks/use-toast";
+// import Image from "next/image";
+// import { title } from "process";
+
+// /* ------------------ DATA ------------------ */
+
+// const workshops = [
+//   {
+//     id: 1,
+//     title: "Hands-on Genomics Workshop",
+//     duration: "3 hours",
+//     description: "Practical workshop on genomic data analysis and interpretation",
+//     thumbnail:
+//       "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=400&h=225&fit=crop",
+//     completed: false,
+//     locked: false,
+//   }
+// ];
+
+// const trainingVideos = [
+//   {
+//     id: 1,
+//     title: "Introduction to Multi-Omics",
+//     duration: "15:30",
+//     thumbnail:
+//       "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=400&h=225&fit=crop",
+//     description: "Learn the fundamentals of multi-omics analysis and integration",
+//     completed: true,
+//     locked: false,
+//   },
+//   {
+//     id: 2,
+//     title: "Genomics Fundamentals",
+//     duration: "22:45",
+//     thumbnail:
+//       "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=225&fit=crop",
+//     description: "Deep dive into genomic sequencing and data interpretation",
+//     completed: true,
+//     locked: false,
+//   },
+//   {
+//     id: 3,
+//     title: "Proteomics Deep Dive",
+//     duration: "28:15",
+//     thumbnail:
+//       "https://images.unsplash.com/photo-1576086213369-97a306d36557?w=400&h=225&fit=crop",
+//     description: "Master proteomic analysis techniques and applications",
+//     completed: false,
+//     locked: false,
+//   },
+//   {
+//     id: 4,
+//     title: "Metabolomics Applications",
+//     duration: "19:50",
+//     thumbnail:
+//       "https://images.unsplash.com/photo-1582719471384-894fbb16e074?w=400&h=225&fit=crop",
+//     description: "Explore metabolomic pathways and clinical applications",
+//     completed: false,
+//     locked: false,
+//   },
+//   {
+//     id: 5,
+//     title: "Advanced Data Integration",
+//     duration: "35:20",
+//     thumbnail:
+//       "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=225&fit=crop",
+//     description: "Integrate multi-omics data for comprehensive insights",
+//     completed: false,    
+//     locked: false,
+//   },
+// ];
+
+// const studyMaterials = [
+//   {
+//     id: 1,
+//     title: "Multi-Omics Handbook",
+//     type: "PDF",
+//     size: "2.4 MB",
+//     category: "Guide",
+//     description: "Comprehensive guide to multi-omics methodologies",
+//   },
+//   {
+//     id: 2,
+//     title: "Genomics Lab Protocols",
+//     type: "PDF",
+//     size: "1.8 MB",
+//     category: "Protocol",
+//     description: "Step-by-step laboratory protocols for genomic analysis",
+//   },
+//   {
+//     id: 3,
+//     title: "Case Studies Collection",
+//     type: "PDF",
+//     size: "3.2 MB",
+//     category: "Reference",
+//     description: "Real-world applications and research findings",
+//   },
+// ];
+
+// const COURSE_PRICE = "₹4,999";
+
+// /* ------------------ COMPONENT ------------------ */
+
+// export default function LearningPage() {
+//   const [enrolledCourses, setEnrolledCourses] = useState<number[]>([]);
+//   const [isEnrolled, setIsEnrolled] = useState(false);
+//   const [showEnrollModal, setShowEnrollModal] = useState(false);
+//   const [enrollmentStep, setEnrollmentStep] = useState<"form" | "payment">("form");
+//   const [selectedVideo, setSelectedVideo] = useState<typeof trainingVideos[0] | null>(null);
+//   const { toast } = useToast();
+
+//   // Form states
+//   const [formData, setFormData] = useState({
+//     name: "",
+//     email: "",
+//     // phone: "",
+//     organization: "",
+//   });
+
+//   const [paymentData, setPaymentData] = useState({
+//     cardNumber: "",
+//     expiryDate: "",
+//     cvv: "",
+//     cardholderName: "",
+//   });
+
+//   // Check enrollment status on mount
+//   useEffect(() => {
+//     const enrolledCoursesStr = localStorage.getItem("sukshmadarshini_enrolled_courses");
+//     if (enrolledCoursesStr) {
+//       const courses = JSON.parse(enrolledCoursesStr);
+//       setEnrolledCourses(courses);
+//     }
+//   }, []);
+
+//   const handleEnrollmentComplete = (courseId: number) => {
+//     const enrolledCoursesStr = localStorage.getItem("sukshmadarshini_enrolled_courses");
+//     const courses = enrolledCoursesStr ? JSON.parse(enrolledCoursesStr) : [];
+//     setEnrolledCourses(courses);
+//   };
+
+//   const isVideoEnrolled = (videoId: number) => {
+//     return enrolledCourses.includes(videoId);
+//   };
+
+//   const handleAccessContent = (videoId: number) => {
+//     if (isVideoEnrolled(videoId)) {
+//       // User is enrolled, allow access
+//       toast({
+//         title: "Access Granted",
+//         description: "Enjoy your learning content!",
+//       });
+//     } else {
+//       // Show enrollment modal
+//       setShowEnrollModal(true);
+//     }
+//   };
+
+//   const handleFormSubmit = (e: React.FormEvent) => {
+//     e.preventDefault();
+//     setEnrollmentStep("payment");
+//   };
+
+//   const handlePaymentSubmit = (e: React.FormEvent) => {
+//     e.preventDefault();
+    
+//     // Simulate payment processing
+//     setTimeout(() => {
+//       // Store enrollment
+//       localStorage.setItem("sukshmadarshini_enrolled", "true");
+//       localStorage.setItem("sukshmadarshini_user", JSON.stringify(formData));
+      
+//       setShowEnrollModal(false);
+      
+//       toast({
+//         title: "🎉 Enrollment Successful!",
+//         description: "Welcome to SukshmaDarshini. You now have full access to all training materials.",
+//       });
+      
+//       // Reset forms
+//       setEnrollmentStep("form");
+//       setFormData({ name: "", 
+//                     email: "", 
+//                     // phone: "", 
+//                     organization: "" });
+//       setPaymentData({ cardNumber: "", expiryDate: "", cvv: "", cardholderName: "" });
+//     }, 1500);
+//   };
+
+//   return (
+//     <>
+//     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30">
+//       {/* HEADER */}
+//       <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur-xl shadow-sm">
+//         <div className="container mx-auto flex h-16 md:h-20 items-center justify-between px-4">
+//           <Link href="/" className="flex items-center gap-3 group">
+//             {/* <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-purple-600 shadow-lg group-hover:shadow-xl transition-shadow">
+//               <Eye className="h-5 w-5 text-white" />
+//             </div> */}
+//             <Image 
+//               src="/Screenshot_2026-01-27_201728-removebg-preview.png" 
+//               alt="EyeIcon Navbar Logo" 
+//               width={56}   // w-14 in Tailwind = 14 * 4px = 56px
+//               height={40}  // h-10 in Tailwind = 10 * 4px = 40px
+//               className="object-contain"
+//             />
+//             <div className="flex flex-col">
+//               <span className="font-display text-lg font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+//                 Sukshmadarshini Learning
+//               </span>
+//               <span className="text-xs text-muted-foreground">
+//                 Insight Beyond Vision
+//               </span>
+//             </div>
+//           </Link>
+
+//           <div className="flex items-center gap-4">
+//             {enrolledCourses.length > 0 ? (
+//               <Badge className="bg-green-500/10 text-green-700 dark:text-green-400 border-green-500/20 hover:bg-green-500/30">
+//                 <CheckCircle className="w-3 h-3 mr-1" />
+//                 {enrolledCourses.length} Course{enrolledCourses.length !== 1 ? 's' : ''} Enrolled
+//               </Badge>
+//             ) : (
+//               <Button 
+//                 onClick={() => setShowEnrollModal(true)}
+//                 className="rounded-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all"
+//               >
+//                 <Sparkles className="w-4 h-4 mr-2" />
+//                 Enroll Now
+//               </Button>
+//             )}
+//           </div>
+//         </div>
+//       </header>
+
+//       {/* HERO SECTION */}
+//       <section className="container mx-auto px-4 py-12 text-center">
+//         <div className="max-w-3xl mx-auto space-y-6">
+//           <h1 className="font-display text-4xl md:text-5xl font-bold text-gradient bg-clip-text text-transparent">
+//             {/* Programs & Professional Services in Agri-Proteomics and Biotechnology */}
+//             Advanced Agri-Proteomics Workshops & Research Consulting
+//           </h1>
+//           <p className="text-lg text-muted-foreground">
+//             {/* Structured workshops, industry skill programs, and expert advisory services for life science professionals. */}
+//             Hands-on training, workflow consulting, and strategic mentorship in plant proteomics and molecular agriculture.
+//           </p>
+          
+//           {/* {!isEnrolled && (
+//             <Card className="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20 border-blue-200 dark:border-blue-800">
+//               <CardContent className="pt-6">
+//                 <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+//                   <div className="text-left">
+//                     <p className="text-sm text-muted-foreground mb-1">Complete Course Access</p>
+//                     <p className="text-3xl font-bold text-foreground">{COURSE_PRICE}</p>
+//                     <p className="text-sm text-muted-foreground mt-1">One-time payment • Lifetime access</p>
+//                   </div>
+//                   <Button 
+//                     size="lg"
+//                     onClick={() => setShowEnrollModal(true)}
+//                     className="rounded-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all"
+//                   >
+//                     Start Learning Today
+//                     <ArrowRight className="w-4 h-4 ml-2" />
+//                   </Button>
+//                 </div>
+//               </CardContent>
+//             </Card>
+//           )} */}
+//         </div>
+//       </section>
+
+//       {/* CONTENT */}
+//       <main className="container mx-auto px-4 py-8 space-y-8">
+//         <Tabs defaultValue="workshop" className="w-full">
+//           <TabsList className="grid w-full max-w-xl mx-auto grid-cols-2">
+//             <TabsTrigger value="workshop">
+//               <Users className="mr-2 h-5 w-5" />
+//               Offline Workshops
+//             </TabsTrigger>
+//             {/* <TabsTrigger value="videos">
+//               <Video className="mr-2 h-5 w-5" />
+//               Training Videos
+//             </TabsTrigger> */}
+//             <TabsTrigger value="materials">
+//               <Briefcase className="mr-2 h-5 w-5" />
+//               Consultation Services
+//             </TabsTrigger>
+//           </TabsList>
+
+//           <TabsContent value="workshop" className="mt-8">
+//             <h3 className="font-display text-3xl md:text-4xl font-bold text-gradient mb-10">
+//                 Workshops and Trainings
+//               </h3>
+//             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+//               {workshops.map((video, index) => (
+//                 // <Card 
+//                 //   key={video.id} 
+//                 //   className="group hover:shadow-xl transition-all duration-300 overflow-hidden border-2 hover:border-primary/50"
+//                 // >
+//                 <Card 
+//                   key={video.id} 
+//                   className={`overflow-hidden transition-all duration-300 cursor-pointer ${
+//                     video.locked 
+//                       ? "opacity-60" 
+//                       : "hover:shadow-lg hover:-translate-y-1"
+//                   }`}
+//                   onClick={() => setSelectedVideo(video)}
+//                 >
+//                   <div className="relative h-48 w-full overflow-hidden bg-muted" 
+//                   // onClick={() => setSelectedVideo(video)}
+//                   >
+//                     <Image
+//                       src={video.thumbnail}
+//                       alt={video.title}
+//                       fill
+//                       className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      
+//                     />
+//                     {!isEnrolled && (
+//                       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">
+//                         <Lock className="w-8 h-8 text-white" />
+//                       </div>
+//                     )}
+//                     <div className="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded-full flex items-center gap-1">
+//                       <Clock className="w-3 h-3" />
+//                       {video.duration}
+//                     </div>
+//                   </div>
+//                   <CardContent className="pt-4 space-y-3">
+//                     <div className="flex items-start justify-between gap-2">
+//                       <h3 className="font-semibold text-lg leading-tight">{video.title}</h3>
+//                       <Badge variant="secondary" className="text-xs">
+//                         #{index + 1}
+//                       </Badge>
+//                     </div>
+//                     <p className="text-sm text-muted-foreground line-clamp-2">
+//                       {video.description}
+//                     </p>
+//                     <Button 
+//                       onClick={() => setSelectedVideo(video)}
+//                       disabled={isVideoEnrolled(video.id)}
+//                       variant={isVideoEnrolled(video.id) ? "default" : "secondary"}
+//                       className="w-full"
+//                     >
+//                       {isVideoEnrolled(video.id) ? (
+//                         <>
+//                           <Play className="w-4 h-4 mr-2" />
+//                           Enrolled
+//                         </>
+//                       ) : (
+//                         <>
+//                           <Lock className="w-4 h-4 mr-2" />
+//                           Enroll to Access
+//                         </>
+//                       )}
+//                     </Button>
+//                   </CardContent>
+//                 </Card>
+//               ))}
+//             </div>
+//           </TabsContent>
+
+//           {/* <TabsContent value="videos" className="mt-8">
+//             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+//               {trainingVideos.map((video, index) => (
+//                 // <Card 
+//                 //   key={video.id} 
+//                 //   className="group hover:shadow-xl transition-all duration-300 overflow-hidden border-2 hover:border-primary/50"
+//                 // >
+//                 <Card 
+//                   key={video.id} 
+//                   className={`overflow-hidden transition-all duration-300 cursor-pointer ${
+//                     video.locked 
+//                       ? "opacity-60" 
+//                       : "hover:shadow-lg hover:-translate-y-1"
+//                   }`}
+//                   // onClick={() => setSelectedVideo(video)}
+//                 >
+//                   <div className="relative h-48 w-full overflow-hidden bg-muted" onClick={() => setSelectedVideo(video)}>
+//                     <Image
+//                       src={video.thumbnail}
+//                       alt={video.title}
+//                       fill
+//                       className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      
+//                     />
+//                     {!isEnrolled && (
+//                       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">
+//                         <Lock className="w-8 h-8 text-white" />
+//                       </div>
+//                     )}
+//                     <div className="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded-full flex items-center gap-1">
+//                       <Clock className="w-3 h-3" />
+//                       {video.duration}
+//                     </div>
+//                   </div>
+//                   <CardContent className="pt-4 space-y-3">
+//                     <div className="flex items-start justify-between gap-2">
+//                       <h3 className="font-semibold text-lg leading-tight">{video.title}</h3>
+//                       <Badge variant="secondary" className="text-xs">
+//                         #{index + 1}
+//                       </Badge>
+//                     </div>
+//                     <p className="text-sm text-muted-foreground line-clamp-2">
+//                       {video.description}
+//                     </p>
+//                     <Button 
+//                       onClick={() => setSelectedVideo(video)}
+//                       variant={isVideoEnrolled(video.id) ? "default" : "secondary"}
+//                       className="w-full"
+//                     >
+//                       {isVideoEnrolled(video.id) ? (
+//                         <>
+//                           <Play className="w-4 h-4 mr-2" />
+//                           Watch Now
+//                         </>
+//                       ) : (
+//                         <>
+//                           <Lock className="w-4 h-4 mr-2" />
+//                           Enroll to Access
+//                         </>
+//                       )}
+//                     </Button>
+//                   </CardContent>
+//                 </Card>
+//               ))}
+//             </div>
+//           </TabsContent> */}
+
+//           <TabsContent value="materials" className="mt-8">
+//             <h3 className="font-display text-3xl md:text-4xl font-bold text-gradient mb-10">
+//                 Consutation Services
+//               </h3>
+//             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+//               {studyMaterials.map((item) => (
+//                 <Card key={item.id} className="hover:shadow-lg transition-shadow">
+//                   <CardContent className="pt-6">
+//                     <div className="flex items-start justify-between mb-4">
+//                       <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10">
+//                         <FileText className="w-6 h-6 text-primary" />
+//                       </div>
+//                       <Badge variant="outline">{item.category}</Badge>
+//                     </div>
+//                     <h3 className="font-semibold mb-2">{item.title}</h3>
+//                     <p className="text-sm text-muted-foreground mb-3">{item.description}</p>
+//                     <div className="flex items-center justify-between text-xs text-muted-foreground mb-4">
+//                       <span>{item.type}</span>
+//                       <span>{item.size}</span>
+//                     </div>
+//                     <Button 
+//                       onClick={() => enrolledCourses.length > 0 ? handleAccessContent(0) : setShowEnrollModal(true)}
+//                       variant={enrolledCourses.length > 0 ? "default" : "secondary"}
+//                       className="w-full"
+//                       size="sm"
+//                     >
+//                       {enrolledCourses.length > 0 ? (
+//                         <>
+//                           <Download className="w-4 h-4 mr-2" />
+//                           Download
+//                         </>
+//                       ) : (
+//                         <>
+//                           <Lock className="w-4 h-4 mr-2" />
+//                           Enroll to Access
+//                         </>
+//                       )}
+//                     </Button>
+//                   </CardContent>
+//                 </Card>
+//               ))}
+//             </div>
+//           </TabsContent>
+//         </Tabs>
+//       </main>
+
+//       {/* ENROLLMENT MODAL */}
+//       <Dialog open={showEnrollModal} onOpenChange={setShowEnrollModal}>
+//         <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
+//           <DialogHeader>
+//             <DialogTitle className="text-2xl font-display">
+//               {enrollmentStep === "form" ? "Complete Your Registration" : "Payment Details"}
+//             </DialogTitle>
+//             <DialogDescription>
+//               {enrollmentStep === "form" 
+//                 ? "Fill in your details to get started with your learning journey"
+//                 : `Complete your payment of ${COURSE_PRICE} to unlock all content`
+//               }
+//             </DialogDescription>
+//           </DialogHeader>
+
+//           {enrollmentStep === "form" ? (
+//             <form onSubmit={handleFormSubmit} className="space-y-4 pt-4">
+//               <div className="space-y-2">
+//                 <Label htmlFor="name">Full Name *</Label>
+//                 <div className="relative">
+//                   <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+//                   <Input
+//                     id="name"
+//                     placeholder="John Doe"
+//                     value={formData.name}
+//                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+//                     className="pl-10"
+//                     required
+//                   />
+//                 </div>
+//               </div>
+
+//               <div className="space-y-2">
+//                 <Label htmlFor="email">Email Address *</Label>
+//                 <div className="relative">
+//                   <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+//                   <Input
+//                     id="email"
+//                     type="email"
+//                     placeholder="you@example.com"
+//                     value={formData.email}
+//                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+//                     className="pl-10"
+//                     required
+//                   />
+//                 </div>
+//               </div>
+
+//               {/* <div className="space-y-2">
+//                 <Label htmlFor="phone">Phone Number *</Label>
+//                 <div className="relative">
+//                   <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+//                   <Input
+//                     id="phone"
+//                     type="tel"
+//                     placeholder="+91 98765 43210"
+//                     value={formData.phone}
+//                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+//                     className="pl-10"
+//                     required
+//                   />
+//                 </div>
+//               </div> */}
+
+//               <div className="space-y-2">
+//                 <Label htmlFor="organization">Organization (Optional)</Label>
+//                 <Input
+//                   id="organization"
+//                   placeholder="Your University/Company"
+//                   value={formData.organization}
+//                   onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
+//                 />
+//               </div>
+
+//               <Button type="submit" className="w-full mt-6">
+//                 Continue to Payment
+//                 <ChevronRight className="w-4 h-4 ml-2" />
+//               </Button>
+//             </form>
+//           ) : (
+//             <form onSubmit={handlePaymentSubmit} className="space-y-4 pt-4">
+//               <div className="bg-muted/50 p-4 rounded-lg mb-4">
+//                 <p className="text-sm text-muted-foreground mb-1">Total Amount</p>
+//                 <p className="text-3xl font-bold">{COURSE_PRICE}</p>
+//               </div>
+
+//               <div className="space-y-2">
+//                 <Label htmlFor="cardNumber">Card Number *</Label>
+//                 <div className="relative">
+//                   <CreditCard className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+//                   <Input
+//                     id="cardNumber"
+//                     placeholder="1234 5678 9012 3456"
+//                     value={paymentData.cardNumber}
+//                     onChange={(e) => setPaymentData({ ...paymentData, cardNumber: e.target.value })}
+//                     className="pl-10"
+//                     required
+//                   />
+//                 </div>
+//               </div>
+
+//               <div className="space-y-2">
+//                 <Label htmlFor="cardholderName">Cardholder Name *</Label>
+//                 <Input
+//                   id="cardholderName"
+//                   placeholder="John Doe"
+//                   value={paymentData.cardholderName}
+//                   onChange={(e) => setPaymentData({ ...paymentData, cardholderName: e.target.value })}
+//                   required
+//                 />
+//               </div>
+
+//               <div className="grid grid-cols-2 gap-4">
+//                 <div className="space-y-2">
+//                   <Label htmlFor="expiryDate">Expiry Date *</Label>
+//                   <Input
+//                     id="expiryDate"
+//                     placeholder="MM/YY"
+//                     value={paymentData.expiryDate}
+//                     onChange={(e) => setPaymentData({ ...paymentData, expiryDate: e.target.value })}
+//                     required
+//                   />
+//                 </div>
+//                 <div className="space-y-2">
+//                   <Label htmlFor="cvv">CVV *</Label>
+//                   <Input
+//                     id="cvv"
+//                     placeholder="123"
+//                     type="password"
+//                     maxLength={4}
+//                     value={paymentData.cvv}
+//                     onChange={(e) => setPaymentData({ ...paymentData, cvv: e.target.value })}
+//                     required
+//                   />
+//                 </div>
+//               </div>
+
+//               <div className="flex gap-2 pt-4">
+//                 <Button 
+//                   type="button" 
+//                   variant="outline" 
+//                   className="flex-1"
+//                   onClick={() => setEnrollmentStep("form")}
+//                 >
+//                   Back
+//                 </Button>
+//                 <Button type="submit" className="flex-1 bg-green-600 hover:bg-green-700">
+//                   <CreditCard className="w-4 h-4 mr-2" />
+//                   Pay {COURSE_PRICE}
+//                 </Button>
+//               </div>
+
+//               <p className="text-xs text-center text-muted-foreground mt-4">
+//                 🔒 Secure payment powered by industry-standard encryption
+//               </p>
+//             </form>
+//           )}
+//         </DialogContent>
+//       </Dialog>
+//     </div>
+
+//     <WorkshopDetailDialog
+//         video={selectedVideo}
+//         open={!!selectedVideo}
+//         onOpenChange={(open) => { if (!open) setSelectedVideo(null); }}
+//         isEnrolled={selectedVideo ? isVideoEnrolled(selectedVideo.id) : false}
+//         onEnrollmentComplete={handleEnrollmentComplete}
+//       />
+//     </>
+//   );
+// }
+
 "use client";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
-  Eye,
-  Play,
-  FileText,
-  Download,
   Clock,
-  BookOpen,
-  // Presentation,
-  Projector,
-  Video,
-  ChevronRight,
   Lock,
+  Users,
+  Briefcase,
   CheckCircle,
+  Sparkles,
+  ChevronRight,
   CreditCard,
   Mail,
   User,
-  Phone,
-  X,
-  Sparkles,
-  ArrowRight,
+  MailCheck,
 } from "lucide-react";
 
 import { Button } from "../components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
 } from "../components/ui/card";
 import { Badge } from "../components/ui/badge";
-import CourseDetailDialog from "../components/CourseDetailDialog";
-import WorkshopDetailDialog from "../components/WorkshopDetailDialogue";
-import { Progress } from "../components/ui/progress";
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
 } from "../components/ui/tabs";
-import { ScrollArea } from "../components/ui/scroll-area";
 import {
   Dialog,
   DialogContent,
@@ -53,121 +743,239 @@ import {
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { useToast } from "../hooks/use-toast";
-import Image from "next/image";
-import { title } from "process";
+import WorkshopDetailDialog from "../components/WorkshopDetailDialogue";
 
 /* ------------------ DATA ------------------ */
 
 const workshops = [
   {
     id: 1,
-    title: "Hands-on Genomics Workshop",
-    duration: "3 hours",
-    description: "Practical workshop on genomic data analysis and interpretation",
+    category: "Agri-Proteomics & Crop Molecular Innovation",
+    title: "Introductory Agri-Proteomics Workshop",
+    duration: "3–4 Hours",
+    mode: "Online / Offline",
+    idealFor: "Agriculture & Biotechnology students",
+    priceNote: "Early bird and group discounts available",
+    content: [
+      "Fundamentals of plant proteomics",
+      "Introduction to LC–MS/MS workflows",
+      "Plant stress proteomics concepts",
+      "Crop resilience & yield improvement research",
+      "Career pathways in Agri-Proteomics",
+    ],
     thumbnail:
       "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=400&h=225&fit=crop",
-    completed: false,
-    locked: false,
-  }
-];
-
-const trainingVideos = [
-  {
-    id: 1,
-    title: "Introduction to Multi-Omics",
-    duration: "15:30",
-    thumbnail:
-      "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=400&h=225&fit=crop",
-    description: "Learn the fundamentals of multi-omics analysis and integration",
-    completed: true,
-    locked: false,
   },
   {
     id: 2,
-    title: "Genomics Fundamentals",
-    duration: "22:45",
+    category: "Agri-Proteomics & Crop Molecular Innovation",
+    title: "2–3 Day Intensive Agri-Proteomics Workshop",
+    duration: "2–3 Days",
+    mode: "Online / Offline",
+    idealFor: "Advanced students & researchers",
+    priceNote: "Depends on batch size & format",
+    content: [
+      "Applied LC–MS/MS workflows for plant systems",
+      "Experimental design in crop molecular research",
+      "DDA vs DIA strategy planning",
+      "Case studies in sustainable agriculture",
+      "Workflow design exercises",
+    ],
     thumbnail:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=225&fit=crop",
-    description: "Deep dive into genomic sequencing and data interpretation",
-    completed: true,
-    locked: false,
+      "https://images.unsplash.com/photo-1576086213369-97a306d36557?w=400&h=225&fit=crop",
   },
   {
     id: 3,
-    title: "Proteomics Deep Dive",
-    duration: "28:15",
+    category: "Agri-Proteomics & Crop Molecular Innovation",
+    title: "Advanced Certification in Plant Proteomics",
+    duration: "6–8 Weeks",
+    mode: "Hybrid / Offline Preferred",
+    idealFor: "Research-track learners",
+    priceNote: "Depends on batch size & format",
+    content: [
+      "End-to-end plant proteomics workflow",
+      "Sample preparation & digestion strategy",
+      "Experimental design principles",
+      "Visit to Mass Spectrometry facility (Optional)",
+      "Basics of proteomics data analysis",
+      "Research presentation & evaluation (Optional)",
+    ],
     thumbnail:
-      "https://images.unsplash.com/photo-1576086213369-97a306d36557?w=400&h=225&fit=crop",
-    description: "Master proteomic analysis techniques and applications",
-    completed: false,
-    locked: false,
+      "https://images.unsplash.com/photo-1582719471384-894fbb16e074?w=400&h=225&fit=crop",
   },
   {
     id: 4,
-    title: "Metabolomics Applications",
-    duration: "19:50",
-    thumbnail:
-      "https://images.unsplash.com/photo-1582719471384-894fbb16e074?w=400&h=225&fit=crop",
-    description: "Explore metabolomic pathways and clinical applications",
-    completed: false,
-    locked: false,
-  },
-  {
-    id: 5,
-    title: "Advanced Data Integration",
-    duration: "35:20",
+    category: "Biotechnology Industry Skill Development",
+    title: "Biotechnology Industry Skill Development Program",
+    duration: "4–6 Weeks",
+    mode: "Online / Hybrid",
+    idealFor: "Students seeking industry-ready biotech skills",
+    priceNote: "Depends on batch size & format",
+    content: [
+      "Advanced molecular biology techniques",
+      "HPLC fundamentals",
+      "LC–MS/MS workflows",
+      "Experimental design strategy",
+      "Translational data interpretation",
+      "Research profile building & career positioning",
+    ],
     thumbnail:
       "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=225&fit=crop",
-    description: "Integrate multi-omics data for comprehensive insights",
-    completed: false,    
-    locked: false,
   },
 ];
 
-const studyMaterials = [
+const consultationServices = [
+  // {
+  //   id: 101,
+  //   title: "Agri-Proteomics Research Consulting",
+  //   duration: "Project-based",
+  //   description:
+  //     "End-to-end guidance on plant proteomics study design, LC–MS/MS workflows, and result interpretation for academic and industry research.",
+  //   thumbnail:
+  //     "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=400&h=225&fit=crop",
+  //   mode: "Online / Hybrid",
+  //   audience: "Researchers • PhD Scholars • Institutions",
+  //   cta: "Request Consultation",
+  // },
+  // {
+  //   id: 102,
+  //   title: "Biotechnology Workflow Advisory",
+  //   duration: "Flexible",
+  //   description:
+  //     "Expert advisory on molecular biology workflows, experimental design, and translational biotech research strategies.",
+  //   thumbnail:
+  //     "https://images.unsplash.com/photo-1576086213369-97a306d36557?w=400&h=225&fit=crop",
+  //   mode: "Online",
+  //   audience: "Students • Startups • Labs",
+  //   cta: "Book Advisory Call",
+  // },
+  // {
+  //   id: 103,
+  //   title: "Research Profile & Career Mentorship",
+  //   duration: "Mentorship-based",
+  //   description:
+  //     "Strategic mentoring for research profile building, international academic pathways, and scientific career positioning.",
+  //   thumbnail:
+  //     "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=400&h=225&fit=crop",
+  //   mode: "Online",
+  //   audience: "UG • PG • Early Researchers",
+  //   cta: "Start Mentorship",
+  // },
   {
-    id: 1,
-    title: "Multi-Omics Handbook",
-    type: "PDF",
-    size: "2.4 MB",
-    category: "Guide",
-    description: "Comprehensive guide to multi-omics methodologies",
+    id: 201,
+    title: "Proteomics Workflow & Sample Preparation Consulting",
+    duration: "60-minute session • Project-based available",
+    price: "₹3,500 per session",
+    thumbnail:
+      "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=400&h=225&fit=crop",
+    mode: "Online",
+    audience: "Researchers • Labs • Institutions",
+    description:
+      "Strategic consulting support for experimental design, LC–MS/MS workflows, and sample preparation optimization in plant proteomics research.",
+    includes: [
+      "Plant tissue protein extraction strategies",
+      "Sample clean-up & digestion optimization",
+      "DDA & DIA workflow planning",
+      "Contaminant mitigation & QC strategy",
+      "Targeted vs discovery proteomics planning",
+      "Free 15-minute discovery call",
+    ],
+    cta: "Book Consulting Session",
   },
+
+  /* -------------------------------------------------- */
+  /* 2A. Europe Profile Review Session */
+  /* -------------------------------------------------- */
   {
-    id: 2,
-    title: "Genomics Lab Protocols",
-    type: "PDF",
-    size: "1.8 MB",
-    category: "Protocol",
-    description: "Step-by-step laboratory protocols for genomic analysis",
+    id: 202,
+    title: "European Science Pathway – Profile Review Session",
+    duration: "60 Minutes",
+    price: "₹2,500 per session",
+    thumbnail:
+      "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=400&h=225&fit=crop",
+    mode: "Online",
+    audience: "Biotech • Agriculture • Molecular Biology Students",
+    description:
+      "Scientific profile evaluation and strategic recommendations for Master's or PhD pathways in Europe.",
+    includes: [
+      "Scientific CV review",
+      "Program alignment advice",
+      "Skill gap assessment",
+      "Personalized academic strategy guidance",
+    ],
+    cta: "Book Profile Review",
   },
+
+  /* -------------------------------------------------- */
+  /* 2B. Application Strategy Package */
+  /* -------------------------------------------------- */
   {
-    id: 3,
-    title: "Case Studies Collection",
-    type: "PDF",
-    size: "3.2 MB",
-    category: "Reference",
-    description: "Real-world applications and research findings",
+    id: 203,
+    title: "Europe Application Strategy Package (Basic)",
+    duration: "Flexible",
+    price: "₹2,500 per session",
+    thumbnail:
+      "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&h=225&fit=crop",
+    mode: "Online",
+    audience: "Students applying to European universities",
+    description:
+      "Structured guidance for university selection, SOP improvement, and application planning.",
+    includes: [
+      "University shortlist (5–7 programs)",
+      "SOP review (1 round)",
+      "CV optimization",
+      "Application timeline planning",
+    ],
+    cta: "Start Application Strategy",
+  },
+
+  /* -------------------------------------------------- */
+  /* 2C. Comprehensive Europe Mentorship */
+  /* -------------------------------------------------- */
+  {
+    id: 204,
+    title: "Comprehensive Europe Mentorship (Premium)",
+    duration: "3 Months • 10 Meetings",
+    price: "₹20,000",
+    thumbnail:
+      "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=400&h=225&fit=crop",
+    mode: "Online Mentorship",
+    audience: "Serious Master's / PhD applicants",
+    description:
+      "End-to-end structured mentorship for European academic admissions, research alignment, and interview preparation.",
+    includes: [
+      "Research alignment strategy",
+      "University shortlisting",
+      "SOP drafting guidance",
+      "Multiple review rounds",
+      "Interview preparation",
+      "Skill development roadmap",
+      "End-to-end mentorship support",
+    ],
+    cta: "Apply for Mentorship",
   },
 ];
 
-const COURSE_PRICE = "₹4,999";
+// const COURSE_PRICE = consultationServices.price || "₹3,500";
+// const COURSE_PRICE = consultationServices[0]?.price ?? "₹3,500";
+
 
 /* ------------------ COMPONENT ------------------ */
 
 export default function LearningPage() {
-  const [enrolledCourses, setEnrolledCourses] = useState<number[]>([]);
-  const [isEnrolled, setIsEnrolled] = useState(false);
+  const [selectedWorkshop, setSelectedWorkshop] = useState<any>(null);
+  const [selectedService, setSelectedService] = useState<any>(null);
   const [showEnrollModal, setShowEnrollModal] = useState(false);
-  const [enrollmentStep, setEnrollmentStep] = useState<"form" | "payment">("form");
-  const [selectedVideo, setSelectedVideo] = useState<typeof trainingVideos[0] | null>(null);
+  const [enrollmentStep, setEnrollmentStep] =
+    useState<"form" | "confirmation">("form");
   const { toast } = useToast();
+  
+  const COURSE_PRICE = selectedService?.price ?? "";
+  const COURSE_NAME = selectedService?.title ?? "";
 
-  // Form states
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    // phone: "",
     organization: "",
   });
 
@@ -178,509 +986,363 @@ export default function LearningPage() {
     cardholderName: "",
   });
 
-  // Check enrollment status on mount
-  useEffect(() => {
-    const enrolledCoursesStr = localStorage.getItem("sukshmadarshini_enrolled_courses");
-    if (enrolledCoursesStr) {
-      const courses = JSON.parse(enrolledCoursesStr);
-      setEnrolledCourses(courses);
-    }
-  }, []);
-
-  const handleEnrollmentComplete = (courseId: number) => {
-    const enrolledCoursesStr = localStorage.getItem("sukshmadarshini_enrolled_courses");
-    const courses = enrolledCoursesStr ? JSON.parse(enrolledCoursesStr) : [];
-    setEnrolledCourses(courses);
-  };
-
-  const isVideoEnrolled = (videoId: number) => {
-    return enrolledCourses.includes(videoId);
-  };
-
-  const handleAccessContent = (videoId: number) => {
-    if (isVideoEnrolled(videoId)) {
-      // User is enrolled, allow access
-      toast({
-        title: "Access Granted",
-        description: "Enjoy your learning content!",
-      });
-    } else {
-      // Show enrollment modal
-      setShowEnrollModal(true);
-    }
-  };
-
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setEnrollmentStep("payment");
+    setEnrollmentStep("confirmation");
   };
 
   const handlePaymentSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Simulate payment processing
     setTimeout(() => {
-      // Store enrollment
-      localStorage.setItem("sukshmadarshini_enrolled", "true");
-      localStorage.setItem("sukshmadarshini_user", JSON.stringify(formData));
-      
       setShowEnrollModal(false);
-      
-      toast({
-        title: "🎉 Enrollment Successful!",
-        description: "Welcome to SukshmaDarshini. You now have full access to all training materials.",
-      });
-      
-      // Reset forms
       setEnrollmentStep("form");
-      setFormData({ name: "", 
-                    email: "", 
-                    // phone: "", 
-                    organization: "" });
-      setPaymentData({ cardNumber: "", expiryDate: "", cvv: "", cardholderName: "" });
-    }, 1500);
+      toast({
+        title: "🎉 Registration Successful",
+        description:
+          "Our team will contact you shortly with workshop details.",
+      });
+      setFormData({ name: "", email: "", organization: "" });
+      setPaymentData({
+        cardNumber: "",
+        expiryDate: "",
+        cvv: "",
+        cardholderName: "",
+      });
+    }, 1200);
   };
 
   return (
     <>
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30">
-      {/* HEADER */}
-      <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur-xl shadow-sm">
-        <div className="container mx-auto flex h-16 items-center justify-between px-4">
-          <Link href="/" className="flex items-center gap-3 group">
-            {/* <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-purple-600 shadow-lg group-hover:shadow-xl transition-shadow">
-              <Eye className="h-5 w-5 text-white" />
-            </div> */}
-            <Image 
-              src="/Screenshot_2026-01-27_201728-removebg-preview.png" 
-              alt="EyeIcon Navbar Logo" 
-              width={56}   // w-14 in Tailwind = 14 * 4px = 56px
-              height={40}  // h-10 in Tailwind = 10 * 4px = 40px
-              className="object-contain"
-            />
-            <span className="font-display text-lg font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
-              Sukshmadarshini Learning
-            </span>
-          </Link>
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30">
+        <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur-xl shadow-sm">
+         <div className="container mx-auto flex h-16 md:h-20 items-center justify-between px-4">
+           <Link href="/" className="flex items-center gap-3 group">
+             <Image 
+               src="/Screenshot_2026-01-27_201728-removebg-preview.png" 
+               alt="EyeIcon Navbar Logo" 
+               width={56}   // w-14 in Tailwind = 14 * 4px = 56px
+               height={40}  // h-10 in Tailwind = 10 * 4px = 40px
+               className="object-contain"
+             />
+             <div className="flex flex-col">
+               <span className="font-display text-lg font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+                 Sukshmadarshini Learning
+               </span>
+               <span className="text-xs text-muted-foreground">
+                 Insight Beyond Vision
+               </span>
+             </div>
+           </Link>
+         </div>
+       </header>
 
-          <div className="flex items-center gap-4">
-            {enrolledCourses.length > 0 ? (
-              <Badge className="bg-green-500/10 text-green-700 dark:text-green-400 border-green-500/20">
-                <CheckCircle className="w-3 h-3 mr-1" />
-                {enrolledCourses.length} Course{enrolledCourses.length !== 1 ? 's' : ''} Enrolled
-              </Badge>
-            ) : (
-              <Button 
-                onClick={() => setShowEnrollModal(true)}
-                className="rounded-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all"
-              >
-                <Sparkles className="w-4 h-4 mr-2" />
-                Enroll Now
-              </Button>
-            )}
-          </div>
-        </div>
-      </header>
-
-      {/* HERO SECTION */}
-      <section className="container mx-auto px-4 py-12 text-center">
-        <div className="max-w-3xl mx-auto space-y-6">
-          <h1 className="font-display text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-950 via-blue-800 to-blue-600 bg-clip-text text-transparent">
-            Master Multi-Omics Analysis
+        {/* HERO */}
+        <section className="container mx-auto px-4 py-14 text-center">
+          <h1 className="font-display text-4xl md:text-5xl font-bold text-gradient bg-clip-text text-transparent">
+            Advanced Agri-Proteomics Workshops & Research Consulting
           </h1>
-          <p className="text-lg text-muted-foreground">
-            Comprehensive training program covering genomics, proteomics, metabolomics, and advanced data integration techniques
+          <p className="text-muted-foreground max-w-3xl mx-auto">
+            Hands-on training, workflow consulting, and strategic mentorship in
+            plant proteomics and molecular agriculture.
           </p>
-          
-          {!isEnrolled && (
-            <Card className="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20 border-blue-200 dark:border-blue-800">
-              <CardContent className="pt-6">
-                <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                  <div className="text-left">
-                    <p className="text-sm text-muted-foreground mb-1">Complete Course Access</p>
-                    <p className="text-3xl font-bold text-foreground">{COURSE_PRICE}</p>
-                    <p className="text-sm text-muted-foreground mt-1">One-time payment • Lifetime access</p>
-                  </div>
-                  <Button 
-                    size="lg"
-                    onClick={() => setShowEnrollModal(true)}
-                    className="rounded-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all"
+        </section>
+
+        {/* CONTENT */}
+        <main className="container mx-auto px-4 pb-16">
+          <Tabs defaultValue="workshops">
+            <TabsList className="grid w-full max-w-lg mx-auto grid-cols-2">
+              <TabsTrigger value="workshops">
+                <Users className="w-4 h-4 mr-2" />
+                Workshops & Programs
+              </TabsTrigger>
+              <TabsTrigger value="consulting">
+                <Briefcase className="w-4 h-4 mr-2" />
+                Consulting Services
+              </TabsTrigger>
+            </TabsList>
+
+            {/* WORKSHOPS */}
+            <TabsContent value="workshops" className="mt-10 text-center">
+              <h3 className="font-display text-3xl md:text-4xl font-bold text-gradient mb-10">
+                Offline and Online Workshops
+              </h3>
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {workshops.map((w) => (
+                  <Card
+                    key={w.id}
+                    className="cursor-pointer hover:shadow-xl transition"
+                    onClick={() => setSelectedWorkshop(w)}
                   >
-                    Start Learning Today
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          )}
-        </div>
-      </section>
+                    <div className="relative h-48">
+                      <Image
+                        src={w.thumbnail}
+                        alt={w.title}
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded flex items-center gap-1">
+                        <Clock className="w-3 h-3" />
+                        {w.duration}
+                      </div>
+                    </div>
 
-      {/* CONTENT */}
-      <main className="container mx-auto px-4 py-8 space-y-8">
-        <Tabs defaultValue="workshop" className="w-full">
-          <TabsList className="grid w-full max-w-xl mx-auto grid-cols-3">
-            <TabsTrigger value="workshop">
-              <Projector className="mr-2 h-5 w-5" />
-              Offline Workshops
-            </TabsTrigger>
-            <TabsTrigger value="videos">
-              <Video className="mr-2 h-5 w-5" />
-              Training Videos
-            </TabsTrigger>
-            <TabsTrigger value="materials">
-              <FileText className="mr-2 h-5 w-5" />
-              Study Materials
-            </TabsTrigger>
-          </TabsList>
+                    <CardContent className="pt-4 space-y-3">
+                      <Badge variant="outline">{w.category}</Badge>
+                      <h3 className="font-semibold text-lg">{w.title}</h3>
 
-          <TabsContent value="workshop" className="mt-8">
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {workshops.map((video, index) => (
-                // <Card 
-                //   key={video.id} 
-                //   className="group hover:shadow-xl transition-all duration-300 overflow-hidden border-2 hover:border-primary/50"
-                // >
-                <Card 
-                  key={video.id} 
-                  className={`overflow-hidden transition-all duration-300 cursor-pointer ${
-                    video.locked 
-                      ? "opacity-60" 
-                      : "hover:shadow-lg hover:-translate-y-1"
-                  }`}
-                  onClick={() => setSelectedVideo(video)}
-                >
-                  <div className="relative h-48 w-full overflow-hidden bg-muted" 
-                  // onClick={() => setSelectedVideo(video)}
+                      <p className="text-sm text-muted-foreground">
+                        <strong>Mode:</strong> {w.mode}
+                      </p>
+
+                      {/* <ul className="list-disc pl-5 text-sm text-muted-foreground">
+                        {w.content.slice(0, 3).map((c, i) => (
+                          <li key={i}>
+                            <CheckCircle className="w-4 h-4 text-green-500 mt-0.5" />
+                            {c} </li>
+                        ))}
+                        <li className="italic">+ more</li>
+                      </ul> */}
+                      <ul className="space-y-2 text-sm text-muted-foreground">
+                        {w.content.slice(0, 3).map((c, i) => (
+                          <li key={i} className="flex items-start gap-2">
+                            <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 shrink-0" />
+                            <span>{c}</span>
+                          </li>
+                        ))}
+                        <li className="italic text-xs text-muted-foreground">+ more</li>
+                      </ul>
+
+                      <p className="text-xs italic text-muted-foreground">
+                        {w.priceNote}
+                      </p>
+
+                      <Button variant="secondary" className="w-full">
+                        View Details
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
+
+            {/* CONSULTING */}
+            <TabsContent value="consulting" className="mt-10 text-center">
+              {/* <p className="text-muted-foreground">
+                Proteomics workflow consulting, European science mentorship, and
+                institutional collaborations are available on request.
+              </p>
+              <Button
+                onClick={() => setShowEnrollModal(true)}
+                className="mt-6"
+              >
+                Request Consultation
+              </Button> */}
+              <h3 className="font-display text-3xl md:text-4xl font-bold text-gradient mb-10">
+                Consultation Services
+              </h3>
+
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {consultationServices.map((service, index) => (
+                  <Card
+                    key={service.id}
+                    className="overflow-hidden transition-all duration-300 cursor-pointer hover:shadow-lg hover:-translate-y-1"
                   >
-                    <Image
-                      src={video.thumbnail}
-                      alt={video.title}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
-                      
-                    />
-                    {!isEnrolled && (
-                      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">
-                        <Lock className="w-8 h-8 text-white" />
+                    {/* Thumbnail */}
+                    <div className="relative h-48 w-full overflow-hidden bg-muted">
+                      <Image
+                        src={service.thumbnail}
+                        alt={service.title}
+                        fill
+                        className="object-cover transition-transform duration-300 hover:scale-105"
+                      />
+                      <div className="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded-full flex items-center gap-1">
+                        <Clock className="w-3 h-3" />
+                        {service.duration}
                       </div>
-                    )}
-                    <div className="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded-full flex items-center gap-1">
-                      <Clock className="w-3 h-3" />
-                      {video.duration}
                     </div>
-                  </div>
-                  <CardContent className="pt-4 space-y-3">
-                    <div className="flex items-start justify-between gap-2">
-                      <h3 className="font-semibold text-lg leading-tight">{video.title}</h3>
-                      <Badge variant="secondary" className="text-xs">
-                        #{index + 1}
-                      </Badge>
-                    </div>
-                    <p className="text-sm text-muted-foreground line-clamp-2">
-                      {video.description}
-                    </p>
-                    <Button 
-                      onClick={() => setSelectedVideo(video)}
-                      disabled={isVideoEnrolled(video.id)}
-                      variant={isVideoEnrolled(video.id) ? "default" : "secondary"}
-                      className="w-full"
-                    >
-                      {isVideoEnrolled(video.id) ? (
-                        <>
-                          <Play className="w-4 h-4 mr-2" />
-                          Enrolled
-                        </>
-                      ) : (
-                        <>
-                          <Lock className="w-4 h-4 mr-2" />
-                          Enroll to Access
-                        </>
-                      )}
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
 
-          <TabsContent value="videos" className="mt-8">
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {trainingVideos.map((video, index) => (
-                // <Card 
-                //   key={video.id} 
-                //   className="group hover:shadow-xl transition-all duration-300 overflow-hidden border-2 hover:border-primary/50"
-                // >
-                <Card 
-                  key={video.id} 
-                  className={`overflow-hidden transition-all duration-300 cursor-pointer ${
-                    video.locked 
-                      ? "opacity-60" 
-                      : "hover:shadow-lg hover:-translate-y-1"
-                  }`}
-                  // onClick={() => setSelectedVideo(video)}
-                >
-                  <div className="relative h-48 w-full overflow-hidden bg-muted" onClick={() => setSelectedVideo(video)}>
-                    <Image
-                      src={video.thumbnail}
-                      alt={video.title}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
-                      
-                    />
-                    {!isEnrolled && (
-                      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">
-                        <Lock className="w-8 h-8 text-white" />
+                    <CardContent className="pt-4 space-y-3">
+                      <div className="flex items-start justify-between gap-2">
+                        <h3 className="font-semibold text-lg leading-tight">
+                          {service.title}
+                        </h3>
+                        <Badge variant="secondary" className="text-xs">
+                          #{index + 1}
+                        </Badge>
                       </div>
-                    )}
-                    <div className="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded-full flex items-center gap-1">
-                      <Clock className="w-3 h-3" />
-                      {video.duration}
-                    </div>
-                  </div>
-                  <CardContent className="pt-4 space-y-3">
-                    <div className="flex items-start justify-between gap-2">
-                      <h3 className="font-semibold text-lg leading-tight">{video.title}</h3>
-                      <Badge variant="secondary" className="text-xs">
-                        #{index + 1}
-                      </Badge>
-                    </div>
-                    <p className="text-sm text-muted-foreground line-clamp-2">
-                      {video.description}
-                    </p>
-                    <Button 
-                      onClick={() => setSelectedVideo(video)}
-                      variant={isVideoEnrolled(video.id) ? "default" : "secondary"}
-                      className="w-full"
-                    >
-                      {isVideoEnrolled(video.id) ? (
-                        <>
-                          <Play className="w-4 h-4 mr-2" />
-                          Watch Now
-                        </>
-                      ) : (
-                        <>
-                          <Lock className="w-4 h-4 mr-2" />
-                          Enroll to Access
-                        </>
-                      )}
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
 
-          <TabsContent value="materials" className="mt-8">
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {studyMaterials.map((item) => (
-                <Card key={item.id} className="hover:shadow-lg transition-shadow">
-                  <CardContent className="pt-6">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10">
-                        <FileText className="w-6 h-6 text-primary" />
+                      <p className="text-sm text-muted-foreground line-clamp-3">
+                        {service.description}
+                      </p>
+
+                      <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
+                        <Badge variant="outline">{service.mode}</Badge>
+                        <Badge variant="outline">{service.audience}</Badge>
                       </div>
-                      <Badge variant="outline">{item.category}</Badge>
-                    </div>
-                    <h3 className="font-semibold mb-2">{item.title}</h3>
-                    <p className="text-sm text-muted-foreground mb-3">{item.description}</p>
-                    <div className="flex items-center justify-between text-xs text-muted-foreground mb-4">
-                      <span>{item.type}</span>
-                      <span>{item.size}</span>
-                    </div>
-                    <Button 
-                      onClick={() => enrolledCourses.length > 0 ? handleAccessContent(0) : setShowEnrollModal(true)}
-                      variant={enrolledCourses.length > 0 ? "default" : "secondary"}
-                      className="w-full"
-                      size="sm"
-                    >
-                      {enrolledCourses.length > 0 ? (
-                        <>
-                          <Download className="w-4 h-4 mr-2" />
-                          Download
-                        </>
-                      ) : (
-                        <>
-                          <Lock className="w-4 h-4 mr-2" />
-                          Enroll to Access
-                        </>
-                      )}
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
-        </Tabs>
-      </main>
 
-      {/* ENROLLMENT MODAL */}
+                      {/* <Button
+                        onClick={() => setShowEnrollModal(true)}
+                        className="w-full"
+                      >
+                        <Briefcase className="w-4 h-4 mr-2" />
+                        {service.cta}
+                      </Button> */}
+                      <Button
+                        onClick={() => {
+                          setSelectedService(service);
+                          setShowEnrollModal(true);
+                          setEnrollmentStep("form");
+                        }}
+                        className="w-full"
+                      >
+                        <Briefcase className="w-4 h-4 mr-2" />
+                        {service.cta}
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
+          </Tabs>
+        </main>
+      </div>
+
+      {/* ENROLL MODAL */}
       <Dialog open={showEnrollModal} onOpenChange={setShowEnrollModal}>
-        <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-md">
           <DialogHeader>
+            {selectedService?.thumbnail && (
+              <div className="relative w-full h-40 rounded-lg overflow-hidden border">
+                <Image
+                  src={selectedService.thumbnail}
+                  alt={selectedService.title}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            )}
             <DialogTitle className="text-2xl font-display">
-              {enrollmentStep === "form" ? "Complete Your Registration" : "Payment Details"}
+              {enrollmentStep === "form"
+                ? "Register Your Interest"
+                : "Confirmation"}
             </DialogTitle>
+
             <DialogDescription>
-              {enrollmentStep === "form" 
-                ? "Fill in your details to get started with your learning journey"
-                : `Complete your payment of ${COURSE_PRICE} to unlock all content`
-              }
+              <div className="space-y-4">
+                {selectedService && (
+                  <>
+                    <div className="font-semibold text-lg text-foreground">
+                        {COURSE_NAME}
+                    </div>
+                    <div className="text-primary font-medium">
+                      {COURSE_PRICE}
+                    </div>
+                  </>
+                )}
+              </div>
+              <div>
+                {enrollmentStep === "form"
+                  ? "Enter your details to continue."
+                  : `Please follow the instructions to complete your registration.`}
+              </div>
             </DialogDescription>
           </DialogHeader>
 
           {enrollmentStep === "form" ? (
-            <form onSubmit={handleFormSubmit} className="space-y-4 pt-4">
-              <div className="space-y-2">
-                <Label htmlFor="name">Full Name *</Label>
-                <div className="relative">
-                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input
-                    id="name"
-                    placeholder="John Doe"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="pl-10"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="email">Email Address *</Label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="you@example.com"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="pl-10"
-                    required
-                  />
-                </div>
-              </div>
-
-              {/* <div className="space-y-2">
-                <Label htmlFor="phone">Phone Number *</Label>
-                <div className="relative">
-                  <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input
-                    id="phone"
-                    type="tel"
-                    placeholder="+91 98765 43210"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="pl-10"
-                    required
-                  />
-                </div>
-              </div> */}
-
-              <div className="space-y-2">
-                <Label htmlFor="organization">Organization (Optional)</Label>
-                <Input
-                  id="organization"
-                  placeholder="Your University/Company"
-                  value={formData.organization}
-                  onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
-                />
-              </div>
-
-              <Button type="submit" className="w-full mt-6">
-                Continue to Payment
+            <form onSubmit={handleFormSubmit} className="space-y-3 pt-4">
+              <Label>Full Name *</Label>
+              <Input
+                value={formData.name}
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
+                required
+              />
+              <Label>Email *</Label>
+              <Input
+                type="email"
+                value={formData.email}
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
+                required
+                className="pb-5"
+              />
+              <Label>Organization (Optional)</Label>
+              <Input
+                value={formData.organization}
+                onChange={(e) =>
+                  setFormData({ ...formData, organization: e.target.value })
+                }
+              />
+              <Button type="submit" className="w-full">
+                Continue
                 <ChevronRight className="w-4 h-4 ml-2" />
               </Button>
             </form>
           ) : (
-            <form onSubmit={handlePaymentSubmit} className="space-y-4 pt-4">
-              <div className="bg-muted/50 p-4 rounded-lg mb-4">
-                <p className="text-sm text-muted-foreground mb-1">Total Amount</p>
-                <p className="text-3xl font-bold">{COURSE_PRICE}</p>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="cardNumber">Card Number *</Label>
-                <div className="relative">
-                  <CreditCard className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input
-                    id="cardNumber"
-                    placeholder="1234 5678 9012 3456"
-                    value={paymentData.cardNumber}
-                    onChange={(e) => setPaymentData({ ...paymentData, cardNumber: e.target.value })}
-                    className="pl-10"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="cardholderName">Cardholder Name *</Label>
-                <Input
-                  id="cardholderName"
-                  placeholder="John Doe"
-                  value={paymentData.cardholderName}
-                  onChange={(e) => setPaymentData({ ...paymentData, cardholderName: e.target.value })}
-                  required
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="expiryDate">Expiry Date *</Label>
-                  <Input
-                    id="expiryDate"
-                    placeholder="MM/YY"
-                    value={paymentData.expiryDate}
-                    onChange={(e) => setPaymentData({ ...paymentData, expiryDate: e.target.value })}
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="cvv">CVV *</Label>
-                  <Input
-                    id="cvv"
-                    placeholder="123"
-                    type="password"
-                    maxLength={4}
-                    value={paymentData.cvv}
-                    onChange={(e) => setPaymentData({ ...paymentData, cvv: e.target.value })}
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="flex gap-2 pt-4">
-                <Button 
-                  type="button" 
-                  variant="outline" 
-                  className="flex-1"
-                  onClick={() => setEnrollmentStep("form")}
-                >
-                  Back
-                </Button>
-                <Button type="submit" className="flex-1 bg-green-600 hover:bg-green-700">
-                  <CreditCard className="w-4 h-4 mr-2" />
-                  Pay {COURSE_PRICE}
-                </Button>
-              </div>
-
-              <p className="text-xs text-center text-muted-foreground mt-4">
-                🔒 Secure payment powered by industry-standard encryption
+            // <form onSubmit={handlePaymentSubmit} className="space-y-4">
+            //   <Input placeholder="Card Number" required />
+            //   <Input placeholder="Cardholder Name" required />
+            //   <div className="grid grid-cols-2 gap-2">
+            //     <Input placeholder="MM/YY" required />
+            //     <Input placeholder="CVV" required />
+            //   </div>
+            //   <Button type="submit" className="w-full bg-green-600">
+            //     Pay {COURSE_PRICE}
+            //   </Button>
+            // </form>
+             <div className="space-y-6 pt-4 text-center">
+              <MailCheck className="w-20 h-20 mx-auto text-primary" />
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                You will receive the confirmation email for the{" "}
+                <span className="font-semibold text-foreground">
+                  {selectedService?.title}
+                </span>{" "}
+                in a few minutes.
+                <br /><br />
+                Please follow the steps given in the email to confirm your seat in the workshop.
               </p>
-            </form>
+              <Button
+                className="w-full"
+                onClick={() => {
+                  const stored =
+                    localStorage.getItem("sukshmadarshini_enrolled_courses") || "[]";
+                  const enrolled = JSON.parse(stored);
+                  if (!enrolled.includes(selectedService?.id)) {
+                    enrolled.push(selectedService?.id);
+                  }
+                  localStorage.setItem(
+                    "sukshmadarshini_enrolled_courses",
+                    JSON.stringify(enrolled)
+                  );
+                  localStorage.setItem(
+                    "sukshmadarshini_user",
+                    JSON.stringify(formData)
+                  );
+                  toast({
+                    title: "Confirmation email sent",
+                    description: `Confirmation instructions sent for "${selectedService?.title}"`,
+                  });
+                  setShowEnrollModal(false);
+                  setEnrollmentStep("form");
+                  setSelectedService(null);
+                }}
+              >
+                Done
+              </Button>
+            </div>
           )}
         </DialogContent>
       </Dialog>
-    </div>
 
-    <WorkshopDetailDialog
-        video={selectedVideo}
-        open={!!selectedVideo}
-        onOpenChange={(open) => { if (!open) setSelectedVideo(null); }}
-        isEnrolled={selectedVideo ? isVideoEnrolled(selectedVideo.id) : false}
-        onEnrollmentComplete={handleEnrollmentComplete}
+      {/* DETAIL DIALOG */}
+      <WorkshopDetailDialog
+        video={selectedWorkshop}
+        open={!!selectedWorkshop}
+        onOpenChange={(open) => !open && setSelectedWorkshop(null)}
+        isEnrolled={false}
+        onEnrollmentComplete={() => {}}
       />
     </>
   );
