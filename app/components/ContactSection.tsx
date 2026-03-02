@@ -1,8 +1,10 @@
 "use client"
-import { Mail, MapPin, Phone, Send } from "lucide-react";
+import { useState } from "react";
+import { Mail, MapPin, Phone, Send, Loader2 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
+import { useToast } from "../hooks/use-toast";
 
 const contactInfo = [
   {
@@ -23,6 +25,54 @@ const contactInfo = [
 ];
 
 export function ContactSection() {
+  const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const res = await fetch("/api/contactEmail", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.success) throw new Error("Failed");
+
+      toast({
+        title: "Message sent successfully",
+        description: "We will respond shortly.",
+      });
+
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        subject: "",
+        message: "",
+      });
+    } catch {
+      toast({
+        title: "Failed to send message",
+        description: "Please try again later.",
+        variant: "destructive",
+      });
+    }
+    setLoading(false);
+  };
+
   return (
     <section
       id="contact"
@@ -42,7 +92,7 @@ export function ContactSection() {
             </span>
 
             <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground leading-tight mb-6">
-              Let’s <span className="text-gradient font-bold"> Connect </span>
+              Let&apos;s <span className="text-gradient font-bold"> Connect </span>
             </h2>
 
             <p className="text-lg text-muted-foreground max-w-xl mb-12 leading-relaxed">
@@ -75,19 +125,33 @@ export function ContactSection() {
 
           {/* RIGHT FORM */}
           <div className="bg-background rounded-3xl p-8 md:p-10 shadow-soft border border-border">
-            <form className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium mb-2">
                     First Name
                   </label>
-                  <Input placeholder="John" />
+                  <Input
+                    placeholder="John"
+                    value={formData.firstName}
+                    onChange={(e) =>
+                      setFormData({ ...formData, firstName: e.target.value })
+                    }
+                    required
+                  />
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-2">
                     Last Name
                   </label>
-                  <Input placeholder="Doe" />
+                  <Input
+                    placeholder="Doe"
+                    value={formData.lastName}
+                    onChange={(e) =>
+                      setFormData({ ...formData, lastName: e.target.value })
+                    }
+                    required
+                  />
                 </div>
               </div>
 
@@ -95,14 +159,29 @@ export function ContactSection() {
                 <label className="block text-sm font-medium mb-2">
                   Email Address
                 </label>
-                <Input type="email" placeholder="john@example.com" />
+                <Input
+                  type="email"
+                  placeholder="john@example.com"
+                  value={formData.email}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
+                  required
+                />
               </div>
 
               <div>
                 <label className="block text-sm font-medium mb-2">
                   Subject
                 </label>
-                <Input placeholder="How can we help?" />
+                <Input
+                  placeholder="How can we help?"
+                  value={formData.subject}
+                  onChange={(e) =>
+                    setFormData({ ...formData, subject: e.target.value })
+                  }
+                  required
+                />
               </div>
 
               <div>
@@ -113,6 +192,11 @@ export function ContactSection() {
                   rows={5}
                   placeholder="Tell us about your research needs..."
                   className="resize-none"
+                  value={formData.message}
+                  onChange={(e) =>
+                    setFormData({ ...formData, message: e.target.value })
+                  }
+                  required
                 />
               </div>
 
@@ -120,14 +204,25 @@ export function ContactSection() {
                 type="submit"
                 size="lg"
                 className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
+                disabled={loading}
               >
-                <Send className="w-4 h-4 mr-2" />
-                Send Message
+                {loading ? (
+                  <>
+                    <Loader2 className="animate-spin w-4 h-4 mr-2" />
+                    Sending...
+                  </>
+                ) : (
+                  <>
+                    <Send className="w-4 h-4 mr-2" />
+                    Send Message
+                  </>
+                )}
               </Button>
             </form>
           </div>
         </div>
       </div>
+
       {/* Wave decoration */}
       <div className="relative h-32 overflow-hidden">
         <svg
