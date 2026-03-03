@@ -48,24 +48,30 @@ export default function ContactEmail({
           }}
         >
           {/* Header */}
-          <Section style={{ backgroundColor: "#2563eb", padding: "24px", textAlign: "center" }}>
-              <Img 
-                src="/mail.png"
-                width="32"
-                height="32"
-                alt="mail"
-                style={{ margin: "0 auto 8px auto", display: "block" }}
-              />
-            <Text
-              style={{
-                margin: 0,
-                color: "#ffffff",
-                fontSize: "20px",
-                fontWeight: "bold",
-              }}
-            >
-              New Contact Form Submission
-            </Text>
+          <Section style={{ backgroundColor: "#31366d", padding: "24px" }}>
+            <Row>
+              <Column style={{ width: "48px", verticalAlign: "middle" }}>
+                <Img
+                  src="https://biometrics-ui-project-nextjs.vercel.app/mail.png"
+                  width="36"
+                  height="36"
+                  alt="mail"
+                  style={{ display: "block" }}
+                />
+              </Column>
+              <Column style={{ verticalAlign: "middle", paddingLeft: "12px" }}>
+                <Text
+                  style={{
+                    margin: 0,
+                    color: "#ffffff",
+                    fontSize: "20px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  New Contact Form Submission
+                </Text>
+              </Column>
+            </Row>
           </Section>
 
           {/* Body */}
