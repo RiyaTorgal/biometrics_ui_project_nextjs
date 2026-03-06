@@ -47,7 +47,7 @@ const workshops = [
   {
     id: 1,
     category: "Agri-Proteomics & Crop Molecular Innovation",
-    title: "Introductory Agri-Proteomics Workshop",
+    title: "Fundamentals of Plant Proteomics",
     duration: "3–4 Hours",
     mode: "Online / Offline",
     idealFor: "Agriculture & Biotechnology students",
@@ -60,7 +60,7 @@ const workshops = [
       "Career pathways in Agri-Proteomics",
     ],
     thumbnail:
-      "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=400&h=225&fit=crop",
+      "/Fundamentals of Plant Proteomics.png",
   },
   {
     id: 2,
@@ -78,7 +78,7 @@ const workshops = [
       "Workflow design exercises",
     ],
     thumbnail:
-      "https://images.unsplash.com/photo-1576086213369-97a306d36557?w=400&h=225&fit=crop",
+      "/2–3 Day Intensive Agri-Proteomics Workshop.png",
   },
   {
     id: 3,
@@ -97,7 +97,7 @@ const workshops = [
       "Research presentation & evaluation (Optional)",
     ],
     thumbnail:
-      "https://images.unsplash.com/photo-1582719471384-894fbb16e074?w=400&h=225&fit=crop",
+      "/Advanced Course in Plant Proteomics.png",
   },
   {
     id: 4,
@@ -116,7 +116,7 @@ const workshops = [
       "Research profile building & career positioning",
     ],
     thumbnail:
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=225&fit=crop",
+      "/Biotechnology Career Advancement Program.png",
   },
 ];
 
@@ -275,7 +275,7 @@ export default function LearningPage() {
          <div className="container mx-auto flex h-16 md:h-20 items-center justify-between px-4">
            <Link href="/" className="flex items-center gap-3 group">
              <Image 
-               src="/Screenshot_2026-01-27_201728-removebg-preview.png" 
+               src="/official logo.svg" 
                alt="EyeIcon Navbar Logo" 
                width={56}   // w-14 in Tailwind = 14 * 4px = 56px
                height={40}  // h-10 in Tailwind = 10 * 4px = 40px
@@ -307,7 +307,7 @@ export default function LearningPage() {
         {/* CONTENT */}
         <main className="container mx-auto px-4 pb-16">
           <Tabs defaultValue="workshops">
-            <TabsList className="grid w-full max-w-lg mx-auto grid-cols-2">
+            <TabsList className="grid w-full max-w-lg mx-auto grid-cols-1 md:grid-cols-2 h-auto">
               <TabsTrigger value="workshops">
                 <Users className="w-4 h-4 mr-2" />
                 Workshops & Programs
@@ -335,7 +335,7 @@ export default function LearningPage() {
                         src={w.thumbnail}
                         alt={w.title}
                         fill
-                        className="object-cover"
+                        className="object-cover rounded-t-lg"
                       />
                       <div className="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded flex items-center gap-1">
                         <Clock className="w-3 h-3" />

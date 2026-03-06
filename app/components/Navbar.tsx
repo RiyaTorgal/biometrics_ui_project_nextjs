@@ -10,7 +10,7 @@ const navLinks = [
   { label: "About us", href: "/#about", },
   { label: "Expertise", href: "/#expertise", },
   { label: "Workshops", href: "/#trainings", },
-  { label: "Contact", href: "/#contact",},
+  // { label: "Contact", href: "/#contact",},
   // { label: "Events", href: "/#events", },
   // { label: "Agri-Proteomics", href: "#",},
   // { label: "Biotech Training", href: "#",},
@@ -43,7 +43,7 @@ export function Navbar() {
               <div className="absolute inset-0 rounded-full border-2 border-secondary/30 animate-pulse-slow" />
             </div> */}
             <Image 
-              src="/Screenshot_2026-01-27_201728-removebg-preview.png" 
+              src="/official logo.svg" 
               alt="EyeIcon Navbar Logo" 
               width={56}   // w-14 in Tailwind = 14 * 4px = 56px
               height={40}  // h-10 in Tailwind = 10 * 4px = 40px
