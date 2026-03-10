@@ -1,12 +1,12 @@
 "use client"
-import { Linkedin, Mail, Twitter, Instagram } from "lucide-react";
+import { Linkedin, Mail, Twitter, Instagram, Locate, MapPin } from "lucide-react";
 import Image from "next/image";
 
 const footerLinks = {
   services: [
-    { label: "Workshop", href: "/learning" },
+    { label: "Workshop", href: "/learning#workshops" },
     // { label: "Transcriptomics", href: "#" },
-    { label: "Consultations", href: "/learning" },
+    { label: "Consultations", href: "/learning#consulting" },
     // { label: "Metabolomics", href: "#" },
   ],
   company: [
@@ -40,7 +40,7 @@ export function Footer() {
               {/* <div className="w-16 h-14 p-1 rounded-full bg-white flex items-center justify-center"> */}
                 {/* <span className="text-primary-foreground font-display font-bold text-lg">SD</span> */}
                 <Image 
-                  src="/Screenshot_2026-01-27_201728-removebg-preview.png" 
+                  src="/official logo.svg" 
                   alt="EyeIcon Navbar Logo" 
                   width={56}   // w-Tailwind = 14 * 4px = 56px
                   height={40}  // h-Tailwind = 10 * 4px = 40px
@@ -61,6 +61,12 @@ export function Footer() {
             <p className="text-foreground/60 text-sm leading-relaxed mb-6">
               An emerging Agri-Proteomics venture empowering sustainable agriculture, translational biotech skills.
             </p>
+            <div className="mb-4">
+              <MapPin className="w-5 h-5 inline-block mr-2 text-primary" />
+              <span className="text-foreground/75 text-sm">
+                Pune, Maharashtra, India
+              </span>
+            </div>
             <div className="flex gap-3">
               {socialLinks.map((social) => (
                 <a

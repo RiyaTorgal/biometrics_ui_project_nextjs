@@ -223,8 +223,8 @@ export default function LearningPage() {
   const [selectedWorkshop, setSelectedWorkshop] = useState<any>(null);
   const [selectedService, setSelectedService] = useState<any>(null);
   const [showEnrollModal, setShowEnrollModal] = useState(false);
-  const [enrollmentStep, setEnrollmentStep] =
-    useState<"form" | "confirmation">("form");
+  const [enrollmentStep, setEnrollmentStep] = useState<"form" | "confirmation">("form");
+  
   const { toast } = useToast();
   
   const COURSE_PRICE = selectedService?.price ?? "";
@@ -236,37 +236,71 @@ export default function LearningPage() {
     organization: "",
   });
 
-  const [paymentData, setPaymentData] = useState({
-    cardNumber: "",
-    expiryDate: "",
-    cvv: "",
-    cardholderName: "",
-  });
+  // const getInitialTab = () => {
+  //   if (typeof window !== "undefined") {
+  //     const hash = window.location.hash.replace("#", "");
+  //     if (hash === "consulting" || hash === "workshops") return hash;
+  //   }
+  //   return "workshops";
+  // };
+
+  // ✅ This does the job — getInitialTab is redundant
+
+
+  const [activeTab, setActiveTab] = useState<string>("workshops");
+
+  useEffect(() => {
+  const handleHashChange = () => {
+    const hash = window.location.hash.replace("#", "");
+    if (hash === "consulting" || hash === "workshops") {
+      setActiveTab(hash);
+    }
+  };
+
+  handleHashChange(); // runs on mount (replaces getInitialTab)
+  window.addEventListener("hashchange", handleHashChange);
+  return () => window.removeEventListener("hashchange", handleHashChange);
+}, []);
+
+  // useEffect(() => {
+  //   // Set tab based on hash after mount (avoids SSR mismatch)
+  //   const hash = window.location.hash.replace("#", "");
+  //   if (hash === "consulting" || hash === "workshops") {
+  //     setActiveTab(hash);
+  //   }
+  // }, []);
+
+  // const [paymentData, setPaymentData] = useState({
+  //   cardNumber: "",
+  //   expiryDate: "",
+  //   cvv: "",
+  //   cardholderName: "",
+  // });
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setEnrollmentStep("confirmation");
   };
 
-  const handlePaymentSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setTimeout(() => {
-      setShowEnrollModal(false);
-      setEnrollmentStep("form");
-      toast({
-        title: "🎉 Registration Successful",
-        description:
-          "Our team will contact you shortly with workshop details.",
-      });
-      setFormData({ name: "", email: "", organization: "" });
-      setPaymentData({
-        cardNumber: "",
-        expiryDate: "",
-        cvv: "",
-        cardholderName: "",
-      });
-    }, 1200);
-  };
+  // const handlePaymentSubmit = (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   setTimeout(() => {
+  //     setShowEnrollModal(false);
+  //     setEnrollmentStep("form");
+  //     toast({
+  //       title: "🎉 Registration Successful",
+  //       description:
+  //         "Our team will contact you shortly with workshop details.",
+  //     });
+  //     setFormData({ name: "", email: "", organization: "" });
+  //     setPaymentData({
+  //       cardNumber: "",
+  //       expiryDate: "",
+  //       cvv: "",
+  //       cardholderName: "",
+  //     });
+  //   }, 1200);
+  // };
 
   return (
     <>
@@ -306,7 +340,8 @@ export default function LearningPage() {
 
         {/* CONTENT */}
         <main className="container mx-auto px-4 pb-16">
-          <Tabs defaultValue="workshops">
+          {/* <Tabs defaultValue="workshops"> */}
+          <Tabs value={activeTab} onValueChange={setActiveTab}>
             <TabsList className="grid w-full max-w-lg mx-auto grid-cols-1 md:grid-cols-2 h-auto">
               <TabsTrigger value="workshops">
                 <Users className="w-4 h-4 mr-2" />
