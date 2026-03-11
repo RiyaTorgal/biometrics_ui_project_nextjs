@@ -1,6 +1,160 @@
+// "use client"
+// import { Linkedin, Mail, Twitter, Instagram, Locate, MapPin } from "lucide-react";
+// import Image from "next/image";
+
+// const footerLinks = {
+//   services: [
+//     { label: "Workshop", href: "/learning#workshops" },
+//     // { label: "Transcriptomics", href: "#" },
+//     { label: "Consultations", href: "/learning#consulting" },
+//     // { label: "Metabolomics", href: "#" },
+//   ],
+//   company: [
+//     // { label: "Our Team", href: "/#" },
+//     { label: "Careers", href: "/careers" },
+//     // { label: "Blog", href: "#" },
+//     { label: "Contact", href: "/#contact" },
+//   ],
+//   legal: [
+//     { label: "Privacy Policy", href: "/privacy-policy" },
+//     { label: "Terms of Service", href: "/terms-of-service" },
+//   ],
+// };
+
+// const socialLinks = [
+//   { icon: Instagram, href: "https://www.instagram.com/suksh_madarshini?igsh=ZW10ZDJuYXU3eWZ3", label: "Instagram" },
+//   { icon: Linkedin, href: "https://www.linkedin.com/in/p-tilak/", label: "LinkedIn" },
+//   { icon: Mail, href: "mailto:sukshmadarshini@gmail.com", label: "Email" },
+// ];
+
+// export function Footer() {
+//   return (
+    
+//     <>
+//     <footer className="gradient-footer pt-10 pb-10 text-foreground">
+//       <div className="container mx-auto px-4">
+//         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+//           {/* Brand */}
+//           <div>
+//             <div className="flex items-center gap-2 mb-4">
+//               {/* <div className="w-16 h-14 p-1 rounded-full bg-white flex items-center justify-center"> */}
+//                 {/* <span className="text-primary-foreground font-display font-bold text-lg">SD</span> */}
+//                 <Image 
+//                   src="/official logo.svg" 
+//                   alt="EyeIcon Navbar Logo" 
+//                   width={56}   // w-Tailwind = 14 * 4px = 56px
+//                   height={40}  // h-Tailwind = 10 * 4px = 40px
+//                   className="object-contain"
+//                 />
+//               {/* </div> */}
+//               {/* <Image 
+//                 src="/Screenshot_2026-01-27_201728-removebg-preview.png" 
+//                 alt="EyeIcon Navbar Logo" 
+//                 width={56}   // w-Tailwind = 14 * 4px = 56px
+//                 height={40}  // h-Tailwind = 10 * 4px = 40px
+//                 className="object-contain"
+//               /> */}
+//               <span className="font-display font-bold text-xl">
+//                 Sukshmadarshini<span className="text-secondary"></span>™
+//               </span>
+//             </div>
+//             <p className="text-foreground/60 text-sm leading-relaxed mb-6">
+//               An emerging Agri-Proteomics venture empowering sustainable agriculture, translational biotech skills.
+//             </p>
+//             <div className="mb-4">
+//               <MapPin className="w-5 h-5 inline-block mr-2 text-primary" />
+//               <span className="text-foreground/75 text-sm">
+//                 Pune, Maharashtra, India
+//               </span>
+//             </div>
+//             <div className="flex gap-3">
+//               {socialLinks.map((social) => (
+//                 <a
+//                   key={social.label}
+//                   href={social.href}
+//                   className="w-10 h-10 rounded-lg bg-background/10 hover:bg-background/20 flex items-center justify-center transition-colors"
+//                   aria-label={social.label}
+//                 >
+//                   <social.icon className="w-5 h-5" />
+//                 </a>
+//               ))}
+//             </div>
+//           </div>
+
+//           {/* Services */}
+//           <div>
+//             <h4 className="font-display font-semibold text-lg mb-4">Services</h4>
+//             <ul className="space-y-3">
+//               {footerLinks.services.map((link) => (
+//                 <li key={link.label}>
+//                   <a
+//                     href={link.href}
+//                     className="text-foreground/60 hover:text-foreground transition-colors text-sm"
+//                   >
+//                     {link.label}
+//                   </a>
+//                 </li>
+//               ))}
+//             </ul>
+//           </div>
+
+//           {/* Company */}
+//           <div>
+//             <h4 className="font-display font-semibold text-lg mb-4">Company</h4>
+//             <ul className="space-y-3">
+//               {footerLinks.company.map((link) => (
+//                 <li key={link.label}>
+//                   <a
+//                     href={link.href}
+//                     className="text-foreground/60 hover:text-foreground transition-colors text-sm"
+//                   >
+//                     {link.label}
+//                   </a>
+//                 </li>
+//               ))}
+//             </ul>
+//           </div>
+
+//           {/* Legal */}
+//           <div>
+//             <h4 className="font-display font-semibold text-lg mb-4">Legal</h4>
+//             <ul className="space-y-3">
+//               {footerLinks.legal.map((link) => (
+//                 <li key={link.label}>
+//                   <a
+//                     href={link.href}
+//                     className="text-foreground/60 hover:text-foreground transition-colors text-sm"
+//                   >
+//                     {link.label}
+//                   </a>
+//                 </li>
+//               ))}
+//             </ul>
+//           </div>
+//         </div>
+
+//         {/* Bottom */}
+//         <div className="pt-8 border-t border-background/10">
+//           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+//             <p className="text-foreground/50 text-sm">
+//               © {new Date().getFullYear()} Sukshmadarshini™. All rights reserved.
+//             </p>
+//             <p className="text-foreground/50 text-sm">
+//               Registered with MSME under Startup India Initiative
+//             </p>
+//           </div>
+//         </div>
+//       </div>
+//     </footer>
+//     </>
+//   );
+// }
+
 "use client"
 import { Linkedin, Mail, Twitter, Instagram, Locate, MapPin } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const footerLinks = {
   services: [
@@ -28,6 +182,18 @@ const socialLinks = [
 ];
 
 export function Footer() {
+  const router = useRouter();
+
+  // For hash links on the same page (/learning#workshops, /learning#consulting),
+  // we push the route then manually dispatch hashchange so the Tabs component reacts.
+  const handleHashLink = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    const [path, hash] = href.split("#");
+    if (hash && typeof window !== "undefined" && window.location.pathname === path) {
+      e.preventDefault();
+      window.location.hash = hash;
+      window.dispatchEvent(new HashChangeEvent("hashchange"));
+    }
+  };
   return (
     
     <>
@@ -87,12 +253,13 @@ export function Footer() {
             <ul className="space-y-3">
               {footerLinks.services.map((link) => (
                 <li key={link.label}>
-                  <a
+                  <Link
                     href={link.href}
+                    onClick={(e) => handleHashLink(e, link.href)}
                     className="text-foreground/60 hover:text-foreground transition-colors text-sm"
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -104,12 +271,13 @@ export function Footer() {
             <ul className="space-y-3">
               {footerLinks.company.map((link) => (
                 <li key={link.label}>
-                  <a
+                  <Link
                     href={link.href}
+                    onClick={(e) => handleHashLink(e, link.href)}
                     className="text-foreground/60 hover:text-foreground transition-colors text-sm"
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -121,12 +289,12 @@ export function Footer() {
             <ul className="space-y-3">
               {footerLinks.legal.map((link) => (
                 <li key={link.label}>
-                  <a
+                  <Link
                     href={link.href}
                     className="text-foreground/60 hover:text-foreground transition-colors text-sm"
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
