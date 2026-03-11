@@ -168,18 +168,21 @@ const workshopDetails: Record<
 
 // const COURSE_PRICE = "₹4,999";
 
-const handleShare = (title: string) => {
+const handleShare = (title: string, id: number) => {
+  const url = `${window.location.origin}/learning?workshop=${id}`;
+
   if (navigator.share) {
     navigator.share({
       title,
       text: `Check out this workshop: ${title}`,
-      url: window.location.href,
+      url,
     });
   } else {
-    navigator.clipboard.writeText(window.location.href);
+    navigator.clipboard.writeText(url).then(() => {
+      // optional: you can trigger a toast here if you move handleShare inside the component
+    });
   }
 };
-
 /* -------------------- Component -------------------- */
 
 export default function WorkshopDetailDialog({
@@ -202,12 +205,12 @@ export default function WorkshopDetailDialog({
     organization: "",
   });
 
-  const [paymentData, setPaymentData] = useState({
-    cardNumber: "",
-    cardholderName: "",
-    expiryDate: "",
-    cvv: "",
-  });
+  // const [paymentData, setPaymentData] = useState({
+  //   cardNumber: "",
+  //   cardholderName: "",
+  //   expiryDate: "",
+  //   cvv: "",
+  // });
 
   if (!video) return null;
 
@@ -216,43 +219,43 @@ export default function WorkshopDetailDialog({
 
   /* -------------------- Handlers -------------------- */
 
-  const handlePaymentSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  // const handlePaymentSubmit = (e: React.FormEvent) => {
+  //   e.preventDefault();
 
-    setTimeout(() => {
-      const stored =
-        localStorage.getItem("sukshmadarshini_enrolled_courses") || "[]";
-      const enrolled = JSON.parse(stored);
+  //   setTimeout(() => {
+  //     const stored =
+  //       localStorage.getItem("sukshmadarshini_enrolled_courses") || "[]";
+  //     const enrolled = JSON.parse(stored);
 
-      if (!enrolled.includes(video.id)) enrolled.push(video.id);
+  //     if (!enrolled.includes(video.id)) enrolled.push(video.id);
 
-      localStorage.setItem(
-        "sukshmadarshini_enrolled_courses",
-        JSON.stringify(enrolled)
-      );
-      localStorage.setItem(
-        "sukshmadarshini_user",
-        JSON.stringify(formData)
-      );
+  //     localStorage.setItem(
+  //       "sukshmadarshini_enrolled_courses",
+  //       JSON.stringify(enrolled)
+  //     );
+  //     localStorage.setItem(
+  //       "sukshmadarshini_user",
+  //       JSON.stringify(formData)
+  //     );
 
-      toast({
-        title: "🎉 Enrollment Successful",
-        description: `You are now enrolled in "${video.title}".`,
-      });
+  //     toast({
+  //       title: "🎉 Enrollment Successful",
+  //       description: `You are now enrolled in "${video.title}".`,
+  //     });
 
-      setShowEnrollModal(false);
-      setStep("form");
-      setFormData({ name: "", email: "", organization: "" });
-      setPaymentData({
-        cardNumber: "",
-        cardholderName: "",
-        expiryDate: "",
-        cvv: "",
-      });
+  //     setShowEnrollModal(false);
+  //     setStep("form");
+  //     setFormData({ name: "", email: "", organization: "" });
+  //     setPaymentData({
+  //       cardNumber: "",
+  //       cardholderName: "",
+  //       expiryDate: "",
+  //       cvv: "",
+  //     });
 
-      onEnrollmentComplete?.(video.id);
-    }, 1200);
-  };
+  //     onEnrollmentComplete?.(video.id);
+  //   }, 1200);
+  // };
 
   /* -------------------- Render -------------------- */
 
@@ -324,7 +327,7 @@ export default function WorkshopDetailDialog({
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => handleShare(video.title)}
+                onClick={() => handleShare(video.title, video.id)}
               >
                 <Share2 className="w-5 h-5" />
               </Button>

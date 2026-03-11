@@ -159,12 +159,12 @@ export default function PrivacyPolicy() {
               className="glass-card rounded-2xl p-6 md:p-8 shadow-soft hover:shadow-glow transition-all duration-300 animate-fade-up"
               style={{ animationDelay: `${index * 0.05}s` }}
             >
-              <div className="flex items-start gap-4 mb-4">
-                <div className="w-10 h-10 rounded-xl gradient-accent flex items-center justify-center flex-shrink-0">
+              <div className="flex items-start gap-4 mb-0">
+                <div className="w-9 h-9 rounded-xl gradient-accent flex items-center justify-center flex-shrink-0">
                   <section.icon className="w-5 h-5 text-primary-foreground" />
                 </div>
                 <div>
-                  <span className="text-xs text-muted-foreground font-medium tracking-wider uppercase">Section {section.number}</span>
+                  {/* <span className="text-xs text-muted-foreground font-medium tracking-wider uppercase">Section {section.number}</span> */}
                   <h2 className="font-display text-xl font-semibold text-foreground">{section.title}</h2>
                 </div>
               </div>

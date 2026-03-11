@@ -341,7 +341,12 @@ export default function LearningPage() {
         {/* CONTENT */}
         <main className="container mx-auto px-4 pb-16">
           {/* <Tabs defaultValue="workshops"> */}
-          <Tabs value={activeTab} onValueChange={setActiveTab}>
+          <Tabs
+            defaultValue="workshops"
+            onValueChange={(val) => {
+            setActiveTab(val);
+            window.location.hash = val; // sync URL hash when tab is clicked
+          }}>
             <TabsList className="grid w-full max-w-lg mx-auto grid-cols-1 md:grid-cols-2 h-auto">
               <TabsTrigger value="workshops">
                 <Users className="w-4 h-4 mr-2" />

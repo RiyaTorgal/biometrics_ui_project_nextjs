@@ -1,5 +1,5 @@
 import { Users, GraduationCap, FlaskConical, BookOpen, Briefcase, Mail, Lightbulb } from "lucide-react";
-// import { Navbar } from "../components/Navbar";
+import { Navbar } from "../components/Navbar";
 // import { Footer } from "../components/Footer";
 
 const roles = [
@@ -12,7 +12,7 @@ const roles = [
 export default function Careers() {
   return (
     <div className="min-h-screen bg-background">
-      {/* <Navbar /> */}
+      <Navbar />
 
       {/* Hero Banner */}
       <section className="relative pt-10 overflow-hidden">
@@ -138,8 +138,6 @@ export default function Careers() {
           </div>
         </div>
       </section>
-
-      {/* <Footer /> */}
     </div>
   );
 }

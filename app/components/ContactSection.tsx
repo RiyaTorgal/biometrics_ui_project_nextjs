@@ -1,6 +1,6 @@
 "use client"
 import { useState } from "react";
-import { Mail, MapPin, Phone, Send, Loader2 } from "lucide-react";
+import { Mail, MapPin, Phone, Send, Loader2, CheckCircle2, XCircle, X } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
@@ -27,6 +27,7 @@ const contactInfo = [
 export function ContactSection() {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+  const [overlay, setOverlay] = useState<{ visible: boolean; success: boolean } | null>(null);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -51,11 +52,6 @@ export function ContactSection() {
 
       if (!res.ok || !data.success) throw new Error("Failed");
 
-      toast({
-        title: "Message sent successfully",
-        description: "We will respond shortly.",
-      });
-
       setFormData({
         firstName: "",
         lastName: "",
@@ -63,12 +59,10 @@ export function ContactSection() {
         subject: "",
         message: "",
       });
+
+      setOverlay({ visible: true, success: true });
     } catch {
-      toast({
-        title: "Failed to send message",
-        description: "Please try again later.",
-        variant: "destructive",
-      });
+      setOverlay({ visible: true, success: false });
     }
     setLoading(false);
   };
@@ -251,6 +245,76 @@ export function ContactSection() {
           </defs>
         </svg>
       </div>
+
+      {/* Confirmation / Error Overlay */}
+      {overlay?.visible && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ backgroundColor: "rgba(0,0,0,0.55)", backdropFilter: "blur(4px)" }}
+          onClick={() => setOverlay(null)}
+        >
+          <div
+            className="relative bg-background rounded-3xl shadow-2xl border border-border p-10 max-w-md w-full flex flex-col items-center text-center"
+            style={{
+              animation: "overlayIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close button */}
+            <button
+              onClick={() => setOverlay(null)}
+              className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors rounded-full p-1"
+              aria-label="Close"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            {/* Icon */}
+            <div
+              className={`w-20 h-20 rounded-full flex items-center justify-center mb-6 ${
+                overlay.success ? "bg-green-100 dark:bg-green-900/30" : "bg-red-100 dark:bg-red-900/30"
+              }`}
+            >
+              {overlay.success ? (
+                <CheckCircle2 className="w-10 h-10 text-green-600 dark:text-green-400" />
+              ) : (
+                <XCircle className="w-10 h-10 text-red-600 dark:text-red-400" />
+              )}
+            </div>
+
+            {/* Heading */}
+            <h3 className="font-display text-2xl font-bold text-foreground mb-2">
+              {overlay.success ? "Message Sent!" : "Sending Failed"}
+            </h3>
+
+            {/* Description */}
+            <p className="text-muted-foreground text-base mb-8 leading-relaxed">
+              {overlay.success
+                ? "Thank you for reaching out. We'll get back to you shortly."
+                : "Something went wrong while sending your message. Please try again later."}
+            </p>
+
+            <Button
+              size="lg"
+              className={`w-full ${
+                overlay.success
+                  ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                  : "bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              }`}
+              onClick={() => setOverlay(null)}
+            >
+              {overlay.success ? "Great, thanks!" : "Got it, I'll try again"}
+            </Button>
+          </div>
+
+          <style>{`
+            @keyframes overlayIn {
+              from { opacity: 0; transform: scale(0.88) translateY(16px); }
+              to   { opacity: 1; transform: scale(1) translateY(0); }
+            }
+          `}</style>
+        </div>
+      )}
     </section>
   );
 }

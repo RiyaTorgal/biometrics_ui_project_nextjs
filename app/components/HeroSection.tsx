@@ -3,6 +3,7 @@ import { GraduationCap, BookOpen, FlaskConical, Presentation } from "lucide-reac
 // import heroScientist from "./assets/hero-scientist.jpg";
 import { Button } from "./ui/button";
 import Image from "next/image";
+import {Navbar} from "../components/Navbar"
 
 const features = [
   {
@@ -29,6 +30,8 @@ const features = [
 
 export function HeroSection() {
   return (
+    <>
+    <Navbar />
     <section id="home" className="relative pt-20 overflow-hidden bg-background">
       {/* Hero Content */}
       <div className="relative">
@@ -111,5 +114,6 @@ export function HeroSection() {
         </div>
       </div>
     </section>
+    </>
   );
 }
