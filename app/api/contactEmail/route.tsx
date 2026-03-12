@@ -1,303 +1,110 @@
-// import { Resend } from "resend";
-
-// const resend = new Resend(process.env.RESEND_API_KEY);
-
-// interface ContactFormBody {
-//   firstName: string;
-//   lastName: string;
-//   email: string;
-//   subject: string;
-//   message: string;
-// }
-
-// export async function POST(req: Request): Promise<Response> {
-//   try {
-//     const body: ContactFormBody = await req.json();
-
-//     const { firstName, lastName, email, subject, message } = body;
-
-//     const name = `${firstName} ${lastName}`;
-
-//     const result = await resend.emails.send({
-//   from: "Contact Form <onboarding@resend.dev>",
-//   to: "sukshmadarshini@gmail.com",
-//   replyTo: email,
-//   subject: subject,
-//   html: `
-//   <div style="
-//     font-family: Arial, sans-serif;
-//     background-color: #f4f6f8;
-//     padding: 20px;
-//   ">
-//     <div style="
-//       max-width: 600px;
-//       margin: auto;
-//       background: #ffffff;
-//       border-radius: 10px;
-//       overflow: hidden;
-//       box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-//     ">
-
-//       <!-- Header -->
-//       <div style="
-//         background: #2563eb;
-//         color: white;
-//         padding: 20px;
-//         text-align: center;
-//       ">
-//         <h2 style="margin: 0;">📩 New Contact Form Submission</h2>
-//       </div>
-
-//       <!-- Body -->
-//       <div style="padding: 25px; color: #333;">
-        
-//         <p style="margin-bottom: 20px;">
-//           You have received a new message from your website contact form.
-//         </p>
-
-//         <table style="width: 100%; border-collapse: collapse;">
-//           <tr>
-//             <td style="
-//               padding: 10px;
-//               font-weight: bold;
-//               background: #f9fafb;
-//               width: 120px;
-//               border-radius: 6px 0 0 6px;
-//             ">
-//               Name
-//             </td>
-//             <td style="
-//               padding: 10px;
-//               background: #f9fafb;
-//               border-radius: 0 6px 6px 0;
-//             ">
-//               ${name}
-//             </td>
-//           </tr>
-
-//           <tr>
-//             <td style="padding: 10px; font-weight: bold;">
-//               Email
-//             </td>
-//             <td style="padding: 10px;">
-//               ${email}
-//             </td>
-//           </tr>
-
-//           <tr>
-//             <td style="padding: 10px; font-weight: bold;">
-//               Subject
-//             </td>
-//             <td style="padding: 10px;">
-//               ${subject}
-//             </td>
-//           </tr>
-//         </table>
-
-//         <!-- Message Box -->
-//         <div style="margin-top: 20px;">
-//           <p style="font-weight: bold; margin-bottom: 8px;">
-//             Message:
-//           </p>
-//           <div style="
-//             background: #f1f5f9;
-//             padding: 15px;
-//             border-radius: 8px;
-//             line-height: 1.6;
-//             white-space: pre-line;
-//           ">
-//             ${message}
-//           </div>
-//         </div>
-
-//       </div>
-
-//       <!-- Footer -->
-//       <div style="
-//         background: #f9fafb;
-//         padding: 15px;
-//         text-align: center;
-//         font-size: 12px;
-//         color: #6b7280;
-//       ">
-//         This email was sent from your website contact form.
-//       </div>
-
-//     </div>
-//   </div>
-//   `,
-// });
-
-//     console.log("Resend result:", result);
-
-//     if (result.error) {
-//       throw new Error(result.error.message);
-//     }
-
-//     return Response.json({ success: true });
-//   } catch (error: unknown) {
-//     console.error(error);
-
-//     return Response.json(
-//       { success: false, error: "Failed to send email" },
-//       { status: 500 }
-//     );
-//   }
-// }
-
-// import { Resend } from "resend";
-
-// const resend = new Resend(process.env.RESEND_API_KEY);
-
-// interface ContactFormBody {
-//   firstName: string;
-//   lastName: string;
-//   email: string;
-//   subject: string;
-//   message: string;
-// }
-
-// export async function POST(req: Request): Promise<Response> {
-//   try {
-//     const body: ContactFormBody = await req.json();
-
-//     const { firstName, lastName, email, subject, message } = body;
-
-//     const name = `${firstName} ${lastName}`;
-
-//     const result = await resend.emails.send({
-//       from: "Contact Form <onboarding@resend.dev>",
-//       to: "sukshmadarshini@gmail.com",
-//       replyTo: email,
-//       subject: subject,
-//       html: `
-//       <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f4f6f8; padding: 20px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
-//         <tr>
-//           <td align="center">
-//             <table width="600" cellpadding="0" cellspacing="0" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; overflow: hidden;">
-
-//               <!-- Header -->
-//               <tr>
-//                 <td style="background-color: #2563eb; padding: 24px; text-align: center;">
-//                   <h2 style="margin: 0; color: #ffffff; font-size: 20px; font-weight: bold;">
-//                     &#9993; New Contact Form Submission
-//                   </h2>
-//                 </td>
-//               </tr>
-
-//               <!-- Body -->
-//               <tr>
-//                 <td style="padding: 25px; color: #333333;">
-//                   <p style="margin: 0 0 20px 0; font-size: 14px;">
-//                     You have received a new message from your website contact form.
-//                   </p>
-
-//                   <!-- Details Table -->
-//                   <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse; font-size: 14px;">
-//                     <tr>
-//                       <td style="padding: 10px 12px; font-weight: bold; background-color: #f9fafb; width: 120px; border-bottom: 1px solid #e2e8f0;">Name</td>
-//                       <td style="padding: 10px 12px; background-color: #f9fafb; border-bottom: 1px solid #e2e8f0;">${name}</td>
-//                     </tr>
-//                     <tr>
-//                       <td style="padding: 10px 12px; font-weight: bold; border-bottom: 1px solid #e2e8f0;">Email</td>
-//                       <td style="padding: 10px 12px; border-bottom: 1px solid #e2e8f0;">${email}</td>
-//                     </tr>
-//                     <tr>
-//                       <td style="padding: 10px 12px; font-weight: bold;">Subject</td>
-//                       <td style="padding: 10px 12px;">${subject}</td>
-//                     </tr>
-//                   </table>
-
-//                   <!-- Message Box -->
-//                   <p style="font-weight: bold; margin: 20px 0 8px 0; font-size: 14px;">Message:</p>
-//                   <table width="100%" cellpadding="0" cellspacing="0">
-//                     <tr>
-//                       <td style="background-color: #f1f5f9; padding: 15px; border-radius: 8px; font-size: 14px; line-height: 1.6; color: #333333;">
-//                         ${message}
-//                       </td>
-//                     </tr>
-//                   </table>
-//                 </td>
-//               </tr>
-
-//               <!-- Footer -->
-//               <tr>
-//                 <td style="background-color: #f9fafb; padding: 15px; text-align: center; font-size: 12px; color: #6b7280; border-top: 1px solid #e2e8f0;">
-//                   This email was sent from your website contact form.
-//                 </td>
-//               </tr>
-
-//             </table>
-//           </td>
-//         </tr>
-//       </table>
-//       `,
-//     });
-
-//     console.log("Resend result:", result);
-
-//     if (result.error) {
-//       throw new Error(result.error.message);
-//     }
-
-//     return Response.json({ success: true });
-//   } catch (error: unknown) {
-//     console.error(error);
-
-//     return Response.json(
-//       { success: false, error: "Failed to send email" },
-//       { status: 500 }
-//     );
-//   }
-// }
-
+// app/api/contactEmail/route.ts
+import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
-import { render } from "@react-email/render";
 import ContactEmail from "@/app/components/emails/ContactEmail";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// ─── Server-side validation helpers ──────────────────────────────────────────
 
-interface ContactFormBody {
-  firstName: string;
-  lastName: string;
-  email: string;
-  subject: string;
-  message: string;
+const DISPOSABLE_DOMAINS = new Set([
+  "mailinator.com", "guerrillamail.com", "tempmail.com", "yopmail.com",
+  "sharklasers.com", "spam4.me", "trashmail.com", "trashmail.me",
+  "dispostable.com", "maildrop.cc", "fakeinbox.com", "10minutemail.com",
+  "tempr.email", "discard.email", "mytemp.email", "temp-mail.org",
+  "throwaway.email", "getnada.com",
+]);
+
+const FAKE_NAME_PATTERNS = [
+  /^(.)\1{2,}$/i,
+  /^[^aeiou]{5,}$/i,
+  /^(test|fake|asdf|qwerty|admin|user|anon|anonymous|nobody|noone|noreply|abc|xyz)$/i,
+  /^[a-z]{1,2}$/i,
+  /\d{3,}/,
+];
+
+function isNameValid(name: string): boolean {
+  const t = name.trim();
+  if (!t || t.length < 2 || t.length > 50) return false;
+  if (!/^[\p{L}\p{M}'\- ]+$/u.test(t)) return false;
+  return !FAKE_NAME_PATTERNS.some((p) => p.test(t));
 }
 
-export async function POST(req: Request): Promise<Response> {
+function isEmailFormatValid(email: string): boolean {
+  const t = email.trim().toLowerCase();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(t)) return false;
+  const domain = t.split("@")[1];
+  if (DISPOSABLE_DOMAINS.has(domain)) return false;
+  const local = t.split("@")[0];
+  return !/^(test|fake|noreply|no-reply|donotreply|spam|trash|throwaway|temp)\d*$/i.test(local);
+}
+
+// ─── Reuse /api/validate-email for the Abstract API check ────────────────────
+
+async function verifyEmailViaRoute(email: string): Promise<{ valid: boolean; reason?: string }> {
   try {
-    const body: ContactFormBody = await req.json();
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+    const res = await fetch(
+      `${baseUrl}/api/validateEmail?email=${encodeURIComponent(email)}`,
+      { cache: "no-store" }
+    );
+    if (!res.ok) return { valid: true };
+    return res.json();
+  } catch {
+    return { valid: true };
+  }
+}
 
+// ─── Route handler ────────────────────────────────────────────────────────────
+
+export async function POST(req: NextRequest) {
+  try {
+    const body = await req.json();
     const { firstName, lastName, email, subject, message } = body;
-
     const name = `${firstName} ${lastName}`;
 
-    const html = await render(
-      <ContactEmail name={name} email={email} subject={subject} message={message} />
-    );
+    // ── Server-side field validation ─────────────────────────────────────────
+    if (!isNameValid(firstName))
+      return NextResponse.json({ success: false, error: "Invalid first name." }, { status: 400 });
 
-    const result = await resend.emails.send({
-      from: "Contact Form <onboarding@resend.dev>",
-      to: "sukshmadarshini@gmail.com",
+    if (!isNameValid(lastName))
+      return NextResponse.json({ success: false, error: "Invalid last name." }, { status: 400 });
+
+    if (!isEmailFormatValid(email))
+      return NextResponse.json({ success: false, error: "Invalid email address." }, { status: 400 });
+
+    if (!subject?.trim() || subject.trim().length < 3)
+      return NextResponse.json({ success: false, error: "Invalid subject." }, { status: 400 });
+
+    if (!message?.trim() || message.trim().length < 10)
+      return NextResponse.json({ success: false, error: "Message too short." }, { status: 400 });
+
+    // ── Abstract API deep verification via /api/validate-email ───────────────
+    const { valid, reason } = await verifyEmailViaRoute(email);
+    if (!valid)
+      return NextResponse.json(
+        { success: false, error: reason ?? "Email address failed verification." },
+        { status: 400 }
+      );
+
+    // ── Send via Resend using your ContactEmail component ────────────────────
+    const resend = new Resend(process.env.RESEND_API_KEY);
+
+    const { error } = await resend.emails.send({
+      from:    process.env.EMAIL_FROM!,
+      to:      process.env.EMAIL_TO!,
       replyTo: email,
-      subject: subject,
-      html,
+      subject: `[Contact Form] ${subject}`,
+      react:   ContactEmail({ name, email, subject, message }),
     });
 
-    console.log("Resend result:", result);
-
-    if (result.error) {
-      throw new Error(result.error.message);
+    if (error) {
+      console.error("[contactEmail] Resend error:", error);
+      return NextResponse.json({ success: false, error: "Failed to send email." }, { status: 500 });
     }
 
-    return Response.json({ success: true });
-  } catch (error: unknown) {
-    console.error(error);
+    return NextResponse.json({ success: true });
 
-    return Response.json(
-      { success: false, error: "Failed to send email" },
-      { status: 500 }
-    );
+  } catch (err) {
+    console.error("[contactEmail] Unexpected error:", err);
+    return NextResponse.json({ success: false, error: "Internal server error." }, { status: 500 });
   }
 }
