@@ -12,7 +12,7 @@ const DISPOSABLE_DOMAINS = new Set([
   "fakeinbox.com", "spamgourmet.com", "mailnull.com", "10minutemail.com",
   "10minutemail.net", "tempr.email", "discard.email", "spamex.com",
   "mytemp.email", "temp-mail.org", "tempinbox.com", "throwaway.email",
-  "wegwerfmail.de", "owlpic.com", "getnada.com",
+  "wegwerfmail.de", "owlpic.com", "getnada.com","@minitts.net","SolarNyx.com",
 ]);
 
 // ─── Known legitimate domains (skip MX lookup for these) ─────────────────────
@@ -30,21 +30,56 @@ const GIBBERISH_DOMAIN_PATTERNS = [
   /^(foo|bar|baz|qux|test|fake|dummy|example|sample|blah|asdf|xyz|abc|def|ghi|jkl|mno|pqr|stu|vwx)\.[a-z]{2,}$/i,
 ];
 
+// ─── Parking/placeholder nameserver patterns ──────────────────────────────────
+// These are domains used by registrars for parked/unconfigured domains
+const PARKING_NAMESERVERS = [
+  "cashparking.com", "parkingcrew.net", "sedoparking.com", "bodis.com",
+  "parklogic.com", "above.com", "domainsponsor.com", "parkingpage.net",
+  "uniregistry.com", "undeveloped.com", "dan.com", "afternic.com",
+  "hugedomains.com", "namecheapparking.com", "godaddyparking.com",
+  "smartname.com", "premiumdrop.net", "skenzo.com", "trafficz.com",
+];
+
 // ─── In-memory cache ──────────────────────────────────────────────────────────
 const cache = new Map<string, { valid: boolean; reason?: string }>();
 
 // ─── MX lookup ────────────────────────────────────────────────────────────────
-async function checkMxRecords(domain: string): Promise<"found" | "notfound" | "unknown"> {
+async function checkMxAndResolve(domain: string): Promise<"valid" | "nomx" | "parked" | "unknown"> {
   try {
-    const records = await dns.resolveMx(domain);
-    return records && records.length > 0 ? "found" : "notfound";
+    const mxRecords = await dns.resolveMx(domain);
+    if (!mxRecords || mxRecords.length === 0) return "nomx";
+ 
+    // Sort by priority and check the highest priority MX host
+    const topMx = mxRecords.sort((a, b) => a.priority - b.priority)[0].exchange;
+ 
+    // Try to resolve the MX hostname to an IP address
+    try {
+      const addresses = await dns.resolve4(topMx);
+      if (!addresses || addresses.length === 0) return "parked";
+      return "valid";
+    } catch (innerErr: unknown) {
+      const code = (innerErr as NodeJS.ErrnoException).code;
+      // MX record exists but hostname has no A record = parked domain
+      if (code === "ENODATA" || code === "ENOTFOUND") return "parked";
+      return "unknown";
+    }
+ 
   } catch (err: unknown) {
     const code = (err as NodeJS.ErrnoException).code;
-    if (code === "ENODATA" || code === "ENOTFOUND" || code === "ESERVFAIL") {
-      return "notfound";
-    }
-    // ECONNREFUSED, ETIMEOUT = DNS server unreachable
-    return "unknown";
+    if (code === "ENODATA" || code === "ENOTFOUND" || code === "ESERVFAIL") return "nomx";
+    return "unknown"; // DNS unreachable locally
+  }
+}
+ 
+// ─── Check nameservers for parking indicators ─────────────────────────────────
+async function isParkedDomain(domain: string): Promise<boolean> {
+  try {
+    const nsRecords = await dns.resolveNs(domain);
+    return nsRecords.some((ns) =>
+      PARKING_NAMESERVERS.some((parking) => ns.toLowerCase().includes(parking))
+    );
+  } catch {
+    return false;
   }
 }
 
@@ -109,16 +144,28 @@ export async function GET(req: NextRequest) {
   }
 
   // ── 6. MX record lookup ──────────────────────────────────────────────────
-  const mxStatus = await checkMxRecords(domain);
-
-  if (mxStatus === "notfound") {
+    const mxStatus = await checkMxAndResolve(domain);
+ 
+  if (mxStatus === "nomx") {
     const result = { valid: false, reason: "This email domain doesn't exist or can't receive emails." };
     cache.set(normalized, result);
     return NextResponse.json(result);
   }
-
+ 
+  if (mxStatus === "parked") {
+    // Double-check with nameserver check before blocking
+    const parked = await isParkedDomain(domain);
+    const result = {
+      valid: false,
+      reason: parked
+        ? "This domain appears to be parked and cannot receive emails."
+        : "This email domain cannot receive emails. Please use a different email address.",
+    };
+    cache.set(normalized, result);
+    return NextResponse.json(result);
+  }
+ 
   if (mxStatus === "unknown") {
-    // DNS unreachable — log and fail open
     console.warn(`[validateEmail] DNS lookup failed for domain: ${domain} — failing open`);
     return NextResponse.json({ valid: true });
   }
