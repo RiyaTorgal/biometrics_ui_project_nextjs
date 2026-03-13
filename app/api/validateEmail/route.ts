@@ -2,6 +2,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { promises as dns } from "dns";
 
+export const dynamic = "force-dynamic";
+
 // ─── Disposable domain blocklist ──────────────────────────────────────────────
 const DISPOSABLE_DOMAINS = new Set([
   "mailinator.com", "guerrillamail.com", "tempmail.com", "throwam.com",

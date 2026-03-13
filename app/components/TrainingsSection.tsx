@@ -36,7 +36,7 @@ export function TrainingsSection() {
 
         {/* CTA */}
         <div className="relative text-center mt-12">
-           <a href="/learning">
+           <a href="/services" className="inline-flex items-center gap-2">
             <Button size="lg" className="rounded-full px-8 bg-secondary hover:bg-secondary/90 text-secondary-foreground">
               View All Programs
             </Button>

@@ -13,6 +13,8 @@ import {ContactSection} from "./components/ContactSection"
 import { EuropeanAdvisory } from "./components/EuropeanAdvisory"
 import { CoreFocusSection } from "./components/CoreFocus"
 
+export const revalidate = 30;
+
 export default function HomePage() {
   return (
     <>

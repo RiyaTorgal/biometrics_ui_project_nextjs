@@ -3,6 +3,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import ContactEmail from "@/app/components/emails/ContactEmail";
 
+export const dynamic = "force-dynamic";
+
 // ─── Server-side validation helpers ──────────────────────────────────────────
 
 const DISPOSABLE_DOMAINS = new Set([
