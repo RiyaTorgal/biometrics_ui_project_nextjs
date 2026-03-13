@@ -158,9 +158,9 @@ import { useRouter } from "next/navigation";
 
 const footerLinks = {
   services: [
-    { label: "Workshop", href: "/learning#workshops" },
+    { label: "Workshop", href: "/services#workshops" },
     // { label: "Transcriptomics", href: "#" },
-    { label: "Consultations", href: "/learning#consulting" },
+    { label: "Consultations", href: "/services#consulting" },
     // { label: "Metabolomics", href: "#" },
   ],
   company: [
