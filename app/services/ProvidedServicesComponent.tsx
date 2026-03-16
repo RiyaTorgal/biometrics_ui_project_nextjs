@@ -127,7 +127,7 @@ const consultationServices = [
     duration: "60-minute session • Project-based available",
     price: "₹3,500 per session",
     thumbnail:
-      "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=400&h=225&fit=crop",
+      "/Proteomics Workflow & Sample Preparation Consulting.jpg",
     mode: "Online",
     audience: "Researchers • Labs • Institutions",
     description:
