@@ -8,7 +8,10 @@ const sections = [
     number: "1",
     title: "Overview",
     content: (
-      <p>These Terms of Service (&quot;Terms&quot;) govern your access to and use of the Sukshmadarshini™ website (sukshmadarshini.com) and all related services. By accessing or using our website, you agree to be bound by these Terms. If you do not agree, please discontinue use immediately.</p>
+      // <p>These Terms of Service (&quot;Terms&quot;) govern your access to and use of the Sukshmadarshini™ website (sukshmadarshini.com) and all related services. By accessing or using our website, you agree to be bound by these Terms. If you do not agree, please discontinue use immediately.</p>
+      <p>
+        These Terms of Service (&quot;Terms&quot;) outline the conditions governing your access to and use of the Sukshmadarshini™ website (sukshmadarshini.com) and its related services. By accessing or using our website, you acknowledge that you have read, understood, and agree to comply with these Terms. If you do not agree with any part of these Terms, we kindly request that you refrain from using our website and services.
+      </p>
     ),
   },
   {
@@ -18,14 +21,31 @@ const sections = [
     content: (
       <>
         <p className="mb-3">Sukshmadarshini™ provides:</p>
-        <ul className="space-y-2 ml-1">
-          <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-secondary flex-shrink-0" />Agri-Proteomics consulting and research advisory</li>
-          <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-secondary flex-shrink-0" />Biotechnology training programs and workshops</li>
-          <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-secondary flex-shrink-0" />European research advisory services</li>
-          <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-secondary flex-shrink-0" />Scientific resources and educational content</li>
-          <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-secondary flex-shrink-0" />Internship and career opportunities in life sciences</li>
+        <ul className="space-y-2 ml-2">
+          <li className="flex items-center gap-3">
+            <span className="w-1.5 h-1.5 rounded-full bg-secondary flex-shrink-0" />
+            Agri-Proteomics consulting and research advisory
+          </li>
+          <li className="flex items-center gap-3">
+            <span className="w-1.5 h-1.5 rounded-full bg-secondary flex-shrink-0" />
+            Biotechnology training programs and workshops
+          </li>
+          <li className="flex items-center gap-3">
+            <span className="w-1.5 h-1.5 rounded-full bg-secondary flex-shrink-0" />
+            European research advisory services
+          </li>
+          <li className="flex items-center gap-3">
+            <span className="w-1.5 h-1.5 rounded-full bg-secondary flex-shrink-0" />
+            Scientific resources and educational content
+          </li>
+          <li className="flex items-center gap-3">
+            <span className="w-1.5 h-1.5 rounded-full bg-secondary flex-shrink-0" />
+            Internship and career opportunities in life sciences
+          </li>
         </ul>
-        <p className="mt-3 text-muted-foreground text-sm">Service availability, schedules, and content may change at any time without prior notice.</p>
+        <p className="mt-3 text-primary text-sm font-normal">
+          We strive to keep our services consistent; however, service availability, schedules, or content may occasionally be updated. In such cases, Sukshmadarshini™ will make reasonable efforts to provide prior notice of significant changes whenever possible.
+        </p>
       </>
     ),
   },
@@ -36,11 +56,11 @@ const sections = [
     content: (
       <>
         <p className="mb-3">By using this website, you agree to:</p>
-        <ul className="space-y-2 ml-1">
-          <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-secondary flex-shrink-0" />Provide accurate information when submitting forms or inquiries</li>
-          <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-secondary flex-shrink-0" />Use the website and its content only for lawful purposes</li>
-          <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-secondary flex-shrink-0" />Not attempt to interfere with the website&apos;s functionality or security</li>
-          <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-secondary flex-shrink-0" />Not reproduce, distribute, or misrepresent any content without written permission</li>
+        <ul className="space-y-2 ml-2">
+          <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 rounded-full bg-secondary flex-shrink-0" />Provide accurate information when submitting forms or inquiries</li>
+          <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 rounded-full bg-secondary flex-shrink-0" />Use the website and its content only for lawful purposes</li>
+          <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 rounded-full bg-secondary flex-shrink-0" />Not attempt to interfere with the website&apos;s functionality or security</li>
+          <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 rounded-full bg-secondary flex-shrink-0" />Not reproduce, distribute, or misrepresent any content without written permission</li>
         </ul>
       </>
     ),
@@ -50,7 +70,7 @@ const sections = [
     number: "4",
     title: "Intellectual Property",
     content: (
-      <p>All content on this website — including text, graphics, logos, the Sukshmadarshini™ name and brand identity, training materials, and scientific resources — is the intellectual property of Sukshmadarshini™ and is protected by applicable copyright and trademark laws. Unauthorized use, reproduction, or distribution is strictly prohibited.</p>
+      <p>All content on this website, including text, logos, the Sukshmadarshini™ name and brand identity, training materials, and scientific resources, is the intellectual property of Sukshmadarshini™ and is protected by applicable copyright and trademark laws. Unauthorized use, reproduction, or distribution is strictly prohibited.</p>
     ),
   },
   {
@@ -60,10 +80,10 @@ const sections = [
     content: (
       <>
         <p className="mb-3">Sukshmadarshini™ strives to provide accurate and up-to-date information; however:</p>
-        <ul className="space-y-2 ml-1">
-          <li className="flex items-start gap-2"><span className="w-1.5 h-1.5 rounded-full bg-secondary flex-shrink-0 mt-2" />We do not guarantee that the website will be error-free, uninterrupted, or free from vulnerabilities.</li>
-          <li className="flex items-start gap-2"><span className="w-1.5 h-1.5 rounded-full bg-secondary flex-shrink-0 mt-2" />Content is provided &qout;as is&qout; for informational purposes and does not constitute professional or scientific advice.</li>
-          <li className="flex items-start gap-2"><span className="w-1.5 h-1.5 rounded-full bg-secondary flex-shrink-0 mt-2" />We shall not be liable for any direct, indirect, or consequential damages arising from the use of this website.</li>
+        <ul className="space-y-2 ml-2">
+          <li className="flex items-start gap-3"><span className="w-1.5 h-1.5 rounded-full bg-secondary flex-shrink-0 mt-2" />We do not guarantee that the website will be error-free, uninterrupted, or free from vulnerabilities.</li>
+          <li className="flex items-start gap-3"><span className="w-1.5 h-1.5 rounded-full bg-secondary flex-shrink-0 mt-2" />Content is provided &qout;as is&qout; for informational purposes and does not constitute professional or scientific advice.</li>
+          <li className="flex items-start gap-3"><span className="w-1.5 h-1.5 rounded-full bg-secondary flex-shrink-0 mt-2" />We shall not be liable for any direct, indirect, or consequential damages arising from the use of this website.</li>
         </ul>
       </>
     ),
