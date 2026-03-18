@@ -169,7 +169,7 @@ const workshopDetails: Record<
 // const COURSE_PRICE = "₹4,999";
 
 const handleShare = (title: string, id: number) => {
-  const url = `${window.location.origin}/learning?workshop=${id}`;
+  const url = `${window.location.origin}/services?workshop=${id}`;
 
   if (navigator.share) {
     navigator.share({
