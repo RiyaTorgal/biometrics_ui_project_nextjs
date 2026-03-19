@@ -40,6 +40,7 @@ import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { useToast } from "../hooks/use-toast";
 import WorkshopDetailDialog from "../components/WorkshopDetailDialogue";
+import ConsultationDetailDialog from "../components/ConsultationDetailDialogue";
 
 /* ------------------ DATA ------------------ */
 
@@ -122,7 +123,7 @@ const workshops = [
 
 const consultationServices = [
   {
-    id: 201,
+    id: 1,
     title: "Proteomics Workflow & Sample Preparation Consulting",
     duration: "60-minute session • Project-based available",
     price: "₹3,500 per session",
@@ -140,14 +141,14 @@ const consultationServices = [
       "Targeted vs discovery proteomics planning",
       "Free 15-minute discovery call",
     ],
-    cta: "Book Consulting Session",
+    cta: "Book Session",
   },
 
   /* -------------------------------------------------- */
   /* 2A. Europe Profile Review Session */
   /* -------------------------------------------------- */
   {
-    id: 202,
+    id: 2,
     title: "European Science Pathway – Profile Review Session",
     duration: "60 Minutes",
     price: "₹2,500 per session",
@@ -163,14 +164,14 @@ const consultationServices = [
       "Skill gap assessment",
       "Personalized academic strategy guidance",
     ],
-    cta: "Book Profile Review",
+    cta: "Book Session",
   },
 
   /* -------------------------------------------------- */
   /* 2B. Application Strategy Package */
   /* -------------------------------------------------- */
   {
-    id: 203,
+    id: 3,
     title: "Europe Application Strategy Package (Basic)",
     duration: "Flexible",
     price: "₹2,500 per session",
@@ -186,14 +187,14 @@ const consultationServices = [
       "CV optimization",
       "Application timeline planning",
     ],
-    cta: "Start Application Strategy",
+    cta: "Book Session",
   },
 
   /* -------------------------------------------------- */
   /* 2C. Comprehensive Europe Mentorship */
   /* -------------------------------------------------- */
   {
-    id: 204,
+    id: 4,
     title: "Comprehensive Europe Mentorship (Premium)",
     duration: "3 Months • 10 Meetings",
     price: "₹20,000",
@@ -222,6 +223,7 @@ const consultationServices = [
 export default function ServicesPage() {
   const [selectedWorkshop, setSelectedWorkshop] = useState<any>(null);
   const [selectedService, setSelectedService] = useState<any>(null);
+  const [selectedConsultation, setSelectedConsultation] = useState<any>(null);
   const [showEnrollModal, setShowEnrollModal] = useState(false);
   const [enrollmentStep, setEnrollmentStep] = useState<"form" | "confirmation">("form");
   
@@ -341,7 +343,7 @@ export default function ServicesPage() {
           <h1 className="font-display text-4xl md:text-5xl font-bold text-gradient bg-clip-text text-transparent">
             Advanced Agri-Proteomics Workshops & Research Consulting
           </h1>
-          <p className="text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-muted-foreground mt-2 max-w-3xl mx-auto">
             Hands-on training, workflow consulting, and strategic mentorship in
             plant proteomics and molecular agriculture.
           </p>
@@ -434,7 +436,8 @@ export default function ServicesPage() {
                 {consultationServices.map((service, index) => (
                   <Card
                     key={service.id}
-                    className="overflow-hidden transition-all duration-300 cursor-pointer hover:shadow-lg hover:-translate-y-1"
+                    // className="overflow-hidden transition-all duration-300 cursor-pointer hover:shadow-lg hover:-translate-y-1"
+                    className="overflow-hidden transition-all duration-300 cursor-pointer hover:shadow-lg hover:-translate-y-1 flex flex-col"
                   >
                     {/* Thumbnail */}
                     <div className="relative h-48 w-full overflow-hidden bg-muted">
@@ -450,7 +453,7 @@ export default function ServicesPage() {
                       </div>
                     </div>
 
-                    <CardContent className="pt-4 space-y-3">
+                    {/* <CardContent className="pt-4 flex flex-col flex-1">
                       <div className="flex items-start justify-between gap-2">
                         <h3 className="font-semibold text-lg leading-tight">
                           {service.title}
@@ -480,6 +483,42 @@ export default function ServicesPage() {
                         <Briefcase className="w-4 h-4 mr-2" />
                         {service.cta}
                       </Button>
+                      <Button
+                        onClick={() => setSelectedConsultation(service)}
+                        className="w-full"
+                      >
+                        <Briefcase className="w-4 h-4 mr-2" />
+                        {service.cta}
+                      </Button>
+                    </CardContent> */}
+                    <CardContent className="pt-4 flex flex-col flex-1">
+                      <div className="flex-1 space-y-3">
+                        <div className="flex items-start justify-between gap-2">
+                          <h3 className="font-semibold text-lg leading-tight">
+                            {service.title}
+                          </h3>
+                          {/* <Badge variant="secondary" className="text-xs">
+                            #{index + 1}
+                          </Badge> */}
+                        </div>
+
+                        <p className="text-sm text-muted-foreground line-clamp-3">
+                          {service.description}
+                        </p>
+
+                        <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
+                          <Badge variant="outline">{service.mode}</Badge>
+                          <Badge variant="outline">{service.audience}</Badge>
+                        </div>
+                      </div>
+
+                      <Button
+                        onClick={() => setSelectedConsultation(service)}
+                        className="w-full mt-4"        // mt-4 replaces space-y-3 gap
+                      >
+                        <Briefcase className="w-4 h-4 mr-2" />
+                        {service.cta}
+                      </Button>
                     </CardContent>
                   </Card>
                 ))}
@@ -490,7 +529,7 @@ export default function ServicesPage() {
       </div>
 
       {/* ENROLL MODAL */}
-      <Dialog open={showEnrollModal} onOpenChange={setShowEnrollModal}>
+      {/* <Dialog open={showEnrollModal} onOpenChange={setShowEnrollModal}>
         <DialogContent className="max-w-md">
           <DialogHeader>
             {selectedService?.thumbnail && (
@@ -605,7 +644,7 @@ export default function ServicesPage() {
             </div>
           )}
         </DialogContent>
-      </Dialog>
+      </Dialog> */}
 
       {/* DETAIL DIALOG */}
       <WorkshopDetailDialog
@@ -614,6 +653,14 @@ export default function ServicesPage() {
         onOpenChange={(open) => !open && setSelectedWorkshop(null)}
         isEnrolled={false}
         onEnrollmentComplete={() => {}}
+      />
+
+      <ConsultationDetailDialog
+        service={selectedConsultation}
+        open={!!selectedConsultation}
+        onOpenChange={(open) => !open && setSelectedConsultation(null)}
+        isBooked={false}
+        onBookingComplete={() => {}}
       />
     </>
   );
