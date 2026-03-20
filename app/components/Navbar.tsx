@@ -8,8 +8,8 @@ import Link from "next/link";
 
 const navLinks = [
   { label: "About us", href: "/#about", },
-  { label: "Expertise", href: "/#expertise", },
-  { label: "Workshops", href: "/#trainings", },
+  // { label: "Expertise", href: "/#expertise", },
+  { label: "Our Services", href: "/#trainings", },
   // { label: "Contact", href: "/#contact",},
   // { label: "Events", href: "/#events", },
   // { label: "Agri-Proteomics", href: "#",},
@@ -22,13 +22,27 @@ const navLinks = [
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
+  // const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  //   if (!href.startsWith("#")) return;
+  //   e.preventDefault();
+  //   const target = document.querySelector(href);
+  //   if (!target) return;
+  //   const navbarHeight = 0; // matches your h-20 navbar height
+  //   const offsetPosition = target.getBoundingClientRect().top + window.scrollY - navbarHeight;
+  //   window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+  // };
+
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    if (!href.startsWith("#")) return;
+    // Extract just the hash portion from "/#section" or "#section"
+    const hash = href.startsWith("/#") ? href.slice(1) : href.startsWith("#") ? href : null;
+    if (!hash) return;
+
+    if (window.location.pathname !== "/") return;
+
     e.preventDefault();
-    const target = document.querySelector(href);
+    const target = document.querySelector(hash); // now passes "#contact", not "/#contact"
     if (!target) return;
-    const navbarHeight = 0; // matches your h-20 navbar height
-    const offsetPosition = target.getBoundingClientRect().top + window.scrollY - navbarHeight;
+    const offsetPosition = target.getBoundingClientRect().top + window.scrollY;
     window.scrollTo({ top: offsetPosition, behavior: "smooth" });
   };
 

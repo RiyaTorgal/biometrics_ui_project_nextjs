@@ -186,14 +186,31 @@ export function Footer() {
 
   // For hash links on the same page (/learning#workshops, /learning#consulting),
   // we push the route then manually dispatch hashchange so the Tabs component reacts.
+  // const handleHashLink = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  //   const [path, hash] = href.split("#");
+  //   if (hash && typeof window !== "undefined" && window.location.pathname === path) {
+  //     e.preventDefault();
+  //     window.location.hash = hash;
+  //     window.dispatchEvent(new HashChangeEvent("hashchange"));
+  //   }
+  // };
+
   const handleHashLink = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     const [path, hash] = href.split("#");
-    if (hash && typeof window !== "undefined" && window.location.pathname === path) {
+    if (!hash) return;
+
+    // Normalize: "/#contact" splits to path="" — treat that as "/"
+    const normalizedPath = path === "" ? "/" : path;
+
+    if (typeof window !== "undefined" && window.location.pathname === normalizedPath) {
       e.preventDefault();
-      window.location.hash = hash;
-      window.dispatchEvent(new HashChangeEvent("hashchange"));
+      const target = document.querySelector(`#${hash}`);
+      if (!target) return;
+      target.scrollIntoView({ behavior: "smooth" });
     }
+    // Otherwise let Next.js Link handle the navigation normally
   };
+
   return (
     
     <>
