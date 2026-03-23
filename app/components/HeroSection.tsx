@@ -61,7 +61,7 @@ export function HeroSection() {
                 {/* Specialized Agri-Proteomics training, biotechnology skill development, and strategic academic guidance for students aspiring to excel in Europe’s research ecosystem. */}
                 Agri-Proteomics training and biotechnology skill development designed for research-focused learners and future-ready agricultural innovators.
               </p>
-              <a href="/learning" className="flex items-center gap-3">
+              <a href="/services" className="flex items-center gap-3">
               <div className="text-center mt-12">
                 <Button variant="outline" size="lg" className="rounded-md px-8 bg-secondary hover:bg-transparent text-secondary-foreground  border-2 border-secondary hover:border-secondary">
                   Register For Upcoming Workshops
