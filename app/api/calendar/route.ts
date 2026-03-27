@@ -266,21 +266,60 @@ export async function POST(req: NextRequest) {
 //   return slots;
 // }
 
+// function generateAvailableSlots(busySlots: { start: string; end: string }[]) {
+//   const slots: string[] = [];
+//   const now = new Date();
+
+//   // Morning: 10am–12pm, Evening: 4pm–7pm (IST)
+//   const allowedHours = [10, 11, 16, 17, 18];
+
+//   for (let d = 1; d <= 7; d++) {
+//     const day = new Date(now);
+//     day.setDate(now.getDate() + d);
+//     if (day.getDay() === 0) continue; // skip Sundays
+
+//     for (const h of allowedHours) {
+//       const candidate = new Date(day);
+//       candidate.setHours(h, 0, 0, 0);
+//       const candidateEnd = new Date(candidate.getTime() + 60 * 60 * 1000);
+
+//       const isBusy = busySlots.some((b) => {
+//         const bs = new Date(b.start).getTime();
+//         const be = new Date(b.end).getTime();
+//         return candidate.getTime() < be && candidateEnd.getTime() > bs;
+//       });
+
+//       if (!isBusy) slots.push(candidate.toISOString());
+//     }
+//   }
+//   return slots;
+// }
+
 function generateAvailableSlots(busySlots: { start: string; end: string }[]) {
   const slots: string[] = [];
-  const now = new Date();
 
-  // Morning: 10am–12pm, Evening: 4pm–7pm (IST)
-  const allowedHours = [10, 11, 16, 17, 18];
+  // Use IST "now" as the reference
+  const nowIST = new Date(
+    new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
+  );
 
   for (let d = 1; d <= 7; d++) {
-    const day = new Date(now);
-    day.setDate(now.getDate() + d);
+    const day = new Date(nowIST);
+    day.setDate(nowIST.getDate() + d);
     if (day.getDay() === 0) continue; // skip Sundays
 
+    const allowedHours = [10, 11, 16, 17, 18]; // 10am, 11am, 4pm, 5pm, 6pm IST
+
     for (const h of allowedHours) {
-      const candidate = new Date(day);
-      candidate.setHours(h, 0, 0, 0);
+      // Build ISO string explicitly in IST offset (+05:30)
+      const yyyy = day.getFullYear();
+      const mm = String(day.getMonth() + 1).padStart(2, "0");
+      const dd = String(day.getDate()).padStart(2, "0");
+      const hh = String(h).padStart(2, "0");
+
+      // +05:30 hardcoded — avoids any server timezone dependency
+      const candidateISO = `${yyyy}-${mm}-${dd}T${hh}:00:00+05:30`;
+      const candidate = new Date(candidateISO);
       const candidateEnd = new Date(candidate.getTime() + 60 * 60 * 1000);
 
       const isBusy = busySlots.some((b) => {
