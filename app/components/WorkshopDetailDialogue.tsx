@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import {
   Clock,
@@ -9,16 +9,17 @@ import {
   BookOpen,
   Award,
   Users,
-  Download,
   CheckCircle,
   Lock,
   Tag,
   ChevronRight,
-  CreditCard,
   Mail,
   User,
   CalendarDays,
   MailCheck,
+  AlertCircle,
+  CheckCircle2,
+  Loader2,
 } from "lucide-react";
 
 import { Button } from "../components/ui/button";
@@ -46,6 +47,59 @@ interface CourseVideo {
   locked: boolean;
 }
 
+type EnrollmentForm = {
+  name: string;
+  email: string;
+};
+
+type FormErrors = Partial<Record<keyof EnrollmentForm, string>>;
+
+type EmailCheckStatus = "idle" | "checking" | "valid" | "invalid";
+
+async function checkEmail(
+  email: string
+): Promise<{ valid: boolean; reason?: string }> {
+  try {
+    const res = await fetch(
+      `/api/validateEmail?email=${encodeURIComponent(email)}`,
+      { cache: "no-store" }
+    );
+    if (!res.ok) return { valid: true };
+    return res.json();
+  } catch {
+    return { valid: true };
+  }
+}
+
+const FAKE_NAME_PATTERNS = [
+  /^(.)\1{2,}$/i,
+  /^[^aeiou]{5,}$/i,
+  /^(test|fake|asdf|qwerty|admin|user|anon|anonymous|nobody|noone|noreply|abc|xyz)$/i,
+  /^[a-z]{1,2}$/i,
+  /\d{3,}/,
+  /^(.{1,3})\1{2,}$/i,
+];
+
+function validateName(value: string): string | null {
+  const t = value.trim();
+  if (!t) return "Full name is required.";
+  if (t.length < 2) return "Name is too short.";
+  if (t.length > 50) return "Name is too long.";
+  if (!/^[\p{L}\p{M}'\- ]+$/u.test(t)) return "Name contains invalid characters.";
+  for (const p of FAKE_NAME_PATTERNS) {
+    if (p.test(t)) return "Please enter your real name.";
+  }
+  return null;
+}
+
+function validateEmailFormat(value: string): string | null {
+  const t = value.trim().toLowerCase();
+  if (!t) return "Email is required.";
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(t))
+    return "Please enter a valid email address.";
+  return null;
+}
+
 interface CourseDetailDialogProps {
   video: CourseVideo | null;
   open: boolean;
@@ -70,9 +124,6 @@ const workshopDetails: Record<
     includes: string[];
   }
 > = {
-  /* -------------------------------------------------- */
-  /* Introductory Agri-Proteomics Workshop */
-  /* -------------------------------------------------- */
   1: {
     description:
       "An introductory workshop designed to build strong conceptual foundations in plant proteomics and crop molecular research. Participants gain exposure to LC–MS/MS workflows, plant stress proteomics, crop resilience research, and career pathways in agri-proteomics.",
@@ -92,10 +143,6 @@ const workshopDetails: Record<
       "Participation certificate",
     ],
   },
-
-  /* -------------------------------------------------- */
-  /* 2–3 Day Intensive Agri-Proteomics Workshop */
-  /* -------------------------------------------------- */
   2: {
     description:
       "A hands-on intensive workshop focusing on applied LC–MS/MS workflows for plant systems. The program emphasizes experimental design, DDA vs DIA strategy planning, real-world case studies, and workflow design exercises for sustainable agriculture research.",
@@ -115,10 +162,6 @@ const workshopDetails: Record<
       "Hands-on research orientation",
     ],
   },
-
-  /* -------------------------------------------------- */
-  /* Advanced Certification in Plant Proteomics */
-  /* -------------------------------------------------- */
   3: {
     description:
       "An advanced certification program covering the complete end-to-end plant proteomics workflow. The course includes sample preparation strategies, experimental design, proteomics data analysis fundamentals, and optional mass spectrometry facility exposure.",
@@ -139,10 +182,6 @@ const workshopDetails: Record<
       "Certification upon successful evaluation",
     ],
   },
-
-  /* -------------------------------------------------- */
-  /* Biotechnology Industry Skill Development Program */
-  /* -------------------------------------------------- */
   4: {
     description:
       "A structured industry-oriented biotechnology skill development program designed to bridge academic learning with real-world laboratory and analytical requirements. Ideal for students seeking industry-ready competencies beyond university curriculum.",
@@ -166,11 +205,8 @@ const workshopDetails: Record<
 
 /* -------------------- Helpers -------------------- */
 
-// const COURSE_PRICE = "₹4,999";
-
 const handleShare = (title: string, id: number) => {
   const url = `${window.location.origin}/services?workshop=${id}`;
-
   if (navigator.share) {
     navigator.share({
       title,
@@ -178,11 +214,10 @@ const handleShare = (title: string, id: number) => {
       url,
     });
   } else {
-    navigator.clipboard.writeText(url).then(() => {
-      // optional: you can trigger a toast here if you move handleShare inside the component
-    });
+    navigator.clipboard.writeText(url);
   }
 };
+
 /* -------------------- Component -------------------- */
 
 export default function WorkshopDetailDialog({
@@ -195,72 +230,211 @@ export default function WorkshopDetailDialog({
   const { toast } = useToast();
 
   const [showEnrollModal, setShowEnrollModal] = useState(false);
-  // const [step, setStep] = useState<"form" | "payment">("form");
   const [step, setStep] = useState<"form" | "confirmation">("form");
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [touched, setTouched] = useState<
+    Partial<Record<keyof EnrollmentForm, boolean>>
+  >({});
+  const [emailCheckStatus, setEmailCheckStatus] =
+    useState<EmailCheckStatus>("idle");
+  const emailDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [loading, setLoading] = useState(false);
 
-
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<EnrollmentForm>({
     name: "",
     email: "",
-    organization: "",
   });
-
-  // const [paymentData, setPaymentData] = useState({
-  //   cardNumber: "",
-  //   cardholderName: "",
-  //   expiryDate: "",
-  //   cvv: "",
-  // });
 
   if (!video) return null;
 
-  const details = workshopDetails[video.id] || workshopDetails[1];
-  const COURSE_PRICE = details.discountPrice;
+  const details = workshopDetails[video.id] ?? workshopDetails[1];
 
-  /* -------------------- Handlers -------------------- */
+  /* ── Validation ─────────────────────────────────────────────────────────── */
 
-  // const handlePaymentSubmit = (e: React.FormEvent) => {
-  //   e.preventDefault();
+  function runValidation(data: EnrollmentForm): FormErrors {
+    return {
+      name: validateName(data.name) ?? undefined,
+      email: validateEmailFormat(data.email) ?? undefined,
+    };
+  }
 
-  //   setTimeout(() => {
-  //     const stored =
-  //       localStorage.getItem("sukshmadarshini_enrolled_courses") || "[]";
-  //     const enrolled = JSON.parse(stored);
+  /* ── Email handlers ──────────────────────────────────────────────────────── */
 
-  //     if (!enrolled.includes(video.id)) enrolled.push(video.id);
+  async function handleEmailBlur() {
+    setTouched((p) => ({ ...p, email: true }));
+    const formatError = validateEmailFormat(formData.email);
+    if (formatError) {
+      setErrors((p) => ({ ...p, email: formatError }));
+      setEmailCheckStatus("idle");
+      return;
+    }
+    setEmailCheckStatus("checking");
+    setErrors((p) => ({ ...p, email: undefined }));
+    try {
+      const result = await checkEmail(formData.email);
+      setEmailCheckStatus(result.valid ? "valid" : "invalid");
+      setErrors((p) => ({
+        ...p,
+        email: result.valid
+          ? undefined
+          : (result.reason ?? "This email address could not be verified."),
+      }));
+    } catch {
+      setEmailCheckStatus("idle");
+    }
+  }
 
-  //     localStorage.setItem(
-  //       "sukshmadarshini_enrolled_courses",
-  //       JSON.stringify(enrolled)
-  //     );
-  //     localStorage.setItem(
-  //       "sukshmadarshini_user",
-  //       JSON.stringify(formData)
-  //     );
+  function handleEmailChange(value: string) {
+    setFormData((p) => ({ ...p, email: value }));
+    setEmailCheckStatus("idle");
+    if (touched.email) {
+      const formatError = validateEmailFormat(value);
+      setErrors((p) => ({ ...p, email: formatError ?? undefined }));
+      if (!formatError) {
+        if (emailDebounceRef.current) clearTimeout(emailDebounceRef.current);
+        emailDebounceRef.current = setTimeout(async () => {
+          setEmailCheckStatus("checking");
+          try {
+            const result = await checkEmail(value);
+            setEmailCheckStatus(result.valid ? "valid" : "invalid");
+            setErrors((p) => ({
+              ...p,
+              email: result.valid
+                ? undefined
+                : (result.reason ?? "This email could not be verified."),
+            }));
+          } catch {
+            setEmailCheckStatus("idle");
+          }
+        }, 800);
+      }
+    }
+  }
 
-  //     toast({
-  //       title: "🎉 Enrollment Successful",
-  //       description: `You are now enrolled in "${video.title}".`,
-  //     });
+  /* ── Generic field handlers ──────────────────────────────────────────────── */
 
-  //     setShowEnrollModal(false);
-  //     setStep("form");
-  //     setFormData({ name: "", email: "", organization: "" });
-  //     setPaymentData({
-  //       cardNumber: "",
-  //       cardholderName: "",
-  //       expiryDate: "",
-  //       cvv: "",
-  //     });
+  function handleBlur(field: keyof EnrollmentForm) {
+    if (field === "email") return;
+    setTouched((p) => ({ ...p, [field]: true }));
+    const errs = runValidation(formData);
+    setErrors((p) => ({ ...p, [field]: errs[field] }));
+  }
 
-  //     onEnrollmentComplete?.(video.id);
-  //   }, 1200);
-  // };
+  function handleChange(field: keyof EnrollmentForm, value: string) {
+    if (field === "email") {
+      handleEmailChange(value);
+      return;
+    }
+    const updated = { ...formData, [field]: value };
+    setFormData(updated);
+    if (touched[field]) {
+      const errs = runValidation(updated);
+      setErrors((p) => ({ ...p, [field]: errs[field] }));
+    }
+  }
+
+  /* ── Submit ──────────────────────────────────────────────────────────────── */
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setTouched({ name: true, email: true });
+
+    if (emailCheckStatus === "checking") {
+      toast({
+        title: "Please wait",
+        description: "Verifying email address…",
+      });
+      return;
+    }
+
+    const allErrors = runValidation(formData);
+    if (emailCheckStatus === "invalid") {
+      allErrors.email =
+        errors.email ?? "This email address could not be verified.";
+    }
+    setErrors(allErrors);
+
+    if (Object.values(allErrors).some(Boolean)) {
+      toast({
+        title: "Please fix the errors",
+        description: "Some fields contain invalid or suspicious values.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setLoading(true);
+    // Simulate a brief async action (e.g. API call) before advancing
+    await new Promise((res) => setTimeout(res, 400));
+    setLoading(false);
+    setStep("confirmation");
+  };
+
+  /* ── Sub-components ──────────────────────────────────────────────────────── */
+
+  function FieldError({ field }: { field: keyof EnrollmentForm }) {
+    if (!touched[field] || !errors[field]) return null;
+    return (
+      <p className="flex items-center gap-1 mt-1 text-xs text-destructive">
+        <AlertCircle className="w-3 h-3 shrink-0" />
+        {errors[field]}
+      </p>
+    );
+  }
+
+  function EmailIndicator() {
+    if (emailCheckStatus === "checking")
+      return (
+        <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 animate-spin text-muted-foreground" />
+      );
+    if (emailCheckStatus === "valid")
+      return (
+        <CheckCircle2 className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-green-500" />
+      );
+    if (emailCheckStatus === "invalid")
+      return (
+        <AlertCircle className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-destructive" />
+      );
+    return null;
+  }
+
+  const emailBorderClass =
+    touched.email && errors.email
+      ? "border-destructive focus-visible:ring-destructive"
+      : emailCheckStatus === "valid"
+      ? "border-green-500 focus-visible:ring-green-500"
+      : "";
+
+  /* ── Confirmation done handler ───────────────────────────────────────────── */
+
+  function handleDone() {
+    const stored =
+      localStorage.getItem("sukshmadarshini_enrolled_courses") || "[]";
+    const enrolled: number[] = JSON.parse(stored);
+    if (!enrolled.includes(video!.id)) enrolled.push(video!.id);
+    localStorage.setItem(
+      "sukshmadarshini_enrolled_courses",
+      JSON.stringify(enrolled)
+    );
+    localStorage.setItem("sukshmadarshini_user", JSON.stringify(formData));
+    toast({
+      title: "Confirmation email sent",
+      description: `Confirmation instructions sent for "${video!.title}"`,
+    });
+    setShowEnrollModal(false);
+    setStep("form");
+    setFormData({ name: "", email: "" });
+    setTouched({});
+    setErrors({});
+    setEmailCheckStatus("idle");
+    onEnrollmentComplete?.(video!.id);
+  }
 
   /* -------------------- Render -------------------- */
 
   return (
     <>
+      {/* ── Workshop Detail Dialog ── */}
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogTitle>{video.title}</DialogTitle>
         <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto p-0">
@@ -274,12 +448,8 @@ export default function WorkshopDetailDialog({
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-t-lg" />
             <div className="absolute bottom-4 left-4 right-4">
-              <h2 className="text-xl font-bold text-white">
-                {video.title}
-              </h2>
-              <p className="text-sm text-white/80">
-                by {details.instructor}
-              </p>
+              <h2 className="text-xl font-bold text-white">{video.title}</h2>
+              <p className="text-sm text-white/80">by {details.instructor}</p>
             </div>
           </div>
 
@@ -376,7 +546,7 @@ export default function WorkshopDetailDialog({
         </DialogContent>
       </Dialog>
 
-      {/* Enrollment Modal */}
+      {/* ── Enrollment Modal ── */}
       <Dialog open={showEnrollModal} onOpenChange={setShowEnrollModal}>
         <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
           <DialogHeader>
@@ -384,18 +554,15 @@ export default function WorkshopDetailDialog({
               {step === "form" ? "Complete Your Registration" : "Confirmation"}
             </DialogTitle>
             <DialogDescription>
-              {step === "form" 
+              {step === "form"
                 ? "Fill in your details to get started with your learning journey"
-                : "Seat confirmation instructions will be sent via email"
-              }
+                : "Seat confirmation instructions will be sent via email"}
             </DialogDescription>
           </DialogHeader>
 
           {step === "form" ? (
-            <form onSubmit={(e) => {
-                e.preventDefault();
-                setStep("confirmation");
-              }} className="space-y-4 pt-4">
+            <form onSubmit={handleSubmit} className="space-y-4 pt-4">
+              {/* Name */}
               <div className="space-y-2">
                 <Label htmlFor="name">Full Name *</Label>
                 <div className="relative">
@@ -404,13 +571,20 @@ export default function WorkshopDetailDialog({
                     id="name"
                     placeholder="John Doe"
                     value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="pl-10"
+                    onChange={(e) => handleChange("name", e.target.value)}
+                    onBlur={() => handleBlur("name")}
+                    className={
+                      touched.name && errors.name
+                        ? "border-destructive focus-visible:ring-destructive pl-10"
+                        : "pl-10"
+                    }
                     required
                   />
                 </div>
+                <FieldError field="name" />
               </div>
 
+              {/* Email */}
               <div className="space-y-2">
                 <Label htmlFor="email">Email Address *</Label>
                 <div className="relative">
@@ -420,144 +594,46 @@ export default function WorkshopDetailDialog({
                     type="email"
                     placeholder="you@example.com"
                     value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="pl-10"
+                    onChange={(e) => handleChange("email", e.target.value)}
+                    onBlur={handleEmailBlur}
+                    className={`pl-10 pr-9 ${emailBorderClass}`}
                     required
                   />
+                  <EmailIndicator />
                 </div>
+                <FieldError field="email" />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="organization">Organization (Optional)</Label>
-                <Input
-                  id="organization"
-                  placeholder="Your University/Company"
-                  value={formData.organization}
-                  onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
-                />
-              </div>
-
-              <Button type="submit" className="w-full mt-6">
-                Continue to Proceed
-                <ChevronRight className="w-4 h-4 ml-2" />
+              <Button
+                type="submit"
+                className="w-full mt-6"
+                disabled={loading}
+              >
+                {loading ? (
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                ) : (
+                  <ChevronRight className="w-4 h-4 ml-2" />
+                )}
+                {loading ? "Verifying…" : "Continue to Confirmation"}
               </Button>
             </form>
           ) : (
-            // <form onSubmit={handlePaymentSubmit} className="space-y-4 pt-4">
-            //   <div className="bg-muted/50 p-4 rounded-lg mb-4">
-            //     <p className="text-sm text-muted-foreground mb-1">Total Amount</p>
-            //     <p className="text-3xl font-bold">{COURSE_PRICE}</p>
-            //   </div>
-
-            //   <div className="space-y-2">
-            //     <Label htmlFor="cardNumber">Card Number *</Label>
-            //     <div className="relative">
-            //       <CreditCard className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-            //       <Input
-            //         id="cardNumber"
-            //         placeholder="1234 5678 9012 3456"
-            //         value={paymentData.cardNumber}
-            //         onChange={(e) => setPaymentData({ ...paymentData, cardNumber: e.target.value })}
-            //         className="pl-10"
-            //         required
-            //       />
-            //     </div>
-            //   </div>
-
-            //   <div className="space-y-2">
-            //     <Label htmlFor="cardholderName">Cardholder Name *</Label>
-            //     <Input
-            //       id="cardholderName"
-            //       placeholder="John Doe"
-            //       value={paymentData.cardholderName}
-            //       onChange={(e) => setPaymentData({ ...paymentData, cardholderName: e.target.value })}
-            //       required
-            //     />
-            //   </div>
-
-            //   <div className="grid grid-cols-2 gap-4">
-            //     <div className="space-y-2">
-            //       <Label htmlFor="expiryDate">Expiry Date *</Label>
-            //       <Input
-            //         id="expiryDate"
-            //         placeholder="MM/YY"
-            //         value={paymentData.expiryDate}
-            //         onChange={(e) => setPaymentData({ ...paymentData, expiryDate: e.target.value })}
-            //         required
-            //       />
-            //     </div>
-            //     <div className="space-y-2">
-            //       <Label htmlFor="cvv">CVV *</Label>
-            //       <Input
-            //         id="cvv"
-            //         placeholder="123"
-            //         type="password"
-            //         maxLength={4}
-            //         value={paymentData.cvv}
-            //         onChange={(e) => setPaymentData({ ...paymentData, cvv: e.target.value })}
-            //         required
-            //       />
-            //     </div>
-            //   </div>
-
-            //   <div className="flex gap-2 pt-4">
-            //     {/* <Button 
-            //       type="button" 
-            //       variant="outline" 
-            //       className="flex-1"
-            //       onClick={() => setEnrollmentStep("form")}
-            //     >
-            //       Back
-            //     </Button> */}
-            //     <Button type="submit" className="flex-1 bg-green-600 hover:bg-green-700">
-            //       <CreditCard className="w-4 h-4 mr-2" />
-            //       Pay {COURSE_PRICE}
-            //     </Button>
-            //   </div>
-
-            //   <p className="text-xs text-center text-muted-foreground mt-4">
-            //     🔒 Secure payment powered by industry-standard encryption
-            //   </p>
-            // </form>
             <div className="space-y-6 pt-4 text-center">
-              < MailCheck className="w-32 h-32 justify-center mx-auto text-primary" />
-              {/* <div className="text-5xl">📩</div> */}
+              <MailCheck className="w-32 h-32 justify-center mx-auto text-primary" />
               <p className="text-sm text-muted-foreground leading-relaxed">
                 You will receive the confirmation email for the{" "}
                 <span className="font-semibold text-foreground">
                   {video.title}
                 </span>{" "}
                 in a few hours.
-                <br /><br />
-                Please follow the steps given in the email to confirm your seat in the workshop.
+                <br />
+                <br />
+                Please follow the steps given in the email to confirm your seat
+                in the workshop.
               </p>
-              <Button
-                className="w-full"
-                onClick={() => {
-                  const stored =
-                    localStorage.getItem("sukshmadarshini_enrolled_courses") || "[]";
-                  const enrolled = JSON.parse(stored);
-                  if (!enrolled.includes(video.id)) enrolled.push(video.id);
-                  localStorage.setItem(
-                    "sukshmadarshini_enrolled_courses",
-                    JSON.stringify(enrolled)
-                  );
-                  localStorage.setItem(
-                    "sukshmadarshini_user",
-                    JSON.stringify(formData)
-                  );
-                  toast({
-                    title: "Confirmation email sent",
-                    description: `Confirmation instructions sent for "${video.title}"`,
-                  });
-                  setShowEnrollModal(false);
-                  setStep("form");
-                  onEnrollmentComplete?.(video.id);
-                }}
-              >
+              <Button className="w-full" onClick={handleDone}>
                 Done
               </Button>
-
             </div>
           )}
         </DialogContent>
