@@ -8,7 +8,7 @@ import Link from "next/link";
 
 export function TrainingsSection() {
   return (
-    <section id="trainings" className="py-24 bg-background relative overflow-hidden">
+    <section id="trainings" className="py-10 pb-14 bg-background relative">
 
       {/* Background pattern */}
       <div className="absolute inset-0 opacity-[0.05]">

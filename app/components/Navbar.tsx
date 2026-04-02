@@ -33,18 +33,18 @@ export function Navbar() {
   // };
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    // Extract just the hash portion from "/#section" or "#section"
-    const hash = href.startsWith("/#") ? href.slice(1) : href.startsWith("#") ? href : null;
-    if (!hash) return;
+  const hash = href.startsWith("/#") ? href.slice(1) : href.startsWith("#") ? href : null;
+  if (!hash) return;
+  if (window.location.pathname !== "/") return;
 
-    if (window.location.pathname !== "/") return;
+  e.preventDefault();
+  const target = document.querySelector(hash);
+  if (!target) return;
 
-    e.preventDefault();
-    const target = document.querySelector(hash); // now passes "#contact", not "/#contact"
-    if (!target) return;
-    const offsetPosition = target.getBoundingClientRect().top + window.scrollY;
-    window.scrollTo({ top: offsetPosition, behavior: "smooth" });
-  };
+  const navbarHeight = 80; // matches your h-20 (80px)
+  const offsetPosition = target.getBoundingClientRect().top + window.scrollY - navbarHeight;
+  window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+};
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">

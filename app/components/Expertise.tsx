@@ -38,9 +38,9 @@ const coreServices = [
 
 export function Expertise() {
   return (
-    <section id="expertise" className="py-24 bg-background relative overflow-hidden">
+    <section id="expertise" className="py-16 pt-0 pb-20  bg-background relative overflow-hidden">
       {/* Background pattern */}
-      <div className="absolute inset-0 dna-pattern opacity-50" />
+      {/* <div className="absolute inset-0 dna-pattern opacity-50" /> */}
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center">

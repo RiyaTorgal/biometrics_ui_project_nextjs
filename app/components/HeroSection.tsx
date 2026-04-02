@@ -32,7 +32,7 @@ export function HeroSection() {
   return (
     <>
     <Navbar />
-    <section id="home" className="relative pt-20 overflow-hidden bg-background">
+    <section id="home" className="py-16 bg-background relative overflow-hidden">
       {/* Hero Content */}
       <div className="relative">
         {/* Gradient overlay background */}
@@ -49,7 +49,7 @@ export function HeroSection() {
         </div>
 
         {/* Content */}
-        <div className="container mx-auto px-4 relative z-20">
+        <div className="container mx-auto px-4 relative z-10">
           <div className="grid lg:grid-cols-2 gap-8 min-h-[500px] items-center py-16">
             {/* Left Content */}
             <div className="text-primary-foreground">

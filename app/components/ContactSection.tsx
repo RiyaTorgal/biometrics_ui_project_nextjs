@@ -302,7 +302,7 @@ export function ContactSection() {
 
   // ── Render ────────────────────────────────────────────────────────────────
   return (
-    <section id="contact" className="relative py-24 overflow-hidden">
+    <section id="contact" className="relative py-9">
       {/* Soft wave background */}
       <div className="absolute inset-x-0 bottom-24 h-44 bg-gradient-to-t from-primary/10 to-transparent" />
 
