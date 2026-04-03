@@ -643,75 +643,41 @@
 //             <div className="space-y-4 pt-0">
 //               <MailCheck className="w-28 h-28 mx-auto text-primary" />
 //               <p className="text-sm text-muted-foreground leading-relaxed">
-//                 Your slot{" "}
-//                 {/* <span className="font-semibold text-foreground">{service.title}</span>{" "} */}
-//                 has been successfully reserved.
+//                 Your slot has been successfully reserved.
+//               </p>
+
+//               {/* Workshop details — always shown */}
+//               <div className="space-y-1 text-sm">
+//                 <div className="flex flex-row items-center mb-1">
+//                   <Pin className="w-5 h-5 mr-2 text-primary shrink-0" />
+//                   <span className="font-semibold text-foreground">{video.title}</span>
+//                 </div>
+//                 <div className="flex flex-row items-center mb-1">
+//                   <Clock3 className="w-5 h-5 mr-2 text-primary shrink-0" />
+//                   <span className="font-semibold text-foreground">{video.duration}</span>
+//                 </div>
+//                 <div className="flex flex-row items-center mb-1">
+//                   <Users className="w-5 h-5 mr-2 text-primary shrink-0" />
+//                   <span className="font-semibold text-foreground">{details.students.toLocaleString()} learners</span>
+//                 </div>
+//                 <div className="flex flex-row items-center mb-1">
+//                   <Award className="w-5 h-5 mr-2 text-primary shrink-0" />
+//                   <span className="font-semibold text-foreground">{details.rating} rating</span>
+//                 </div>
+//               </div>
+
+//               <p className="text-sm text-muted-foreground leading-relaxed">
+//                 This is a paid workshop service, and payment is required to confirm your booking.
 //               </p>
 //               <p className="text-sm text-muted-foreground leading-relaxed">
-//                 {/* <br /><br /> */}
-//                 {selectedWorkshop && (
-//                   <>
-//                   <div className="flex flex-row mb-1">
-//                     <Pin className="w-5 h-5 mr-2 text-primary" /> <span className="font-semibold text-foreground">
-//                       {video.title}
-//                     </span>
-//                   </div>
-//                   <div className="flex flex-row mb-1">
-//                     <MapPin className="w-5 h-5 mr-2 text-primary"/> <span className="font-semibold text-md text-foreground">
-//                       {new Date(selectedWorkshop).toLocaleString("en-IN", {
-//                         weekday: "long",
-//                         month: "long",
-//                         day: "numeric",
-//                       })}
-//                     </span>
-//                   </div>
-//                   <div className="flex flex-row mb-1">
-//                     <Clock3 className="w-5 h-5 mr-2 text-primary" /> <span className="font-semibold text-foreground">
-//                       {video.duration}
-//                     </span>
-//                   </div>
-//                     {/* <br /><br /> */}
-//                   </>
-//                 )}
-//                 {/* You will receive the confirmation email  in a few hours.
-//                 <br />
-//                 To confirm your booking, please complete the payment using the QR code sent to your email.
-//                 <br /><br /> */}
-//                 </p>
-//                 <p className="text-sm text-muted-foreground leading-relaxed">
-//                 This is a paid workshop service, and payment is required to confirm your booking.
-//                 </p>
-//                 <p className="text-sm text-muted-foreground leading-relaxed">
-//                 {/* ⏳
-//                 <span className="font-semibold text-foreground">Important:</span>{" "}
-//                 <br /> */}
 //                 Detailed instructions for completing your booking have been sent to your email.
-//                 <br /><br />
-//                 {/* <span className="font-semibold text-foreground">{formData.email}</span>. */}
-//                 <div className="flex flex-row items-center mb-1">
-//                 <CircleAlert className="w-4 h-4 mr-1 text-rose-600"/>
-//                 <span className="font-semibold text-xs text-rose-600">Slot Held Temporary:</span>{" "} 
-//                 {" "}<span className="font-semibold text-xs text-primary ml-1">It will auto-cancel if unpaid after 3 days.</span>
-//                 </div>
 //               </p>
-//               <Button
-//                 className="w-full"
-//                 // onClick={() => {
-//                 //   const stored = localStorage.getItem("sukshmadarshini_enrolled_courses") || "[]";
-//                 //   const enrolled = JSON.parse(stored);
-//                 //   if (!enrolled.includes(service.id)) enrolled.push(service.id);
-//                 //   localStorage.setItem("sukshmadarshini_enrolled_courses", JSON.stringify(enrolled));
-//                 //   localStorage.setItem("sukshmadarshini_user", JSON.stringify(formData));
-//                 //   toast({
-//                 //     title: "Booking confirmed!",
-//                 //     description: `Calendar invite sent for "${service.title}"`,
-//                 //   });
-//                 //   setShowBookModal(false);
-//                 //   setStep("form");
-//                 //   setSelectedSlot(null);
-//                 //   onBookingComplete?.(service.id);
-//                 // }}
-//               >
+//               <div className="flex flex-row items-center">
+//                 <CircleAlert className="w-4 h-4 mr-1 text-rose-600 shrink-0" />
+//                 <span className="font-semibold text-xs text-rose-600">Slot Held Temporary:</span>
+//                 <span className="font-semibold text-xs text-primary ml-1">It will auto-cancel if unpaid after 3 days.</span>
+//               </div>
+//               <Button className="w-full" onClick={handleDone}>
 //                 Done
 //               </Button>
 //             </div>
@@ -776,8 +742,13 @@ interface CourseVideo {
 }
 
 type EnrollmentForm = {
-  name: string;
+  contactName: string;
   email: string;
+  instituteName: string;
+  designation: string;
+  phone: string;
+  estimatedParticipants: string;
+  message: string;
 };
 
 type FormErrors = Partial<Record<keyof EnrollmentForm, string>>;
@@ -825,6 +796,43 @@ function validateEmailFormat(value: string): string | null {
   if (!t) return "Email is required.";
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(t))
     return "Please enter a valid email address.";
+  return null;
+}
+
+function validateInstituteName(value: string): string | null {
+  const t = value.trim();
+  if (!t) return "Institute name is required.";
+  if (t.length < 3) return "Institute name is too short.";
+  if (t.length > 120) return "Institute name is too long.";
+  if (!/^[\p{L}\p{M}0-9'\-\.,& ]+$/u.test(t))
+    return "Institute name contains invalid characters.";
+  return null;
+}
+
+function validateDesignation(value: string): string | null {
+  const t = value.trim();
+  if (!t) return "Designation is required.";
+  if (t.length < 2) return "Designation is too short.";
+  if (t.length > 80) return "Designation is too long.";
+  return null;
+}
+
+function validatePhone(value: string): string | null {
+  const stripped = value.replace(/[\s\-().+]/g, "");
+  if (!stripped) return "Phone number is required.";
+  if (!/^\d{7,15}$/.test(stripped))
+    return "Please enter a valid phone number.";
+  return null;
+}
+
+function validateMessage(value: string): string | null {
+  if (!value.trim()) return "Message is required.";
+  if (value.trim().length < 10) return "Message is too short (min 10 characters).";
+  return null;
+}
+
+function validateEstimatedParticipants(value: string): string | null {
+  if (!value.trim()) return "Please provide an estimated participant count.";
   return null;
 }
 
@@ -970,8 +978,13 @@ export default function WorkshopDetailDialog({
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState<EnrollmentForm>({
-    name: "",
+    contactName: "",
     email: "",
+    instituteName: "",
+    designation: "",
+    phone: "",
+    estimatedParticipants: "",
+    message: "",
   });
 
   if (!video) return null;
@@ -982,8 +995,13 @@ export default function WorkshopDetailDialog({
 
   function runValidation(data: EnrollmentForm): FormErrors {
     return {
-      name: validateName(data.name) ?? undefined,
-      email: validateEmailFormat(data.email) ?? undefined,
+      contactName:           validateName(data.contactName)                     ?? undefined,
+      email:                 validateEmailFormat(data.email)                     ?? undefined,
+      instituteName:         validateInstituteName(data.instituteName)           ?? undefined,
+      designation:           validateDesignation(data.designation)               ?? undefined,
+      phone:                 validatePhone(data.phone)                           ?? undefined,
+      estimatedParticipants: validateEstimatedParticipants(data.estimatedParticipants) ?? undefined,
+      message:               validateMessage(data.message)                       ?? undefined,
     };
   }
 
@@ -1066,20 +1084,19 @@ export default function WorkshopDetailDialog({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setTouched({ name: true, email: true });
+    setTouched({
+      contactName: true, email: true, instituteName: true,
+      designation: true, phone: true, estimatedParticipants: true, message: true,
+    });
 
     if (emailCheckStatus === "checking") {
-      toast({
-        title: "Please wait",
-        description: "Verifying email address…",
-      });
+      toast({ title: "Please wait", description: "Verifying email address…" });
       return;
     }
 
     const allErrors = runValidation(formData);
     if (emailCheckStatus === "invalid") {
-      allErrors.email =
-        errors.email ?? "This email address could not be verified.";
+      allErrors.email = errors.email ?? "This email address could not be verified.";
     }
     setErrors(allErrors);
 
@@ -1093,10 +1110,41 @@ export default function WorkshopDetailDialog({
     }
 
     setLoading(true);
-    // Simulate a brief async action (e.g. API call) before advancing
-    await new Promise((res) => setTimeout(res, 400));
-    setLoading(false);
-    setStep("confirmation");
+    try {
+      const res = await fetch("/api/workshopEmail", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contactName:           formData.contactName,
+          email:                 formData.email,
+          instituteName:         formData.instituteName,
+          designation:           formData.designation,
+          phone:                 formData.phone,
+          workshopTitle:         video!.title,
+          workshopId:            video!.id,
+          estimatedParticipants: formData.estimatedParticipants,
+          message:               formData.message,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        toast({
+          title: "Failed to send enquiry",
+          description: data.error ?? "Something went wrong. Please try again.",
+          variant: "destructive",
+        });
+        return;
+      }
+      setStep("confirmation");
+    } catch {
+      toast({
+        title: "Network error",
+        description: "Could not reach the server. Please check your connection.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   /* ── Sub-components ──────────────────────────────────────────────────────── */
@@ -1137,22 +1185,16 @@ export default function WorkshopDetailDialog({
   /* ── Confirmation done handler ───────────────────────────────────────────── */
 
   function handleDone() {
-    const stored =
-      localStorage.getItem("sukshmadarshini_enrolled_courses") || "[]";
-    const enrolled: number[] = JSON.parse(stored);
-    if (!enrolled.includes(video!.id)) enrolled.push(video!.id);
-    localStorage.setItem(
-      "sukshmadarshini_enrolled_courses",
-      JSON.stringify(enrolled)
-    );
-    localStorage.setItem("sukshmadarshini_user", JSON.stringify(formData));
     toast({
-      title: "Confirmation email sent",
-      description: `Confirmation instructions sent for "${video!.title}"`,
+      title: "Enquiry sent",
+      description: `Your enquiry for "${video!.title}" has been submitted. We'll be in touch soon.`,
     });
     setShowEnrollModal(false);
     setStep("form");
-    setFormData({ name: "", email: "" });
+    setFormData({
+      contactName: "", email: "", instituteName: "",
+      designation: "", phone: "", estimatedParticipants: "", message: "",
+    });
     setTouched({});
     setErrors({});
     setEmailCheckStatus("idle");
@@ -1262,12 +1304,12 @@ export default function WorkshopDetailDialog({
               {isEnrolled ? (
                 <>
                   <Play className="w-4 h-4 mr-2" />
-                  Already Enrolled
+                  Already Enquired
                 </>
               ) : (
                 <>
-                  <Lock className="w-4 h-4 mr-2" />
-                  Enroll Now
+                  <Mail className="w-4 h-4 mr-2" />
+                  Enquire Now
                 </>
               )}
             </Button>
@@ -1280,48 +1322,86 @@ export default function WorkshopDetailDialog({
         <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-2xl font-display">
-              {step === "form" ? "Complete Your Registration" : "Confirmation"}
+              {step === "form" ? "Workshop Enquiry" : "Enquiry Submitted"}
             </DialogTitle>
             <DialogDescription>
               {step === "form"
-                ? "Fill in your details to get started with your learning journey"
-                : "Seat confirmation instructions will be sent via email"}
+                ? "Fill in your institute details and we'll get back to you shortly"
+                : "Our team will reach out to confirm scheduling and details"}
             </DialogDescription>
           </DialogHeader>
 
           {step === "form" ? (
             <form onSubmit={handleSubmit} className="space-y-4 pt-4">
-              {/* Name */}
+              {/* Contact Name */}
               <div className="space-y-2">
-                <Label htmlFor="name">Full Name *</Label>
+                <Label htmlFor="contactName">Contact Person *</Label>
                 <div className="relative">
                   <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
-                    id="name"
-                    placeholder="John Doe"
-                    value={formData.name}
-                    onChange={(e) => handleChange("name", e.target.value)}
-                    onBlur={() => handleBlur("name")}
+                    id="contactName"
+                    placeholder="Dr. Jane Smith"
+                    value={formData.contactName}
+                    onChange={(e) => handleChange("contactName", e.target.value)}
+                    onBlur={() => handleBlur("contactName")}
                     className={
-                      touched.name && errors.name
+                      touched.contactName && errors.contactName
                         ? "border-destructive focus-visible:ring-destructive pl-10"
                         : "pl-10"
                     }
                     required
                   />
                 </div>
-                <FieldError field="name" />
+                <FieldError field="contactName" />
+              </div>
+
+              {/* Designation */}
+              <div className="space-y-2">
+                <Label htmlFor="designation">Designation *</Label>
+                <Input
+                  id="designation"
+                  placeholder="e.g. HoD Biotechnology, Training Coordinator"
+                  value={formData.designation}
+                  onChange={(e) => handleChange("designation", e.target.value)}
+                  onBlur={() => handleBlur("designation")}
+                  className={
+                    touched.designation && errors.designation
+                      ? "border-destructive focus-visible:ring-destructive"
+                      : ""
+                  }
+                  required
+                />
+                <FieldError field="designation" />
+              </div>
+
+              {/* Institute Name */}
+              <div className="space-y-2">
+                <Label htmlFor="instituteName">Institute / College / University *</Label>
+                <Input
+                  id="instituteName"
+                  placeholder="e.g. MIT Pune, Fergusson College"
+                  value={formData.instituteName}
+                  onChange={(e) => handleChange("instituteName", e.target.value)}
+                  onBlur={() => handleBlur("instituteName")}
+                  className={
+                    touched.instituteName && errors.instituteName
+                      ? "border-destructive focus-visible:ring-destructive"
+                      : ""
+                  }
+                  required
+                />
+                <FieldError field="instituteName" />
               </div>
 
               {/* Email */}
               <div className="space-y-2">
-                <Label htmlFor="email">Email Address *</Label>
+                <Label htmlFor="email">Official Email Address *</Label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
                     id="email"
                     type="email"
-                    placeholder="you@example.com"
+                    placeholder="you@institution.edu.in"
                     value={formData.email}
                     onChange={(e) => handleChange("email", e.target.value)}
                     onBlur={handleEmailBlur}
@@ -1333,17 +1413,76 @@ export default function WorkshopDetailDialog({
                 <FieldError field="email" />
               </div>
 
+              {/* Phone */}
+              <div className="space-y-2">
+                <Label htmlFor="phone">Phone Number *</Label>
+                <Input
+                  id="phone"
+                  type="tel"
+                  placeholder="+91 98765 43210"
+                  value={formData.phone}
+                  onChange={(e) => handleChange("phone", e.target.value)}
+                  onBlur={() => handleBlur("phone")}
+                  className={
+                    touched.phone && errors.phone
+                      ? "border-destructive focus-visible:ring-destructive"
+                      : ""
+                  }
+                  required
+                />
+                <FieldError field="phone" />
+              </div>
+
+              {/* Estimated Participants */}
+              <div className="space-y-2">
+                <Label htmlFor="estimatedParticipants">Estimated Number of Participants *</Label>
+                <Input
+                  id="estimatedParticipants"
+                  placeholder="e.g. 30–50 students"
+                  value={formData.estimatedParticipants}
+                  onChange={(e) => handleChange("estimatedParticipants", e.target.value)}
+                  onBlur={() => handleBlur("estimatedParticipants")}
+                  className={
+                    touched.estimatedParticipants && errors.estimatedParticipants
+                      ? "border-destructive focus-visible:ring-destructive"
+                      : ""
+                  }
+                  required
+                />
+                <FieldError field="estimatedParticipants" />
+              </div>
+
+              {/* Message */}
+              <div className="space-y-2">
+                <Label htmlFor="message">Message / Additional Requirements *</Label>
+                <textarea
+                  id="message"
+                  rows={4}
+                  placeholder="Tell us about your preferred schedule, any specific topics, or other requirements…"
+                  value={formData.message}
+                  onChange={(e) => handleChange("message", e.target.value)}
+                  onBlur={() => handleBlur("message")}
+                  className={`flex w-full rounded-md border bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 resize-none ${
+                    touched.message && errors.message
+                      ? "border-destructive focus-visible:ring-destructive"
+                      : "border-input"
+                  }`}
+                  required
+                />
+                <FieldError field="message" />
+              </div>
+
               <Button
                 type="submit"
-                className="w-full mt-6"
+                className="w-full mt-2"
                 disabled={loading}
               >
                 {loading ? (
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                 ) : (
-                  <ChevronRight className="w-4 h-4 ml-2" />
+                  <Mail className="w-4 h-4 mr-2" />
                 )}
-                {loading ? "Verifying…" : "Continue to Confirmation"}
+                {loading ? "Sending Enquiry…" : "Send Enquiry"}
               </Button>
             </form>
           ) : (
@@ -1366,11 +1505,11 @@ export default function WorkshopDetailDialog({
             // </div>
             <div className="space-y-4 pt-0">
               <MailCheck className="w-28 h-28 mx-auto text-primary" />
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                Your slot has been successfully reserved.
+              <p className="text-sm text-muted-foreground leading-relaxed text-center">
+                Your enquiry has been successfully submitted.
               </p>
 
-              {/* Workshop details — always shown */}
+              {/* Workshop details */}
               <div className="space-y-1 text-sm">
                 <div className="flex flex-row items-center mb-1">
                   <Pin className="w-5 h-5 mr-2 text-primary shrink-0" />
@@ -1382,7 +1521,7 @@ export default function WorkshopDetailDialog({
                 </div>
                 <div className="flex flex-row items-center mb-1">
                   <Users className="w-5 h-5 mr-2 text-primary shrink-0" />
-                  <span className="font-semibold text-foreground">{details.students.toLocaleString()} learners</span>
+                  <span className="font-semibold text-foreground">{details.students.toLocaleString()} learners enrolled</span>
                 </div>
                 <div className="flex flex-row items-center mb-1">
                   <Award className="w-5 h-5 mr-2 text-primary shrink-0" />
@@ -1391,15 +1530,15 @@ export default function WorkshopDetailDialog({
               </div>
 
               <p className="text-sm text-muted-foreground leading-relaxed">
-                This is a paid workshop service, and payment is required to confirm your booking.
-              </p>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                Detailed instructions for completing your booking have been sent to your email.
+                Our team will review your enquiry and reach out to{" "}
+                <span className="font-semibold text-foreground">{formData.email}</span>{" "}
+                within 1–2 business days to discuss scheduling, pricing, and logistics.
               </p>
               <div className="flex flex-row items-center">
-                <CircleAlert className="w-4 h-4 mr-1 text-rose-600 shrink-0" />
-                <span className="font-semibold text-xs text-rose-600">Slot Held Temporary:</span>
-                <span className="font-semibold text-xs text-primary ml-1">It will auto-cancel if unpaid after 3 days.</span>
+                <CircleAlert className="w-4 h-4 mr-1 text-amber-500 shrink-0" />
+                <span className="font-semibold text-xs text-amber-600">
+                  These workshops are exclusively available for colleges, universities, and institutes.
+                </span>
               </div>
               <Button className="w-full" onClick={handleDone}>
                 Done
