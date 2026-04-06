@@ -716,13 +716,13 @@ export default function ServicesPage() {
       </Dialog> */}
 
       {/* DETAIL DIALOG */}
-      <LectureDetailDialog  
+      {/* <LectureDetailDialog  
         video={selectedLecture}
         open={!!selectedLecture}
         onOpenChange={(open) => !open && setSelectedLecture(null)}
         isEnrolled={false}
         onEnrollmentComplete={() => {}}
-      />
+      /> */}
       
       <WorkshopDetailDialog
         video={selectedWorkshop}
