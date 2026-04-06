@@ -25,7 +25,7 @@ import {
 } from "../components/ui/tabs";
 import { useToast } from "../hooks/use-toast";
 import WorkshopDetailDialog from "../components/WorkshopDetailDialogue";
-import LectureDetailDialog from "../components/LectureDetailDialogue";
+// import LectureDetailDialog from "../components/LectureDetailDialogue";
 import ConsultationDetailDialog from "../components/ConsultationDetailDialogue";
 
 /* ------------------ DATA ------------------ */
