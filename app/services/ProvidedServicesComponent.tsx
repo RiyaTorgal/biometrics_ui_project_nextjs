@@ -5,16 +5,10 @@ import Link from "next/link";
 import Image from "next/image";
 import {
   Clock,
-  Lock,
   Users,
   Briefcase,
   CheckCircle,
-  Sparkles,
-  ChevronRight,
-  CreditCard,
-  Mail,
-  User,
-  MailCheck,
+  BookOpenText,
 } from "lucide-react";
 
 import { Button } from "../components/ui/button";
@@ -29,22 +23,13 @@ import {
   TabsList,
   TabsTrigger,
 } from "../components/ui/tabs";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "../components/ui/dialog";
-import { Input } from "../components/ui/input";
-import { Label } from "../components/ui/label";
 import { useToast } from "../hooks/use-toast";
 import WorkshopDetailDialog from "../components/WorkshopDetailDialogue";
+import LectureDetailDialog from "../components/LectureDetailDialogue";
 import ConsultationDetailDialog from "../components/ConsultationDetailDialogue";
 
 /* ------------------ DATA ------------------ */
-
-const workshops = [
+const lectures = [
   {
     id: 1,
     category: "Agri-Proteomics & Crop Molecular Innovation",
@@ -63,6 +48,27 @@ const workshops = [
     thumbnail:
       "/Fundamentals of Plant Proteomics.png",
   },
+];
+
+const workshops = [
+  // {
+  //   id: 1,
+  //   category: "Agri-Proteomics & Crop Molecular Innovation",
+  //   title: "Fundamentals of Plant Proteomics",
+  //   duration: "3–4 Hours",
+  //   mode: "Online / Offline",
+  //   idealFor: "Agriculture & Biotechnology students",
+  //   priceNote: "Early bird and group discounts available",
+  //   content: [
+  //     "Fundamentals of plant proteomics",
+  //     "Introduction to LC–MS/MS workflows",
+  //     "Plant stress proteomics concepts",
+  //     "Crop resilience & yield improvement research",
+  //     "Career pathways in Agri-Proteomics",
+  //   ],
+  //   thumbnail:
+  //     "/Fundamentals of Plant Proteomics.png",
+  // },
   {
     id: 2,
     category: "Agri-Proteomics & Crop Molecular Innovation",
@@ -222,6 +228,7 @@ const consultationServices = [
 
 export default function ServicesPage() {
   const [selectedWorkshop, setSelectedWorkshop] = useState<any>(null);
+  const [selectedLecture, setSelectedLecture] = useState<any>(null);
   const [selectedService, setSelectedService] = useState<any>(null);
   const [selectedConsultation, setSelectedConsultation] = useState<any>(null);
   const [showEnrollModal, setShowEnrollModal] = useState(false);
@@ -357,7 +364,11 @@ export default function ServicesPage() {
               setActiveTab(val);
               window.location.hash = val;
             }}>
-            <TabsList className="grid w-full max-w-lg mx-auto grid-cols-1 md:grid-cols-2 h-auto">
+            <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-1 md:grid-cols-3 h-auto">
+              <TabsTrigger value="lectures">
+                <BookOpenText className="w-4 h-4 mr-2" />
+                Lectures provided
+              </TabsTrigger>
               <TabsTrigger value="workshops">
                 <Users className="w-4 h-4 mr-2" />
                 Workshops & Programs
@@ -368,6 +379,64 @@ export default function ServicesPage() {
               </TabsTrigger>
             </TabsList>
 
+            {/* LECTURES */}
+            <TabsContent value="lectures" className="mt-10 text-center">
+              <h3 className="font-display text-3xl md:text-4xl font-bold text-gradient mb-10">
+                One-on-One & Group Lectures
+              </h3>
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {lectures.map((l) => (
+                  <Card
+                    key={l.id}
+                    className="overflow-hidden transition-all duration-300 cursor-pointer hover:shadow-lg hover:-translate-y-1 flex flex-col"
+                    onClick={() => setSelectedLecture(l)}
+                  >
+                    <div className="relative h-48 w-full overflow-hidden bg-muted">
+                      <Image
+                        src={l.thumbnail}
+                        alt={l.title}
+                        fill
+                        className="object-cover transition-transform duration-300 hover:scale-105 rounded-t-lg"
+                      />
+                      <div className="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded flex items-center gap-1">
+                        <Clock className="w-3 h-3" />
+                        {l.duration}
+                      </div>
+                    </div>
+
+                    <CardContent className="pt-4 flex flex-col flex-1">
+                      <div className="flex-1 space-y-3">
+                        <Badge variant="outline">{l.category}</Badge>
+                        <h3 className="font-semibold text-lg">{l.title}</h3>
+
+                        <p className="text-sm text-muted-foreground">
+                          <strong>Mode:</strong> {l.mode}
+                        </p>
+
+                        <ul className="space-y-2 text-sm text-muted-foreground">
+                          {l.content.slice(0, 3).map((c, i) => (
+                            <li key={i} className="flex items-start gap-2">
+                              <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 shrink-0" />
+                              <span>{c}</span>
+                            </li>
+                          ))}
+                          <li className="italic text-xs text-muted-foreground">+ more</li>
+                        </ul>
+
+                        <p className="text-xs italic text-muted-foreground">
+                          {l.priceNote}
+                        </p>
+                      </div>
+
+                      <Button variant="secondary" className="w-full mt-4">
+                        View Details
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
+            
             {/* WORKSHOPS */}
             <TabsContent value="workshops" className="mt-10 text-center">
               <h3 className="font-display text-3xl md:text-4xl font-bold text-gradient mb-10">
@@ -377,7 +446,7 @@ export default function ServicesPage() {
                 {workshops.map((w) => (
                   <Card
                     key={w.id}
-                    className="cursor-pointer hover:shadow-xl transition flex flex-col"
+                    className="overflow-hidden transition-all duration-300 cursor-pointer hover:shadow-lg hover:-translate-y-1 flex flex-col"
                     onClick={() => setSelectedWorkshop(w)}
                   >
                     <div className="relative h-48">
@@ -385,7 +454,7 @@ export default function ServicesPage() {
                         src={w.thumbnail}
                         alt={w.title}
                         fill
-                        className="object-cover rounded-t-lg"
+                        className="object-cover transition-transform duration-300 hover:scale-105 rounded-t-lg"
                       />
                       <div className="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded flex items-center gap-1">
                         <Clock className="w-3 h-3" />
@@ -647,6 +716,14 @@ export default function ServicesPage() {
       </Dialog> */}
 
       {/* DETAIL DIALOG */}
+      <LectureDetailDialog  
+        video={selectedLecture}
+        open={!!selectedLecture}
+        onOpenChange={(open) => !open && setSelectedLecture(null)}
+        isEnrolled={false}
+        onEnrollmentComplete={() => {}}
+      />
+      
       <WorkshopDetailDialog
         video={selectedWorkshop}
         open={!!selectedWorkshop}

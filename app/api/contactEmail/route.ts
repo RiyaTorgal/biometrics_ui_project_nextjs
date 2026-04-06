@@ -91,7 +91,7 @@ export async function POST(req: NextRequest) {
     const resend = new Resend(process.env.RESEND_API_KEY);
 
     const { error } = await resend.emails.send({
-      from:    process.env.EMAIL_FROM!,
+      from:    process.env.OWNER_EMAIL_FROM!,
       to:      process.env.EMAIL_TO!,
       replyTo: email,
       subject: `[Contact Form] ${subject}`,
