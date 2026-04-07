@@ -25,7 +25,7 @@ import {
 } from "../components/ui/tabs";
 import { useToast } from "../hooks/use-toast";
 import WorkshopDetailDialog from "../components/WorkshopDetailDialogue";
-// import LectureDetailDialog from "../components/LectureDetailDialogue";
+import LectureDetailDialog from "../components/LectureDetailDialogue";
 import ConsultationDetailDialog from "../components/ConsultationDetailDialogue";
 
 /* ------------------ DATA ------------------ */
@@ -716,13 +716,13 @@ export default function ServicesPage() {
       </Dialog> */}
 
       {/* DETAIL DIALOG */}
-      {/* <LectureDetailDialog  
+      <LectureDetailDialog  
         video={selectedLecture}
         open={!!selectedLecture}
         onOpenChange={(open) => !open && setSelectedLecture(null)}
         isEnrolled={false}
         onEnrollmentComplete={() => {}}
-      /> */}
+      />
       
       <WorkshopDetailDialog
         video={selectedWorkshop}
