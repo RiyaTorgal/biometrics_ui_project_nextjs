@@ -49,7 +49,8 @@ export function AboutSection() {
       </div>
       
       <div className="container mx-auto px-4 relative z-10">
-        <div className="grid lg:grid-cols-2 items-center">
+        {/* <div className="grid lg:grid-cols-2 items-center"> */}
+          <div className="grid lg:grid-cols-1 items-center">
           {/* Left Content */}
           <div>
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary mb-6">
@@ -63,37 +64,43 @@ export function AboutSection() {
               <span className="text-gradient block">Sukshmadarshini™</span>
             </h2>
             <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-              <span className="text-gradient font-bold">Sukshmadarshini™ </span>
-                is a science driven platform redefining modern agriculture by equipping students and farmers with globally competitive research and analytical capabilities.
+              <span className="text-gradient font-bold">Bridging Science, Agriculture, and Global Innovation</span> <br />
+<span className="text-gradient font-bold">Sukshmadarshini™ </span> is a science-driven platform dedicated to redefining modern agriculture and life sciences by equipping students, researchers, and farmers with globally competitive research and analytical capabilities. We don’t just teach theory; our growing team is committed to cultivating the next generation of scientific leaders who can transform knowledge into measurable, real-world opportunities.
+              {/* <span className="text-gradient font-bold">Sukshmadarshini™ </span>
+                is a science driven platform redefining modern agriculture by equipping students and farmers with globally competitive research and analytical capabilities. */}
             </p>
-            <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+            {/* <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+              <span className="text-gradient font-bold">Our Expertise & Focus</span><br />
+              Through our application based programs, we strengthen technical precision, analytical thinking, and research confidence in emerging professionals. <span className="text-gradient font-bold">Sukshmadarshini™ </span> specializes in crop consultation, advanced proteomics workflow consulting, and biotechnology skill development. 
               Founded by <span className="text-gradient font-bold">Dr. Priyadarshini Tilak</span> , the platform bridges advanced agricultural science with real-world application and international academic pathways transforming scientific knowledge into measurable opportunities.
-            </p>
-            <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+            </p> */}
+            {/* <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
               We don’t just teach theory. We cultivate scientific leaders.
-            </p>
+            </p> */}
             <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-              Through application focused programs, we strengthen technical precision, analytical thinking, and research confidence in emerging agricultural and life science professionals.
+              <span className="text-gradient font-bold">Global Leadership & Collaborative Network</span><br />
+              At our core, we cultivate collaborative bridges between Indian and European academic ecosystems. By supporting knowledge exchange, research alignment, and cross-border opportunities, we enable our clients to navigate international academic pathways. Through analytical precision, structured training, and guided mentorship from industry veterans, we empower students and researchers to build robust, research-oriented careers on a global stage.
+              {/* Through application focused programs, we strengthen technical precision, analytical thinking, and research confidence in emerging agricultural and life science professionals. */}
             </p>
           </div>
 
           {/* Right Visual */}
-          <div className="relative">
+          {/* <div className="relative">
             <div className="relative aspect-video max-w-md mx-auto">
               <div className="absolute inset-0 flex items-center justify-center">
                 <AnimatedLogo />
               </div>
               
               
-              {/* Floating elements */}
-              {/* <div className="absolute -top-4 -right-4 w-24 h-24 rounded-2xl glass-card shadow-soft flex items-center justify-center animate-float">
+              Floating elements
+              <div className="absolute -top-4 -right-4 w-24 h-24 rounded-2xl glass-card shadow-soft flex items-center justify-center animate-float">
                 <span className="font-display font-bold text-2xl text-primary">DNA</span>
-              </div> */}
+              </div>
               <div className="absolute -bottom-4 -left-4 w-32 h-20 rounded-2xl glass-card shadow-soft flex items-center justify-center animate-float" style={{ animationDelay: '-2s' }}>
                 <span className="font-display font-bold text-lg text-accent">Genomics</span>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </section>

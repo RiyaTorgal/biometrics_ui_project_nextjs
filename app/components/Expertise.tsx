@@ -43,18 +43,18 @@ export function Expertise() {
       {/* <div className="absolute inset-0 dna-pattern opacity-50" /> */}
       
       <div className="container mx-auto px-4 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="grid lg:grid-cols-[auto_1fr] gap-16 items-center">
           {/* Left - Image */}
           <div className="relative">
-            <div className="relative max-w-2xl mx-auto">
+            <div className="max-w-[900px] mx-auto rounded-3xl shadow-xl">
               {/* Main image container */}
-              <div className="relative w-full h-full rounded-3xl overflow-hidden shadow-2xl">
+              <div className="relative w-full h-full rounded-3xl shadow-xl">
                 <Image 
-                  src="/trainingSessions.png" 
+                  src="/Dr. Priyadarshini Tilak.jpeg" 
                   alt="Dr. Priyadarshini Tilak - Founder & CEO"
-                  width={900}
-                  height={1200}
-                  className="w-auto h-auto"
+                  width={650}
+                  height={950}
+                  className="w-full h-full object-cover rounded-3xl shadow-2xl"
                   priority
                 />
                 {/* Gradient overlay
@@ -63,12 +63,12 @@ export function Expertise() {
               </div>
               
               {/* Floating elements */}
-              <div className="absolute -top-4 -right-4 w-28 h-20 rounded-2xl glass-card shadow-soft flex items-center justify-center animate-float bg-white/90 backdrop-blur-sm">
+              {/* <div className="absolute -top-4 -right-4 w-28 h-20 rounded-2xl glass-card shadow-soft flex items-center justify-center animate-float bg-white/90 backdrop-blur-sm">
                 <span className="font-display font-bold text-lg text-primary">Trainings</span>
-              </div>
-              <div className="absolute -bottom-4 -left-4 w-32 h-20 rounded-2xl glass-card shadow-soft flex items-center justify-center animate-float bg-white/90 backdrop-blur-sm" style={{ animationDelay: '-2s' }}>
+              </div> */}
+              {/* <div className="absolute -bottom-4 -left-4 w-32 h-20 rounded-2xl glass-card shadow-soft flex items-center justify-center animate-float bg-white/90 backdrop-blur-sm" style={{ animationDelay: '-2s' }}>
                 <span className="font-display font-bold text-lg text-accent">Proteomics</span>
-              </div>
+              </div> */}
             </div>
           </div>
 
@@ -76,18 +76,20 @@ export function Expertise() {
           <div className="order-1 lg:order-2">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary mb-6">
               <Award className="w-4 h-4" />
-              <span className="text-sm font-semibold">What we do</span>
+              <span className="text-sm font-semibold">Who Leads Us</span>
             </div>
             
             <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6">
-              <span className="text-gradient block">Our Expertise</span>
+              <span className="text-gradient block">Our Leadership</span>
             </h2>
             
             <p className="text-lg text-muted-foreground mb-4 leading-relaxed">
-              <span className="text-gradient font-bold">Sukshmadarshini™ </span>specializes in Agri-Proteomics, advanced proteomics workflow consulting, and biotechnology skill development. Our expertise spans plant proteomics, molecular biology, LC–MS/MS workflows (DDA & DIA), and genomics ensuring scientifically rigorous and globally aligned outcomes.
+              <span className="text-gradient font-bold">Dr. rer.nat. Priyadarshini Tilak </span>| <span className="text-gradient italic">Founder & Lead Scientific Consultant</span> <br />
+An Indo-German life sciences professional  with over a decade of international experience, Dr. Tilak holds a PhD in Plant Proteomics from Germany and an MTech from India. She combines deep technical expertise in proteomics and LC-MS workflows with a strong background in cross-border collaborations, strategic partnerships, and regulatory compliance (EU-MDR, GCP).
+              {/* <span className="text-gradient font-bold">Sukshmadarshini™ </span>specializes in Agri-Proteomics, advanced proteomics workflow consulting, and biotechnology skill development. Our expertise spans plant proteomics, molecular biology, LC–MS/MS workflows (DDA & DIA), and genomics ensuring scientifically rigorous and globally aligned outcomes. */}
             </p>
             <p className="text-lg text-muted-foreground mb-4 leading-relaxed">
-              We cultivate collaborative bridges between Indian and European academic ecosystems, supporting knowledge exchange, research alignment, and cross-border opportunities. Through analytical precision, structured training, and guided mentorship, we enable students and researchers to build strong, research-oriented careers.
+              Her vision guides the Sukshmadarshini™ team in bridging academia and industry, ultimately connecting Indian scientific talent with European opportunities through scientifically rigorous, market-oriented initiatives.
             </p>            
           </div>
         </div>
