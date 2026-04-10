@@ -872,7 +872,7 @@ const workshops = [
       "Research presentation & evaluation (Optional)",
     ],
     thumbnail:
-      "/Advanced Course in Plant Proteomics.png",
+      "/Advanced Certification in Plant Proteomics.jpeg",
   },
   {
     id: 4,
@@ -891,7 +891,7 @@ const workshops = [
       "Research profile building & career positioning",
     ],
     thumbnail:
-      "/Biotechnology Career Advancement Program.png",
+      "/Biotechnology Industry Skill Development Program.jpeg",
   },
 ];
 
