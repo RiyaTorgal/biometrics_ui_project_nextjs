@@ -1,13 +1,16 @@
 // "use client"
 // import { Linkedin, Mail, Twitter, Instagram, Locate, MapPin } from "lucide-react";
 // import Image from "next/image";
+// import Link from "next/link";
+// import { useRouter } from "next/navigation";
 
 // const footerLinks = {
 //   services: [
-//     { label: "Workshop", href: "/learning#workshops" },
+//     { label: "Workshop", href: "/services#workshops" },
 //     // { label: "Transcriptomics", href: "#" },
-//     { label: "Consultations", href: "/learning#consulting" },
+//     { label: "Consultations", href: "/services#consulting" },
 //     // { label: "Metabolomics", href: "#" },
+//     { label: "Lectures", href: "/services#lectures" },
 //   ],
 //   company: [
 //     // { label: "Our Team", href: "/#" },
@@ -28,6 +31,34 @@
 // ];
 
 // export function Footer() {
+//   const router = useRouter();
+
+//   // For hash links on the same page (/learning#workshops, /learning#consulting),
+//   // we push the route then manually dispatch hashchange so the Tabs component reacts.
+//   // const handleHashLink = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+//   //   const [path, hash] = href.split("#");
+//   //   if (hash && typeof window !== "undefined" && window.location.pathname === path) {
+//   //     e.preventDefault();
+//   //     window.location.hash = hash;
+//   //     window.dispatchEvent(new HashChangeEvent("hashchange"));
+//   //   }
+//   // };
+
+//   const handleHashLink = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+//     const hash = href.startsWith("/#") ? href.slice(1) : href.startsWith("#") ? href : null;
+//     if (!hash) return;
+//     if (window.location.pathname !== "/") return;
+
+//     e.preventDefault();
+//     const target = document.querySelector(hash);
+//     if (!target) return;
+
+//     const navbarHeight = 80; // matches your h-20 (80px)
+//     const offsetPosition = target.getBoundingClientRect().top + window.scrollY - navbarHeight;
+//     window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+//     // Otherwise let Next.js Link handle the navigation normally
+//   };
+
 //   return (
     
 //     <>
@@ -87,12 +118,13 @@
 //             <ul className="space-y-3">
 //               {footerLinks.services.map((link) => (
 //                 <li key={link.label}>
-//                   <a
+//                   <Link
 //                     href={link.href}
+//                     onClick={(e) => handleHashLink(e, link.href)}
 //                     className="text-foreground/60 hover:text-foreground transition-colors text-sm"
 //                   >
 //                     {link.label}
-//                   </a>
+//                   </Link>
 //                 </li>
 //               ))}
 //             </ul>
@@ -104,12 +136,13 @@
 //             <ul className="space-y-3">
 //               {footerLinks.company.map((link) => (
 //                 <li key={link.label}>
-//                   <a
+//                   <Link
 //                     href={link.href}
+//                     onClick={(e) => handleHashLink(e, link.href)}
 //                     className="text-foreground/60 hover:text-foreground transition-colors text-sm"
 //                   >
 //                     {link.label}
-//                   </a>
+//                   </Link>
 //                 </li>
 //               ))}
 //             </ul>
@@ -121,12 +154,12 @@
 //             <ul className="space-y-3">
 //               {footerLinks.legal.map((link) => (
 //                 <li key={link.label}>
-//                   <a
+//                   <Link
 //                     href={link.href}
 //                     className="text-foreground/60 hover:text-foreground transition-colors text-sm"
 //                   >
 //                     {link.label}
-//                   </a>
+//                   </Link>
 //                 </li>
 //               ))}
 //             </ul>
@@ -151,23 +184,18 @@
 // }
 
 "use client"
-import { Linkedin, Mail, Twitter, Instagram, Locate, MapPin } from "lucide-react";
+import { Linkedin, Mail, Instagram, MapPin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 const footerLinks = {
   services: [
     { label: "Workshop", href: "/services#workshops" },
-    // { label: "Transcriptomics", href: "#" },
     { label: "Consultations", href: "/services#consulting" },
-    // { label: "Metabolomics", href: "#" },
     { label: "Lectures", href: "/services#lectures" },
   ],
   company: [
-    // { label: "Our Team", href: "/#" },
     { label: "Careers", href: "/careers" },
-    // { label: "Blog", href: "#" },
     { label: "Contact", href: "/#contact" },
   ],
   legal: [
@@ -183,19 +211,6 @@ const socialLinks = [
 ];
 
 export function Footer() {
-  const router = useRouter();
-
-  // For hash links on the same page (/learning#workshops, /learning#consulting),
-  // we push the route then manually dispatch hashchange so the Tabs component reacts.
-  // const handleHashLink = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-  //   const [path, hash] = href.split("#");
-  //   if (hash && typeof window !== "undefined" && window.location.pathname === path) {
-  //     e.preventDefault();
-  //     window.location.hash = hash;
-  //     window.dispatchEvent(new HashChangeEvent("hashchange"));
-  //   }
-  // };
-
   const handleHashLink = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     const hash = href.startsWith("/#") ? href.slice(1) : href.startsWith("#") ? href : null;
     if (!hash) return;
@@ -205,132 +220,120 @@ export function Footer() {
     const target = document.querySelector(hash);
     if (!target) return;
 
-    const navbarHeight = 80; // matches your h-20 (80px)
+    const navbarHeight = 80;
     const offsetPosition = target.getBoundingClientRect().top + window.scrollY - navbarHeight;
     window.scrollTo({ top: offsetPosition, behavior: "smooth" });
-    // Otherwise let Next.js Link handle the navigation normally
   };
 
   return (
-    
     <>
-    <footer className="gradient-footer pt-10 pb-10 text-foreground">
-      <div className="container mx-auto px-4">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
-          {/* Brand */}
-          <div>
-            <div className="flex items-center gap-2 mb-4">
-              {/* <div className="w-16 h-14 p-1 rounded-full bg-white flex items-center justify-center"> */}
-                {/* <span className="text-primary-foreground font-display font-bold text-lg">SD</span> */}
-                <Image 
-                  src="/official logo.svg" 
-                  alt="EyeIcon Navbar Logo" 
-                  width={56}   // w-Tailwind = 14 * 4px = 56px
-                  height={40}  // h-Tailwind = 10 * 4px = 40px
+      <footer className="gradient-footer pt-10 pb-10 text-foreground">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+
+            {/* Brand */}
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <Image
+                  src="/official logo.svg"
+                  alt="EyeIcon Navbar Logo"
+                  width={56}
+                  height={40}
                   className="object-contain"
                 />
-              {/* </div> */}
-              {/* <Image 
-                src="/Screenshot_2026-01-27_201728-removebg-preview.png" 
-                alt="EyeIcon Navbar Logo" 
-                width={56}   // w-Tailwind = 14 * 4px = 56px
-                height={40}  // h-Tailwind = 10 * 4px = 40px
-                className="object-contain"
-              /> */}
-              <span className="font-display font-bold text-xl">
-                Sukshmadarshini<span className="text-secondary"></span>™
-              </span>
+                <span className="font-display font-bold text-xl">
+                  Sukshmadarshini<span className="text-secondary"></span>™
+                </span>
+              </div>
+              <p className="text-foreground/60 text-sm leading-relaxed mb-6">
+                An emerging Agri-Proteomics venture empowering sustainable agriculture, translational biotech skills.
+              </p>
+              <div className="mb-4">
+                <MapPin className="w-5 h-5 inline-block mr-2 text-primary" />
+                <span className="text-foreground/75 text-sm">
+                  Pune, Maharashtra, India
+                </span>
+              </div>
+              <div className="flex gap-3">
+                {socialLinks.map((social) => (
+                  <a
+                    key={social.label}
+                    href={social.href}
+                    className="w-10 h-10 rounded-lg bg-background/10 hover:bg-background/20 flex items-center justify-center transition-colors"
+                    aria-label={social.label}
+                  >
+                    <social.icon className="w-5 h-5" />
+                  </a>
+                ))}
+              </div>
             </div>
-            <p className="text-foreground/60 text-sm leading-relaxed mb-6">
-              An emerging Agri-Proteomics venture empowering sustainable agriculture, translational biotech skills.
-            </p>
-            <div className="mb-4">
-              <MapPin className="w-5 h-5 inline-block mr-2 text-primary" />
-              <span className="text-foreground/75 text-sm">
-                Pune, Maharashtra, India
-              </span>
+
+            {/* Services — plain <a> tags force a full page reload so the hash is read fresh */}
+            <div>
+              <h4 className="font-display font-semibold text-lg mb-4">Services</h4>
+              <ul className="space-y-3">
+                {footerLinks.services.map((link) => (
+                  <li key={link.label}>
+                    <a
+                      href={link.href}
+                      className="text-foreground/60 hover:text-foreground transition-colors text-sm"
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
             </div>
-            <div className="flex gap-3">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  className="w-10 h-10 rounded-lg bg-background/10 hover:bg-background/20 flex items-center justify-center transition-colors"
-                  aria-label={social.label}
-                >
-                  <social.icon className="w-5 h-5" />
-                </a>
-              ))}
+
+            {/* Company */}
+            <div>
+              <h4 className="font-display font-semibold text-lg mb-4">Company</h4>
+              <ul className="space-y-3">
+                {footerLinks.company.map((link) => (
+                  <li key={link.label}>
+                    <Link
+                      href={link.href}
+                      onClick={(e) => handleHashLink(e, link.href)}
+                      className="text-foreground/60 hover:text-foreground transition-colors text-sm"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Legal */}
+            <div>
+              <h4 className="font-display font-semibold text-lg mb-4">Legal</h4>
+              <ul className="space-y-3">
+                {footerLinks.legal.map((link) => (
+                  <li key={link.label}>
+                    <Link
+                      href={link.href}
+                      className="text-foreground/60 hover:text-foreground transition-colors text-sm"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
 
-          {/* Services */}
-          <div>
-            <h4 className="font-display font-semibold text-lg mb-4">Services</h4>
-            <ul className="space-y-3">
-              {footerLinks.services.map((link) => (
-                <li key={link.label}>
-                  <Link
-                    href={link.href}
-                    onClick={(e) => handleHashLink(e, link.href)}
-                    className="text-foreground/60 hover:text-foreground transition-colors text-sm"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Company */}
-          <div>
-            <h4 className="font-display font-semibold text-lg mb-4">Company</h4>
-            <ul className="space-y-3">
-              {footerLinks.company.map((link) => (
-                <li key={link.label}>
-                  <Link
-                    href={link.href}
-                    onClick={(e) => handleHashLink(e, link.href)}
-                    className="text-foreground/60 hover:text-foreground transition-colors text-sm"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Legal */}
-          <div>
-            <h4 className="font-display font-semibold text-lg mb-4">Legal</h4>
-            <ul className="space-y-3">
-              {footerLinks.legal.map((link) => (
-                <li key={link.label}>
-                  <Link
-                    href={link.href}
-                    className="text-foreground/60 hover:text-foreground transition-colors text-sm"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+          {/* Bottom */}
+          <div className="pt-8 border-t border-background/10">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+              <p className="text-foreground/50 text-sm">
+                © {new Date().getFullYear()} Sukshmadarshini™. All rights reserved.
+              </p>
+              <p className="text-foreground/50 text-sm">
+                Registered with MSME under Startup India Initiative
+              </p>
+            </div>
           </div>
         </div>
-
-        {/* Bottom */}
-        <div className="pt-8 border-t border-background/10">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-foreground/50 text-sm">
-              © {new Date().getFullYear()} Sukshmadarshini™. All rights reserved.
-            </p>
-            <p className="text-foreground/50 text-sm">
-              Registered with MSME under Startup India Initiative
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
+      </footer>
     </>
   );
 }
