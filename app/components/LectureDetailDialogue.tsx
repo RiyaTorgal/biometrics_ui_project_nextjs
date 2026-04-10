@@ -147,6 +147,27 @@ const workshopDetails: Record<
       "Participation certificate",
     ],
   },
+  2: {
+    description:
+      "A hands-on 1-day field implementation masterclass focused on precision organic farming techniques. Learn how to move beyond fixed schedules using leaf-sap analysis and Brix monitoring, and apply biological yield engineering to improve crop quality, resilience, and consistency.",
+    instructor: "Dr. Priyadarshini Tilak", // change if different
+    students: 150, // optional estimate or update later
+    date: "Scheduled Batch (Offline Field Training)",
+    rating: 4.9, // you can adjust later
+    originalPrice: "₹5,000",
+    discountPrice: "₹3,500",
+    discountPercent: 30,
+    includes: [
+      "Precision nutrient timing using leaf-sap analysis",
+      "Brix monitoring to identify hidden deficiencies",
+      "Biological yield engineering concepts",
+      "Standardization of farm-made inputs",
+      "Measuring and boosting microbial density",
+      "Improving crop quality, appearance & consistency",
+      "Focused training for fruits, medicinal plants & high-value vegetables",
+      "Participation certificate",
+    ],
+  },
 };
 
 /* -------------------- Helpers -------------------- */
