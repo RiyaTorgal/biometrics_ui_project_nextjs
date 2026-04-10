@@ -162,6 +162,7 @@ const footerLinks = {
     // { label: "Transcriptomics", href: "#" },
     { label: "Consultations", href: "/services#consulting" },
     // { label: "Metabolomics", href: "#" },
+    { label: "Lectures", href: "/services#lectures" },
   ],
   company: [
     // { label: "Our Team", href: "/#" },
@@ -196,18 +197,17 @@ export function Footer() {
   // };
 
   const handleHashLink = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    const [path, hash] = href.split("#");
+    const hash = href.startsWith("/#") ? href.slice(1) : href.startsWith("#") ? href : null;
     if (!hash) return;
+    if (window.location.pathname !== "/") return;
 
-    // Normalize: "/#contact" splits to path="" — treat that as "/"
-    const normalizedPath = path === "" ? "/" : path;
+    e.preventDefault();
+    const target = document.querySelector(hash);
+    if (!target) return;
 
-    if (typeof window !== "undefined" && window.location.pathname === normalizedPath) {
-      e.preventDefault();
-      const target = document.querySelector(`#${hash}`);
-      if (!target) return;
-      target.scrollIntoView({ behavior: "smooth" });
-    }
+    const navbarHeight = 80; // matches your h-20 (80px)
+    const offsetPosition = target.getBoundingClientRect().top + window.scrollY - navbarHeight;
+    window.scrollTo({ top: offsetPosition, behavior: "smooth" });
     // Otherwise let Next.js Link handle the navigation normally
   };
 
