@@ -41,7 +41,7 @@ export function HeroSection() {
         {/* Background image */}
         <div className=" absolute inset-0 w-full h-full">
           <Image 
-            src="/agri-proteomics2.png" 
+            src="/Lab scientist working with samples.png" 
             alt="Scientist analyzing data" 
             fill
             className="object-cover object-right"
@@ -107,9 +107,12 @@ export function HeroSection() {
 
         {/* Tagline */}
         <div className="text-center mt-16 animate-fade-up" style={{ animationDelay: '0.3s' }}>
-          <p className="text-xl md:text-2xl text-foreground">
+          {/* <p className="text-xl md:text-2xl text-foreground">
             Advance your <span className="font-semibold text-primary">biologics pipeline</span> with{" "}
             <span className="font-semibold">hands-on training</span> and applied consultation.
+          </p> */}
+          <p className="text-xl md:text-2xl italic text-foreground">
+            We don’t just <span className="font-semibold text-primary">teach theory</span>.{" "} We cultivate <span className="font-semibold">scientific leaders</span>.
           </p>
         </div>
       </div>

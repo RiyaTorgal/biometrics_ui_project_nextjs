@@ -60,8 +60,8 @@ export function AboutSection() {
             </div>
             
             <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6">
-              About 
-              <span className="text-gradient block">Sukshmadarshini™</span>
+              About
+              <span className="text-gradient"> Sukshmadarshini™</span>
             </h2>
             <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
               <span className="text-gradient font-bold">Bridging Science, Agriculture, and Global Innovation</span> <br />

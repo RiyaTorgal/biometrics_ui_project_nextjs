@@ -46,14 +46,14 @@ export function Expertise() {
         <div className="grid lg:grid-cols-[auto_1fr] gap-16 items-center">
           {/* Left - Image */}
           <div className="relative">
-            <div className="max-w-[900px] mx-auto rounded-3xl shadow-xl">
+            <div className="max-w-[450px] mx-auto rounded-3xl shadow-xl">
               {/* Main image container */}
               <div className="relative w-full h-full rounded-3xl shadow-xl">
                 <Image 
                   src="/Dr. Priyadarshini Tilak.jpeg" 
                   alt="Dr. Priyadarshini Tilak - Founder & CEO"
-                  width={650}
-                  height={950}
+                  width={550}
+                  height={850}
                   className="w-full h-full object-cover rounded-3xl shadow-2xl"
                   priority
                 />
@@ -85,7 +85,7 @@ export function Expertise() {
             
             <p className="text-lg text-muted-foreground mb-4 leading-relaxed">
               <span className="text-gradient font-bold">Dr. rer.nat. Priyadarshini Tilak </span>| <span className="text-gradient italic">Founder & Lead Scientific Consultant</span> <br />
-An Indo-German life sciences professional  with over a decade of international experience, Dr. Tilak holds a PhD in Plant Proteomics from Germany and an MTech from India. She combines deep technical expertise in proteomics and LC-MS workflows with a strong background in cross-border collaborations, strategic partnerships, and regulatory compliance (EU-MDR, GCP).
+              An Indo-German life sciences professional  with 12+ years of international experience, Dr. Tilak holds a PhD in Plant Proteomics and stress signalling from Germany and an MTech from India. She combines deep technical expertise in proteomics and LC-MS workflows with a strong background in cross-border collaborations, strategic partnerships, and regulatory compliance (EU-MDR, GCP).
               {/* <span className="text-gradient font-bold">Sukshmadarshini™ </span>specializes in Agri-Proteomics, advanced proteomics workflow consulting, and biotechnology skill development. Our expertise spans plant proteomics, molecular biology, LC–MS/MS workflows (DDA & DIA), and genomics ensuring scientifically rigorous and globally aligned outcomes. */}
             </p>
             <p className="text-lg text-muted-foreground mb-4 leading-relaxed">

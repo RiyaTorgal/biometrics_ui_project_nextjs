@@ -19,14 +19,14 @@ export function TrainingsSection() {
 
       <div className="container mx-auto px-4">
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="relative inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary mb-6">
             <Users className="w-4 h-4" />
             <span className="text-sm font-semibold">Workshops</span>
           </div>
           <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6">
             Upcoming Hands-on
-            <span className="text-gradient block"> Workshops</span>
+            <span className="text-gradient"> Workshops</span>
           </h2>
           <p className="text-lg text-muted-foreground">
             Industry-ready Workshop programs designed by scientists with deep domain expertise 
