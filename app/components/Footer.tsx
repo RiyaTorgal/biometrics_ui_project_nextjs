@@ -190,9 +190,9 @@ import Link from "next/link";
 
 const footerLinks = {
   services: [
+    { label: "Lectures", href: "/services#lectures" },
     { label: "Workshop", href: "/services#workshops" },
     { label: "Consultations", href: "/services#consulting" },
-    { label: "Lectures", href: "/services#lectures" },
   ],
   company: [
     { label: "Careers", href: "/careers" },
@@ -206,7 +206,7 @@ const footerLinks = {
 
 const socialLinks = [
   { icon: Instagram, href: "https://www.instagram.com/suksh_madarshini?igsh=ZW10ZDJuYXU3eWZ3", label: "Instagram" },
-  { icon: Linkedin, href: "https://www.linkedin.com/in/p-tilak/", label: "LinkedIn" },
+  { icon: Linkedin, href: "https://www.linkedin.com/company/sukshmadarshini/", label: "LinkedIn" },
   { icon: Mail, href: "mailto:sukshmadarshini@gmail.com", label: "Email" },
 ];
 
