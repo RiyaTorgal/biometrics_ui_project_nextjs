@@ -36,33 +36,35 @@ export function HeroSection() {
       {/* Hero Content */}
       <div className="relative">
         {/* Gradient overlay background */}
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/90 via-primary/70 to-transparent z-10" />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/90 via-primary/40 to-transparent z-10" />
         
         {/* Background image */}
         <div className=" absolute inset-0 w-full h-full">
           <Image 
-            src="/Lab scientist working with samples.png" 
+            // src="/Gemini_Generated_Image_e2mn6ge2mn6ge2mn.png" 
+            src="/newimg.png" 
             alt="Scientist analyzing data" 
             fill
-            className="object-cover object-right"
+            className="object-cover"
           />
         </div>
 
         {/* Content */}
         <div className="container mx-auto px-4 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-8 min-h-[500px] items-center py-16">
+          <div className="grid lg:grid-cols-[auto_1fr]  min-h-[500px] items-end py-16">
             {/* Left Content */}
             <div className="text-primary-foreground">
-              <h1 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
+              <h1 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
                 {/* Transforming Agriculture Through Proteomics & Empowering Global Science Careers */}
-                Applied Science for Modern Agriculture
+                {/* Applied Science for Modern Agriculture */}
+                Develop Science-Driven Skills for Modern Farming
               </h1>
-              <p className="text-lg md:text-xl text-primary-foreground/90 max-w-xl">
+              {/* <p className="text-lg md:text-xl text-primary-foreground/90 max-w-xl"> */}
                 {/* Specialized Agri-Proteomics training, biotechnology skill development, and strategic academic guidance for students aspiring to excel in Europe’s research ecosystem. */}
-                Agri-Proteomics training and biotechnology skill development designed for research-focused learners and future-ready agricultural innovators.
-              </p>
+                {/* Agri-Proteomics training and biotechnology skill development designed for research-focused learners and future-ready agricultural innovators. */}
+              {/* </p> */}
               <a href="/services" className="flex items-center gap-3">
-              <div className="text-center mt-12">
+              <div className="text-center mt-5">
                 <Button variant="outline" size="lg" className="rounded-md px-8 bg-secondary hover:bg-transparent text-secondary-foreground  border-2 border-secondary hover:border-secondary">
                   Register For Upcoming Workshops
                 </Button>
