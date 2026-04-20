@@ -120,7 +120,7 @@ interface ExpertiseProps {
 
 const getImageUrl = (url?: string) => {
   // if (!url) return "/Dr. Priyadarshini Tilak.jpeg";
-  if (url.startsWith("http")) return url;
+  if (url.startsWith("https")) return url;
   return `${url}`;
 };
 
