@@ -1979,7 +1979,7 @@ export default function WorkshopDetailDialog({
       function handleDone() {
     toast({
       title: "Enquiry sent",
-      description: `Your enquiry for "${workshop.title}" has been submitted. We'll be in touch soon.`,
+      description: `Your enquiry for "${workshop?.title}" has been submitted. We'll be in touch soon.`,
     });
     setShowEnrollModal(false);
     setStep("form");
