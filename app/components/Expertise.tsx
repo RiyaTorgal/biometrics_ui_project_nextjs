@@ -119,11 +119,12 @@ interface ExpertiseProps {
 }
 
 const getImageUrl = (url?: string) => {
-  // if (!url) return "/Dr. Priyadarshini Tilak.jpeg";
-  if (url.startsWith("https")) return url;
-  return `${url}`;
-};
+  if (!url) return undefined;
 
+  if (url.startsWith("http")) return url;
+
+  return url;
+};
 export function Expertise({
   leadershipPhoto,
   leadershipTitle,
@@ -132,6 +133,7 @@ export function Expertise({
   leadershipBio1,
   leadershipBio2,
 }: ExpertiseProps) {
+  const imageUrl = getImageUrl(leadershipPhoto);
   return (
     <section className="py-16 pt-0 pb-20 bg-background relative overflow-hidden">
       <div className="container mx-auto px-4 relative z-10">
@@ -141,14 +143,22 @@ export function Expertise({
           <div className="relative">
             <div className="max-w-[450px] mx-auto rounded-3xl shadow-xl">
               <div className="relative w-full h-full rounded-3xl shadow-xl">
-                <Image
+                {/* <Image
                   src={getImageUrl(leadershipPhoto)}
                   alt={leadershipName || "Leadership"}
                   width={550}
                   height={850}
                   className="w-full h-full object-cover rounded-3xl shadow-2xl"
                   priority
-                />
+                /> */}
+                {imageUrl && (
+                  <Image
+                    src={imageUrl}
+                    alt="Leadership Photo"
+                    width={500}
+                    height={500}
+                  />
+                )}
               </div>
             </div>
           </div>

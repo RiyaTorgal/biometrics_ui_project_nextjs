@@ -153,8 +153,11 @@ const features = [
 ];
 
 const getImageUrl = (url?: string) => {
+  if (!url) return undefined;
+
   if (url.startsWith("http")) return url;
-  return `${url}`;
+
+  return url;
 };
 
 interface HeroSectionProps {
@@ -170,6 +173,8 @@ export function HeroSection({
   heroTagline,
   heroImage
 }: HeroSectionProps) {
+  const imageUrl = getImageUrl(heroImage);
+  
   return (
     <>
     <Navbar />
@@ -178,12 +183,21 @@ export function HeroSection({
         <div className="absolute inset-0 bg-gradient-to-r from-primary/90 via-primary/40 to-transparent z-10" />
         
         <div className="absolute inset-0 w-full h-full">
-          <Image 
+          {/* <Image 
             src={getImageUrl(heroImage)}
             alt="Scientist analyzing data" 
             fill
             className="object-cover"
-          />
+          /> */}
+          
+          {imageUrl && (
+            <Image
+              src={imageUrl}
+              alt="Hero"
+              width={500}
+              height={500}
+            />
+          )}
         </div>
 
         <div className="container mx-auto px-4 relative z-10">
