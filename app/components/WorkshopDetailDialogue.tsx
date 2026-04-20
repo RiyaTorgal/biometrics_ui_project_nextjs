@@ -1999,6 +1999,7 @@ export default function WorkshopDetailDialog({
 
   /* -------------------- UI -------------------- */
 
+  const imageUrl = workshop.thumbnail?.url;
   return (
     <>
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -2006,12 +2007,22 @@ export default function WorkshopDetailDialog({
 
         {/* IMAGE */}
         <div className="relative h-56 w-full">
-          <Image
-            src={workshop.thumbnail}
+          {/* <Image
+            src={imageUrl}
             alt={workshop.title}
             fill
             className="object-cover rounded-t-lg"
-          />
+          /> */}
+          {imageUrl && (
+            <div className="relative h-56 w-full">
+              <Image
+                src={imageUrl}
+                alt={workshop.title}
+                fill
+                className="object-cover rounded-t-lg"
+              />
+            </div>
+          )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-t-lg" />
             <div className="absolute bottom-4 left-4 right-4">
               <h2 className="text-xl font-bold text-white">{workshop.title}</h2>
@@ -2072,7 +2083,7 @@ export default function WorkshopDetailDialog({
                 This workshop includes
               </h3>
               <ul className="space-y-2">
-                {workshop.includes.map((item, i) => (
+                {workshop.includes?.map((item, i) => (
                   <li
                     key={i}
                     className="flex items-start gap-2 text-sm text-muted-foreground"
