@@ -174,7 +174,7 @@ export function HeroSection({
   heroImage
 }: HeroSectionProps) {
   const imageUrl = getImageUrl(heroImage);
-  
+
   return (
     <>
     <Navbar />
@@ -194,8 +194,8 @@ export function HeroSection({
             <Image
               src={imageUrl}
               alt="Hero"
-              width={500}
-              height={500}
+              fill
+              className="object-cover"
             />
           )}
         </div>

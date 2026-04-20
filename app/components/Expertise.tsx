@@ -154,9 +154,11 @@ export function Expertise({
                 {imageUrl && (
                   <Image
                     src={imageUrl}
-                    alt="Leadership Photo"
-                    width={500}
-                    height={500}
+                    alt={leadershipName || "Leadership"}
+                    width={550}
+                    height={850}
+                    className="w-full h-full object-cover rounded-3xl shadow-2xl"
+                    priority
                   />
                 )}
               </div>
