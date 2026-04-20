@@ -10,6 +10,10 @@ import { Expertise } from "./components/Expertise"
 // import {StatsSection} from "./components/StatsSection"
 // import {ResourcesSection} from "./components/ResourcesSection"
 import {ContactSection} from "./components/ContactSection"
+import HeroSectionWrapper from "./components/HeroSectionWrapper"
+import AboutSectionWrapper from "./components/AboutSectionWrapper"
+import ExpertiseWrapper from "./components/ExpertiseWrapper"
+import {PastAchievementsSection} from "./components/PastAchievementsSection"
 // import { EuropeanAdvisory } from "./components/EuropeanAdvisory"
 // import { CoreFocusSection } from "./components/CoreFocus"
 
@@ -18,10 +22,11 @@ export const revalidate = 30;
 export default function HomePage() {
   return (
     <>
-      <HeroSection />
-      <AboutSection />
-      <Expertise />
+      <HeroSectionWrapper />
+      <AboutSectionWrapper />
+      <ExpertiseWrapper />
       <TrainingsSection />
+      <PastAchievementsSection />
       <ContactSection />
       {/* <EventsSection /> */}
       {/* <GallerySection /> */}
