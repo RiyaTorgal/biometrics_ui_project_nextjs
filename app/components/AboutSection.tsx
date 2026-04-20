@@ -1,106 +1,177 @@
-"use client"
-import { CheckCircle2, Sparkles, Landmark, Badge, ChartArea, Dna, Microscope, GraduationCap } from "lucide-react";
-// import { CircleQuestionMark } from "lucide-react";
-import { AnimatedLogo } from "../components/AnimatedLogo";
+// "use client"
+// import { CheckCircle2, Sparkles, Landmark, Badge, ChartArea, Dna, Microscope, GraduationCap } from "lucide-react";
+// // import { CircleQuestionMark } from "lucide-react";
+// import { AnimatedLogo } from "../components/AnimatedLogo";
 
-const highlights = [
-  "Built by active researchers with hands-on industry and academic experience",
-  "Seamlessly bridges wet-lab biology, omics technologies, and data science",
-  "Focus on reproducibility, interpretability, and real-world applicability",
-  "Programs designed for both scientific depth and industry readiness",
-];
+// const highlights = [
+//   "Built by active researchers with hands-on industry and academic experience",
+//   "Seamlessly bridges wet-lab biology, omics technologies, and data science",
+//   "Focus on reproducibility, interpretability, and real-world applicability",
+//   "Programs designed for both scientific depth and industry readiness",
+// ];
 
-const coreServices = [
-  {
-    Icon: ChartArea,
-    heading: "Data-Driven Insights",
-    content: "Advanced computational biology and bioinformatics services to transform your raw data into actionable research insights. We specialize in multi-omics data integration and statistical analysis.",
-    color: "blue"
-  },
-  {
-    Icon: Dna,
-    heading: "Multi-Omics Research",
-    content: "Comprehensive omics analysis including genomics, proteomics, metabolomics, and transcriptomics. Our expertise bridges molecular biology with computational approaches for breakthrough discoveries.",
-    color: "purple"
-  },
-  {
-    Icon: Microscope,
-    heading: "Advanced Analytical Services",
-    content: "State-of-the-art LC-MS/MS (Liquid Chromatography-Mass Spectrometry) capabilities for precise molecular characterization, metabolite identification, and quantitative analysis.",
-    color: "teal"
-  },
-  {
-    Icon: GraduationCap,
-    heading: "Hands-on Workshops",
-    content: "Comprehensive training programs designed for students, researchers, and industry professionals. Learn through interactive sessions, practical demonstrations, and real-world applications.",
-    color: "orange"
-  }
-];
+// const coreServices = [
+//   {
+//     Icon: ChartArea,
+//     heading: "Data-Driven Insights",
+//     content: "Advanced computational biology and bioinformatics services to transform your raw data into actionable research insights. We specialize in multi-omics data integration and statistical analysis.",
+//     color: "blue"
+//   },
+//   {
+//     Icon: Dna,
+//     heading: "Multi-Omics Research",
+//     content: "Comprehensive omics analysis including genomics, proteomics, metabolomics, and transcriptomics. Our expertise bridges molecular biology with computational approaches for breakthrough discoveries.",
+//     color: "purple"
+//   },
+//   {
+//     Icon: Microscope,
+//     heading: "Advanced Analytical Services",
+//     content: "State-of-the-art LC-MS/MS (Liquid Chromatography-Mass Spectrometry) capabilities for precise molecular characterization, metabolite identification, and quantitative analysis.",
+//     color: "teal"
+//   },
+//   {
+//     Icon: GraduationCap,
+//     heading: "Hands-on Workshops",
+//     content: "Comprehensive training programs designed for students, researchers, and industry professionals. Learn through interactive sessions, practical demonstrations, and real-world applications.",
+//     color: "orange"
+//   }
+// ];
 
-export function AboutSection() {
+// export function AboutSection() {
+//   return (
+//     <section id="about" className=" py-10 bg-background relative -top-20">
+
+//       {/* Background pattern */}
+//       <div className="absolute inset-3 opacity-[0.04]">
+//         <div className="absolute inset-0" style={{
+//           backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+//         }} />
+//       </div>
+      
+//       <div className="container mx-auto px-4 relative z-10">
+//         {/* <div className="grid lg:grid-cols-2 items-center"> */}
+//           <div className="grid lg:grid-cols-1 items-center">
+//           {/* Left Content */}
+//           <div>
+//             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary mb-6">
+//               <Badge className="w-4 h-4" />
+//               {/* <CircleQuestionMark className="w-4 h-4" /> */}
+//               <span className="text-sm font-semibold">Who we are</span>
+//             </div>
+            
+//             <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6">
+//               About
+//               <span className="text-gradient"> Sukshmadarshini™</span>
+//             </h2>
+//             <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+//               <span className="text-gradient font-bold">Bridging Science, Agriculture, and Global Innovation</span> <br />
+// <span className="text-gradient font-bold">Sukshmadarshini™ </span> is a science-driven platform dedicated to redefining modern agriculture and life sciences by equipping students, researchers, and farmers with globally competitive research and analytical capabilities. We don’t just teach theory; our growing team is committed to cultivating the next generation of scientific leaders who can transform knowledge into measurable, real-world opportunities.
+//               {/* <span className="text-gradient font-bold">Sukshmadarshini™ </span>
+//                 is a science driven platform redefining modern agriculture by equipping students and farmers with globally competitive research and analytical capabilities. */}
+//             </p>
+//             {/* <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+//               <span className="text-gradient font-bold">Our Expertise & Focus</span><br />
+//               Through our application based programs, we strengthen technical precision, analytical thinking, and research confidence in emerging professionals. <span className="text-gradient font-bold">Sukshmadarshini™ </span> specializes in crop consultation, advanced proteomics workflow consulting, and biotechnology skill development. 
+//               Founded by <span className="text-gradient font-bold">Dr. Priyadarshini Tilak</span> , the platform bridges advanced agricultural science with real-world application and international academic pathways transforming scientific knowledge into measurable opportunities.
+//             </p> */}
+//             {/* <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+//               We don’t just teach theory. We cultivate scientific leaders.
+//             </p> */}
+//             <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+//               <span className="text-gradient font-bold">Global Leadership & Collaborative Network</span><br />
+//               At our core, we cultivate collaborative bridges between Indian and European academic ecosystems. By supporting knowledge exchange, research alignment, and cross-border opportunities, we enable our clients to navigate international academic pathways. Through analytical precision, structured training, and guided mentorship from industry veterans, we empower students and researchers to build robust, research-oriented careers on a global stage.
+//               {/* Through application focused programs, we strengthen technical precision, analytical thinking, and research confidence in emerging agricultural and life science professionals. */}
+//             </p>
+//           </div>
+
+//           {/* Right Visual */}
+//           {/* <div className="relative">
+//             <div className="relative aspect-video max-w-md mx-auto">
+//               <div className="absolute inset-0 flex items-center justify-center">
+//                 <AnimatedLogo />
+//               </div>
+              
+              
+//               Floating elements
+//               <div className="absolute -top-4 -right-4 w-24 h-24 rounded-2xl glass-card shadow-soft flex items-center justify-center animate-float">
+//                 <span className="font-display font-bold text-2xl text-primary">DNA</span>
+//               </div>
+//               <div className="absolute -bottom-4 -left-4 w-32 h-20 rounded-2xl glass-card shadow-soft flex items-center justify-center animate-float" style={{ animationDelay: '-2s' }}>
+//                 <span className="font-display font-bold text-lg text-accent">Genomics</span>
+//               </div>
+//             </div>
+//           </div> */}
+//         </div>
+//       </div>
+//     </section>
+//   );
+// }
+
+"use client";
+
+import { Badge } from "lucide-react";
+
+interface AboutSectionProps {
+  aboutTitle?: string;
+  aboutSubtitle1?: string;
+  aboutBody1?: string;
+  aboutSubtitle2?: string;
+  aboutBody2?: string;
+}
+
+export function AboutSection({
+  aboutTitle,
+  aboutSubtitle1,
+  aboutBody1,
+  aboutSubtitle2,
+  aboutBody2,
+}: AboutSectionProps) {
   return (
-    <section id="about" className=" py-10 bg-background relative -top-20">
-
+    <section id="about" className="py-10 bg-background relative -top-20">
       {/* Background pattern */}
       <div className="absolute inset-3 opacity-[0.04]">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-        }} />
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          }}
+        />
       </div>
-      
+
       <div className="container mx-auto px-4 relative z-10">
-        {/* <div className="grid lg:grid-cols-2 items-center"> */}
-          <div className="grid lg:grid-cols-1 items-center">
-          {/* Left Content */}
+        <div className="grid lg:grid-cols-1 items-center">
+          {/* Content */}
           <div>
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary mb-6">
               <Badge className="w-4 h-4" />
-              {/* <CircleQuestionMark className="w-4 h-4" /> */}
               <span className="text-sm font-semibold">Who we are</span>
             </div>
-            
+
             <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6">
-              About
-              <span className="text-gradient"> Sukshmadarshini™</span>
+              {/* About <span className="text-gradient">Sukshmadarshini™</span> */}
+              <span className="text-gradient block">
+                {aboutTitle}
+              </span>
             </h2>
+
+            {/* First Section */}
             <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-              <span className="text-gradient font-bold">Bridging Science, Agriculture, and Global Innovation</span> <br />
-<span className="text-gradient font-bold">Sukshmadarshini™ </span> is a science-driven platform dedicated to redefining modern agriculture and life sciences by equipping students, researchers, and farmers with globally competitive research and analytical capabilities. We don’t just teach theory; our growing team is committed to cultivating the next generation of scientific leaders who can transform knowledge into measurable, real-world opportunities.
-              {/* <span className="text-gradient font-bold">Sukshmadarshini™ </span>
-                is a science driven platform redefining modern agriculture by equipping students and farmers with globally competitive research and analytical capabilities. */}
+              <span className="text-gradient font-bold">
+                {aboutSubtitle1 }
+              </span>
+              <br />
+              {aboutBody1}
             </p>
-            {/* <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-              <span className="text-gradient font-bold">Our Expertise & Focus</span><br />
-              Through our application based programs, we strengthen technical precision, analytical thinking, and research confidence in emerging professionals. <span className="text-gradient font-bold">Sukshmadarshini™ </span> specializes in crop consultation, advanced proteomics workflow consulting, and biotechnology skill development. 
-              Founded by <span className="text-gradient font-bold">Dr. Priyadarshini Tilak</span> , the platform bridges advanced agricultural science with real-world application and international academic pathways transforming scientific knowledge into measurable opportunities.
-            </p> */}
-            {/* <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-              We don’t just teach theory. We cultivate scientific leaders.
-            </p> */}
+
+            {/* Second Section */}
             <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-              <span className="text-gradient font-bold">Global Leadership & Collaborative Network</span><br />
-              At our core, we cultivate collaborative bridges between Indian and European academic ecosystems. By supporting knowledge exchange, research alignment, and cross-border opportunities, we enable our clients to navigate international academic pathways. Through analytical precision, structured training, and guided mentorship from industry veterans, we empower students and researchers to build robust, research-oriented careers on a global stage.
-              {/* Through application focused programs, we strengthen technical precision, analytical thinking, and research confidence in emerging agricultural and life science professionals. */}
+              <span className="text-gradient font-bold">
+                {aboutSubtitle2 }
+              </span>
+              <br />
+              {aboutBody2 }
             </p>
           </div>
-
-          {/* Right Visual */}
-          {/* <div className="relative">
-            <div className="relative aspect-video max-w-md mx-auto">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <AnimatedLogo />
-              </div>
-              
-              
-              Floating elements
-              <div className="absolute -top-4 -right-4 w-24 h-24 rounded-2xl glass-card shadow-soft flex items-center justify-center animate-float">
-                <span className="font-display font-bold text-2xl text-primary">DNA</span>
-              </div>
-              <div className="absolute -bottom-4 -left-4 w-32 h-20 rounded-2xl glass-card shadow-soft flex items-center justify-center animate-float" style={{ animationDelay: '-2s' }}>
-                <span className="font-display font-bold text-lg text-accent">Genomics</span>
-              </div>
-            </div>
-          </div> */}
         </div>
       </div>
     </section>

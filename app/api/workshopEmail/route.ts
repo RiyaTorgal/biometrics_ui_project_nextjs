@@ -12,7 +12,7 @@ const DISPOSABLE_DOMAINS = new Set([
   "sharklasers.com", "spam4.me", "trashmail.com", "trashmail.me",
   "dispostable.com", "maildrop.cc", "fakeinbox.com", "10minutemail.com",
   "tempr.email", "discard.email", "mytemp.email", "temp-mail.org",
-  "throwaway.email", "getnada.com",
+  "throwaway.email", "getnada.com", "nada.email", "mailnesia.com", "spamgourmet.com",
 ]);
 
 const FAKE_NAME_PATTERNS = [
