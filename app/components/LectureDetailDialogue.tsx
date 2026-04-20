@@ -1064,7 +1064,7 @@ export default function LectureDetailDialog({
                 This workshop includes
               </h3>
               <ul className="space-y-2">
-                {video.includes.map((item, i) => (
+                {video.includes?.map((item, i) => (
                   <li
                     key={i}
                     className="flex items-start gap-2 text-sm text-muted-foreground"
