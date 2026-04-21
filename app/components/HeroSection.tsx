@@ -128,6 +128,13 @@ import { GraduationCap, BookOpen, FlaskConical, Presentation } from "lucide-reac
 import { Button } from "./ui/button";
 import Image from "next/image";
 import { Navbar } from "../components/Navbar";
+import { useMediaQuery } from "usehooks-ts";
+import imageUrlBuilder from "@sanity/image-url";
+import { sanity } from "@/app/lib/sanity"; // adjust path
+
+const builder = imageUrlBuilder(sanity);
+
+const urlFor = (source: any) => builder.image(source);
 
 const features = [
   {
@@ -152,28 +159,47 @@ const features = [
   },
 ];
 
-const getImageUrl = (url?: string) => {
-  if (!url) return undefined;
+// const getImageUrl = (url?: string) => {
+//   if (!url) return undefined;
 
-  if (url.startsWith("http")) return url;
+//   if (url.startsWith("http")) return url;
 
-  return url;
-};
+//   return url;
+// };
+
+
 
 interface HeroSectionProps {
   heroTitle?: string;
   heroCtaLabel?: string;
   heroTagline?: string;
   heroImage?: string;
+  heroImageMobile?: string;
 }
 
 export function HeroSection({ 
   heroTitle ,
   heroCtaLabel ,
   heroTagline,
-  heroImage
+  heroImage,
+  heroImageMobile,
 }: HeroSectionProps) {
-  const imageUrl = getImageUrl(heroImage);
+  // const imageUrl = getImageUrl(heroImage);
+  // const desktopUrl = getImageUrl(heroImage);
+  // const mobileUrl = getImageUrl(heroImageMobile);
+
+  const isMobile = useMediaQuery("(max-width: 768px)");
+
+const desktopUrl = heroImage ? urlFor(heroImage).width(1600).url() : undefined;
+const mobileUrl = heroImageMobile ? urlFor(heroImageMobile).width(600).url() : undefined;
+console.log(heroImage);
+console.log(heroImageMobile);
+
+
+const selectedImage = isMobile
+  ? mobileUrl || desktopUrl
+  : desktopUrl || mobileUrl;
+  
 
   return (
     <>
@@ -183,19 +209,14 @@ export function HeroSection({
         <div className="absolute inset-0 bg-gradient-to-r from-primary/90 via-primary/40 to-transparent z-10" />
         
         <div className="absolute inset-0 w-full h-full">
-          {/* <Image 
-            src={getImageUrl(heroImage)}
-            alt="Scientist analyzing data" 
-            fill
-            className="object-cover"
-          /> */}
-          
-          {imageUrl && (
+          {selectedImage && (
             <Image
-              src={imageUrl}
+              src={selectedImage}
               alt="Hero"
               fill
-              className="object-cover"
+              priority
+              sizes="100vw"
+              className="object-cover md:object-center object-top"
             />
           )}
         </div>

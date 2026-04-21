@@ -10,6 +10,7 @@ export default async function HeroSectionWrapper() {
       heroCtaLabel={home.heroCtaLabel}
       heroTagline={home.heroTagline}
       heroImage={home.heroImage?.asset?.url}
+      heroImageMobile={home.heroImageMobile?.asset?.url}
     />
   );
 }

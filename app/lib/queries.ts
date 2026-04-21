@@ -9,6 +9,9 @@ export async function getHomepage() {
       heroImage{
         asset->{url}
       },
+      heroImageMobile{
+        asset->{url}
+      },
 
       aboutTitle,
       aboutSubtitle1,
@@ -77,7 +80,6 @@ export async function getServices() {
         mode,
         audience,
         description,
-
         priceLabel,
         cta,
         includes,
