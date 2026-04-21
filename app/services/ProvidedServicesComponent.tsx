@@ -2031,7 +2031,7 @@ export default function ServicesPage() {
       <main className="container mx-auto px-4 pb-16">
         {/* TABS */}
         <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as TabValue)}>
-          <TabsList className="grid grid-cols-3 max-w-2xl mx-auto">
+          <TabsList className="grid grid-cols-1 sm:grid-cols-3 max-w-2xl mx-auto h-auto">
             <TabsTrigger value="lectures">
               <BookOpenText className="w-4 h-4 mr-2" />
               Lectures Provided
