@@ -1284,7 +1284,8 @@ interface ConsultationItem {
   description: string;
   includes: string[];
   cta: string;
-  price: string;
+  // price: string;
+  priceLabel?: string; 
 }
 
 interface Props {
@@ -1325,6 +1326,7 @@ export default function ConsultationDetailDialog({
     organization: "",
   });
   if (!service) return null;
+  console.log("VIDEO DATA:", service);
 
   async function handleFormSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -1416,7 +1418,7 @@ export default function ConsultationDetailDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTitle>{service.title}</DialogTitle>
 
-      <DialogContent className="max-w-xl p-0">
+      <DialogContent className="p-0 max-w-2xl max-h-[90vh] overflow-y-auto">
         {/* IMAGE */}
         <div className="relative h-52">
           <Image
@@ -1458,7 +1460,7 @@ export default function ConsultationDetailDialog({
           {/* PRICE */}
           <div className="flex items-center justify-between">
               <div className="flex items-baseline gap-1">
-                <span className="text-2xl font-bold">{service.price}</span>
+                <span className="text-2xl font-bold">{service.priceLabel}</span>
               </div>
               <Button
                 variant="ghost"

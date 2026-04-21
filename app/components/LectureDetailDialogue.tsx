@@ -657,13 +657,8 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 import {
   Clock,
-  Play,
   Share2,
   BookOpen,
-  Award,
-  Users,
-  CheckCircle,
-  Lock,
   Tag,
   ChevronRight,
   Mail,
@@ -674,9 +669,9 @@ import {
   CheckCircle2,
   Loader2,
   CircleAlert,
-  MapPin,
   Pin,
   Clock3,
+  CheckCircle,
 } from "lucide-react";
 import { Badge } from "../components/ui/badge";
 import { Separator } from "../components/ui/separator";
@@ -693,13 +688,14 @@ import { Input } from "./ui/input";
 import { useToast } from "../hooks/use-toast";
 
 type Lecture = {
-  id: number;
+  _id: string;             // Sanity document ID — used by the API route
+  id: string;              // same value, kept for localStorage
   title: string;
   description?: string;
   category?: string;
   priceNote?: string;
   originalPrice?: string;
-  discountedPrice?: string;
+  priceLabel?: string;     // replaces discountedPrice — e.g. "₹3,500"
   date?: string;
   discountPercent?: number;
   instructor?: string;
@@ -716,10 +712,8 @@ type EnrollmentForm = {
 
 type Props = {
   video: Lecture | null;
-  
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  
 };
 
 function getImage(img?: string) {
@@ -730,7 +724,6 @@ function getImage(img?: string) {
 }
 
 type FormErrors = Partial<Record<keyof EnrollmentForm, string>>;
-
 type EmailCheckStatus = "idle" | "checking" | "valid" | "invalid";
 
 async function checkEmail(
@@ -762,7 +755,8 @@ function validateName(value: string): string | null {
   if (!t) return "Full name is required.";
   if (t.length < 2) return "Name is too short.";
   if (t.length > 50) return "Name is too long.";
-  if (!/^[\p{L}\p{M}'\- ]+$/u.test(t)) return "Name contains invalid characters.";
+  if (!/^[\p{L}\p{M}'\- ]+$/u.test(t))
+    return "Name contains invalid characters.";
   for (const p of FAKE_NAME_PATTERNS) {
     if (p.test(t)) return "Please enter your real name.";
   }
@@ -777,46 +771,29 @@ function validateEmailFormat(value: string): string | null {
   return null;
 }
 
-const handleShare = (title: string, id: number) => {
-  const url = `${window.location.origin}/services?workshop=${id}`;
+const handleShare = (title: string, id: string) => {
+  const url = `${window.location.origin}/services?lecture=${id}`;
   if (navigator.share) {
-    navigator.share({
-      title,
-      text: `Check out this workshop: ${title}`,
-      url,
-    });
+    navigator.share({ title, text: `Check out this lecture: ${title}`, url });
   } else {
     navigator.clipboard.writeText(url);
   }
 };
 
-export default function LectureDetailDialog({
-  video,
-  open,
-  onOpenChange,
-}: Props) {
-
+export default function LectureDetailDialog({ video, open, onOpenChange }: Props) {
   const { toast } = useToast();
   const [showEnrollModal, setShowEnrollModal] = useState(false);
   const [step, setStep] = useState<"form" | "confirmation">("form");
   const [errors, setErrors] = useState<FormErrors>({});
-  const [selectedWorkshop, setSelectedWorkshop] = useState<string | null>(null);
-  const [touched, setTouched] = useState<
-    Partial<Record<keyof EnrollmentForm, boolean>>
-  >({});
-  const [emailCheckStatus, setEmailCheckStatus] =
-    useState<EmailCheckStatus>("idle");
+  const [touched, setTouched] = useState<Partial<Record<keyof EnrollmentForm, boolean>>>({});
+  const [emailCheckStatus, setEmailCheckStatus] = useState<EmailCheckStatus>("idle");
   const emailDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState<EnrollmentForm>({ name: "", email: "" });
 
-  const [formData, setFormData] = useState<EnrollmentForm>({
-    name: "",
-    email: "",
-  });
-  console.log("VIDEO DATA:", video);
   if (!video) return null;
 
-    function runValidation(data: EnrollmentForm): FormErrors {
+  function runValidation(data: EnrollmentForm): FormErrors {
     return {
       name: validateName(data.name) ?? undefined,
       email: validateEmailFormat(data.email) ?? undefined,
@@ -874,7 +851,7 @@ export default function LectureDetailDialog({
     }
   }
 
-   function handleBlur(field: keyof EnrollmentForm) {
+  function handleBlur(field: keyof EnrollmentForm) {
     if (field === "email") return;
     setTouched((p) => ({ ...p, [field]: true }));
     const errs = runValidation(formData);
@@ -899,17 +876,13 @@ export default function LectureDetailDialog({
     setTouched({ name: true, email: true });
 
     if (emailCheckStatus === "checking") {
-      toast({
-        title: "Please wait",
-        description: "Verifying email address…",
-      });
+      toast({ title: "Please wait", description: "Verifying email address…" });
       return;
     }
 
     const allErrors = runValidation(formData);
     if (emailCheckStatus === "invalid") {
-      allErrors.email =
-        errors.email ?? "This email address could not be verified.";
+      allErrors.email = errors.email ?? "This email address could not be verified.";
     }
     setErrors(allErrors);
 
@@ -923,13 +896,44 @@ export default function LectureDetailDialog({
     }
 
     setLoading(true);
-    // Simulate a brief async action (e.g. API call) before advancing
-    await new Promise((res) => setTimeout(res, 400));
-    setLoading(false);
-    setStep("confirmation");
+
+    try {
+      const res = await fetch("/api/lecturesEmail", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          lectureId: video._id,
+          lectureTitle: video.title,
+          selectedSlot: video.date ?? new Date().toISOString(),
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        toast({
+          title: "Registration failed",
+          description: data.error ?? "Something went wrong. Please try again.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      setStep("confirmation");
+    } catch {
+      toast({
+        title: "Network error",
+        description: "Could not reach the server. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
-   function FieldError({ field }: { field: keyof EnrollmentForm }) {
+  function FieldError({ field }: { field: keyof EnrollmentForm }) {
     if (!touched[field] || !errors[field]) return null;
     return (
       <p className="flex items-center gap-1 mt-1 text-xs text-destructive">
@@ -941,17 +945,11 @@ export default function LectureDetailDialog({
 
   function EmailIndicator() {
     if (emailCheckStatus === "checking")
-      return (
-        <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 animate-spin text-muted-foreground" />
-      );
+      return <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 animate-spin text-muted-foreground" />;
     if (emailCheckStatus === "valid")
-      return (
-        <CheckCircle2 className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-green-500" />
-      );
+      return <CheckCircle2 className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-green-500" />;
     if (emailCheckStatus === "invalid")
-      return (
-        <AlertCircle className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-destructive" />
-      );
+      return <AlertCircle className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-destructive" />;
     return null;
   }
 
@@ -963,14 +961,10 @@ export default function LectureDetailDialog({
       : "";
 
   function handleDone() {
-    const stored =
-      localStorage.getItem("sukshmadarshini_enrolled_courses") || "[]";
-    const enrolled: number[] = JSON.parse(stored);
-    if (!enrolled.includes(video!.id)) enrolled.push(video!.id);
-    localStorage.setItem(
-      "sukshmadarshini_enrolled_courses",
-      JSON.stringify(enrolled)
-    );
+    const stored = localStorage.getItem("sukshmadarshini_enrolled_courses") || "[]";
+    const enrolled: string[] = JSON.parse(stored);
+    if (!enrolled.includes(video!._id)) enrolled.push(video!._id);
+    localStorage.setItem("sukshmadarshini_enrolled_courses", JSON.stringify(enrolled));
     localStorage.setItem("sukshmadarshini_user", JSON.stringify(formData));
     toast({
       title: "Confirmation email sent",
@@ -982,17 +976,15 @@ export default function LectureDetailDialog({
     setTouched({});
     setErrors({});
     setEmailCheckStatus("idle");
-    // onEnrollmentComplete?.(video!.id);
   }
-
 
   return (
     <>
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="p-0 max-w-2xl max-h-[90vh] overflow-y-auto">
-        
-        {/* IMAGE */}
-        <div className="relative h-52">
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="p-0 max-w-2xl max-h-[90vh] overflow-y-auto">
+
+          {/* IMAGE */}
+          <div className="relative h-52">
             <Image
               src={getImage(video.thumbnail)}
               alt={video.title}
@@ -1006,19 +998,21 @@ export default function LectureDetailDialog({
             </div>
           </div>
 
-        {/* CONTENT */}
-        <div className="p-6 space-y-5">
-          <DialogHeader>
-            <DialogTitle>{video.title}</DialogTitle>
-          </DialogHeader>
-          <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
+          {/* CONTENT */}
+          <div className="p-6 space-y-5">
+            <DialogHeader>
+              <DialogTitle>{video.title}</DialogTitle>
+            </DialogHeader>
+
+            <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
               <span className="flex items-center gap-1">
                 <CalendarDays className="w-4 h-4" />
-                {video.date && new Date(video.date).toLocaleDateString("en-IN", {
-                  day: "numeric",
-                  month: "short",
-                  year: "numeric",
-                })}
+                {video.date &&
+                  new Date(video.date).toLocaleDateString("en-IN", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                  })}
               </span>
               <span className="flex items-center gap-1">
                 <Clock className="w-4 h-4" />
@@ -1026,49 +1020,49 @@ export default function LectureDetailDialog({
               </span>
             </div>
 
-          <p className="text-sm text-muted-foreground">
-            {video.description}
-          </p>
+            <p className="text-sm text-muted-foreground">{video.description}</p>
+            <p className="text-xs text-muted-foreground">
+              Duration: {video.duration} | Mode: {video.mode}
+            </p>
 
-          <p className="text-xs text-muted-foreground">
-            Duration: {video.duration} | Mode: {video.mode}
-          </p>
-          <Separator />
+            <Separator />
 
-          {/* Pricing */}
+            {/* Pricing — uses priceLabel instead of discountedPrice */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <span className="text-2xl font-bold">
-                  {video.discountedPrice}
+                  {video.priceLabel ?? "—"}
                 </span>
-                <span className="line-through text-sm text-muted-foreground">
-                  {video.originalPrice}
-                </span>
-                <Badge variant="destructive">
-                  <Tag className="w-3 h-3 mr-1" />
-                  {video.discountPercent}% OFF
-                </Badge>
+                {video.originalPrice && (
+                  <span className="line-through text-sm text-muted-foreground">
+                    {video.originalPrice}
+                  </span>
+                )}
+                {video.discountPercent && (
+                  <Badge variant="destructive">
+                    <Tag className="w-3 h-3 mr-1" />
+                    {video.discountPercent}% OFF
+                  </Badge>
+                )}
               </div>
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => handleShare(video.title, video.id)}
+                onClick={() => handleShare(video.title, video._id)}
               >
                 <Share2 className="w-5 h-5" />
               </Button>
             </div>
+
             {/* Includes */}
             <div>
               <h3 className="font-semibold mb-3 flex items-center gap-2">
                 <BookOpen className="w-4 h-4" />
-                This workshop includes
+                This lecture includes
               </h3>
               <ul className="space-y-2">
                 {video.includes?.map((item, i) => (
-                  <li
-                    key={i}
-                    className="flex items-start gap-2 text-sm text-muted-foreground"
-                  >
+                  <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
                     <CheckCircle className="w-4 h-4 text-green-500 mt-0.5" />
                     {item}
                   </li>
@@ -1078,12 +1072,14 @@ export default function LectureDetailDialog({
 
             <Separator />
 
-          <Button className="w-full" onClick={() => setShowEnrollModal(true)}>Enroll</Button>
-        </div>
-      </DialogContent>
-    </Dialog>
+            <Button className="w-full" onClick={() => setShowEnrollModal(true)}>
+              Enroll
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
 
-    {/* ── Enrollment Modal ── */}
+      {/* ── Enrollment Modal ── */}
       <Dialog open={showEnrollModal} onOpenChange={setShowEnrollModal}>
         <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
           <DialogHeader>
@@ -1141,44 +1137,22 @@ export default function LectureDetailDialog({
                 <FieldError field="email" />
               </div>
 
-              <Button
-                type="submit"
-                className="w-full mt-6"
-                disabled={loading}
-              >
+              <Button type="submit" className="w-full mt-6" disabled={loading}>
                 {loading ? (
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                 ) : (
                   <ChevronRight className="w-4 h-4 ml-2" />
                 )}
-                {loading ? "Verifying…" : "Continue to Confirmation"}
+                {loading ? "Sending confirmation…" : "Continue to Confirmation"}
               </Button>
             </form>
           ) : (
-            // <div className="space-y-6 pt-4 text-center">
-            //   <MailCheck className="w-32 h-32 justify-center mx-auto text-primary" />
-            //   <p className="text-sm text-muted-foreground leading-relaxed">
-            //     You will receive the confirmation email for the{" "}
-            //     <span className="font-semibold text-foreground">
-            //       {video.title}
-            //     </span>{" "}
-            //     in a few hours.
-            //     <br />
-            //     <br />
-            //     Please follow the steps given in the email to confirm your seat
-            //     in the workshop.
-            //   </p>
-            //   <Button className="w-full" onClick={handleDone}>
-            //     Done
-            //   </Button>
-            // </div>
             <div className="space-y-4 pt-0">
               <MailCheck className="w-28 h-28 mx-auto text-primary" />
               <p className="text-sm text-muted-foreground leading-relaxed">
                 Your slot has been successfully reserved.
               </p>
 
-              {/* Workshop details — always shown */}
               <div className="space-y-1 text-sm">
                 <div className="flex flex-row items-center mb-1">
                   <Pin className="w-5 h-5 mr-2 text-primary shrink-0" />
@@ -1191,7 +1165,7 @@ export default function LectureDetailDialog({
               </div>
 
               <p className="text-sm text-muted-foreground leading-relaxed">
-                This is a paid workshop service, and payment is required to confirm your booking.
+                This is a paid lecture service, and payment is required to confirm your booking.
               </p>
               <p className="text-sm text-muted-foreground leading-relaxed">
                 Detailed instructions for completing your booking have been sent to your email.
@@ -1199,7 +1173,9 @@ export default function LectureDetailDialog({
               <div className="flex flex-row items-center">
                 <CircleAlert className="w-4 h-4 mr-1 text-rose-600 shrink-0" />
                 <span className="font-semibold text-xs text-rose-600">Slot Held Temporary:</span>
-                <span className="font-semibold text-xs text-primary ml-1">It will auto-cancel if unpaid after 3 days.</span>
+                <span className="font-semibold text-xs text-primary ml-1">
+                  It will auto-cancel if unpaid after 3 days.
+                </span>
               </div>
               <Button className="w-full" onClick={handleDone}>
                 Done

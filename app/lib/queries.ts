@@ -41,7 +41,7 @@ export async function getServices() {
         category,
         priceNote,
         originalPrice,
-        discountedPrice,
+        priceLabel,
         discountPercent,
         instructor,
         content,
@@ -77,7 +77,8 @@ export async function getServices() {
         mode,
         audience,
         description,
-        price,
+
+        priceLabel,
         cta,
         includes,
         thumbnail{
