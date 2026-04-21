@@ -208,7 +208,7 @@ const selectedImage = isMobile
       <div className="relative">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/90 via-primary/40 to-transparent z-10" />
         
-        <div className="absolute inset-0 w-full h-full">
+        {/* <div className="absolute inset-0 w-full h-full">
           {selectedImage && (
             <Image
               src={selectedImage}
@@ -218,6 +218,26 @@ const selectedImage = isMobile
               sizes="100vw"
               className="object-cover md:object-center object-top"
             />
+          )}
+        </div> */}
+        <div className="absolute inset-0 w-full h-full">
+          {(desktopUrl || mobileUrl) && (
+            <picture>
+              {/* Mobile */}
+              {mobileUrl && (
+                <source
+                  media="(max-width: 768px)"
+                  srcSet={mobileUrl}
+                />
+              )}
+
+              {/* Desktop fallback */}
+              <img
+                src={desktopUrl || mobileUrl}
+                alt="Hero"
+                className="w-full h-full object-cover object-center"
+              />
+            </picture>
           )}
         </div>
 
