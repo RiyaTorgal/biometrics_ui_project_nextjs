@@ -182,6 +182,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { sanity } from "@/app/lib/sanity";
 import ConsultationEmail from "@/app/components/emails/ConsultationEmail";
+import { appendConsultationRegistration } from "@/app/lib/googleapi";
 
 export const dynamic = "force-dynamic";
 
@@ -303,6 +304,20 @@ export async function POST(req: NextRequest) {
         { success: false, error: "Failed to send email" },
         { status: 500 }
       );
+    }
+
+        // 📊 Append to Google Sheets — Consultations tab
+    try {
+      await appendConsultationRegistration({
+        name,
+        email,
+        serviceTitle,
+        selectedSlot,
+        transactionRef,
+      });
+    } catch (sheetErr) {
+      // Non-fatal — log but don't fail the registration
+      console.error("[consultationEmail] Google Sheets append failed:", sheetErr);
     }
 
     return NextResponse.json({

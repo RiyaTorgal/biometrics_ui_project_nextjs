@@ -16,6 +16,7 @@ interface WorkshopEmailProps {
   contactName: string;
   email: string;
   instituteName: string;
+  city: string;
   designation: string;
   phone: string;
   workshopTitle: string;
@@ -28,6 +29,7 @@ export default function WorkshopEmail({
   contactName,
   email,
   instituteName,
+  city,
   designation,
   phone,
   workshopTitle,
@@ -179,6 +181,12 @@ export default function WorkshopEmail({
                   Institute Name
                 </Column>
                 <Column style={{ padding: "10px 12px", color: "#111827" }}>{instituteName}</Column>
+              </Row>
+              <Row style={{ backgroundColor: "#f9fafb", borderBottom: "1px solid #e2e8f0" }}>
+                <Column style={{ padding: "10px 12px", fontWeight: "bold", width: "160px", color: "#374151" }}>
+                  City Name
+                </Column>
+                <Column style={{ padding: "10px 12px", color: "#111827" }}>{city}</Column>
               </Row>
               <Row>
                 <Column style={{ padding: "10px 12px", fontWeight: "bold", width: "160px", color: "#374151" }}>

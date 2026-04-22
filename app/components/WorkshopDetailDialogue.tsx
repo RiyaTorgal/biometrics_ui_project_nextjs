@@ -1602,9 +1602,7 @@ export interface Workshop {
   description: string;
   instructor: string;
   date?: string;
-  thumbnail: {
-    url: string;
-  } | null;
+  thumbnail:string;
   originalPrice?: string;
   discountedPrice?: string;
   discountPercent?: number;
@@ -1619,6 +1617,7 @@ type EnrollmentForm = {
   contactName: string;
   email: string;
   instituteName: string;
+  city: string;
   designation: string;
   phone: string;
   estimatedParticipants: string;
@@ -1763,6 +1762,7 @@ export default function WorkshopDetailDialog({
     contactName: "",
     email: "",
     instituteName: "",
+    city: "",
     designation: "",
     phone: "",
     estimatedParticipants: "",
@@ -1780,6 +1780,7 @@ export default function WorkshopDetailDialog({
     contactName: "",
     email: "",
     instituteName: "",
+    city: "",
     designation: "",
     phone: "",
     estimatedParticipants: "",
@@ -1789,9 +1790,9 @@ export default function WorkshopDetailDialog({
 
   if (!workshop) return null;
 
-  const img =
-    workshop.thumbnail?.url ||
-    "https://via.placeholder.com/800x400?text=No+Image";
+  // const img:
+  //   workshop.thumbnail?.url ||
+  //   "https://via.placeholder.com/800x400?text=No+Image";
 
   /* -------------------- EMAIL -------------------- */
 
@@ -1914,6 +1915,7 @@ export default function WorkshopDetailDialog({
           contactName:           formData.contactName,
           email:                 formData.email,
           instituteName:         formData.instituteName,
+          city:                  formData.city,
           designation:           formData.designation,
           phone:                 formData.phone,
           workshopTitle:         workshop.title,
@@ -1984,7 +1986,7 @@ export default function WorkshopDetailDialog({
     setShowEnrollModal(false);
     setStep("form");
     setFormData({
-      contactName: "", email: "", instituteName: "",
+      contactName: "", email: "", instituteName: "", city: "",
       designation: "", phone: "", estimatedParticipants: "", message: "",
     });
     setTouched({});
@@ -1999,7 +2001,7 @@ export default function WorkshopDetailDialog({
 
   /* -------------------- UI -------------------- */
 
-  const imageUrl = workshop.thumbnail?.url;
+  // const imageUrl = workshop.thumbnail?.url;
   return (
     <>
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -2013,16 +2015,16 @@ export default function WorkshopDetailDialog({
             fill
             className="object-cover rounded-t-lg"
           /> */}
-          {imageUrl && (
+          {/* {imageUrl && ( */}
             <div className="relative h-56 w-full">
               <Image
-                src={imageUrl}
+                src={workshop.thumbnail}
                 alt={workshop.title}
                 fill
                 className="object-cover rounded-t-lg"
               />
             </div>
-          )}
+          {/* )} */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-t-lg" />
             <div className="absolute bottom-4 left-4 right-4">
               <h2 className="text-xl font-bold text-white">{workshop.title}</h2>
@@ -2179,6 +2181,23 @@ export default function WorkshopDetailDialog({
                   required
                 />
                 <FieldError field="instituteName" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="city">City *</Label>
+                <Input
+                  id="city"
+                  placeholder="e.g. Pune, Mumbai"
+                  value={formData.city}
+                  onChange={(e) => handleChange("city", e.target.value)}
+                  onBlur={() => handleBlur("city")}
+                  className={
+                    touched.city && errors.city
+                      ? "border-destructive focus-visible:ring-destructive"
+                      : ""
+                  }
+                  required
+                />
+                <FieldError field="city" />
               </div>
 
               {/* Email */}

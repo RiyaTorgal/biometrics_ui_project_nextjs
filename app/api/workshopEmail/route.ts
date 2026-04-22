@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import WorkshopEmail from "@/app/components/emails/WorkshopEmail";
+import { appendWorkshopRegistration } from "@/app/lib/googleapi";
 
 export const dynamic = "force-dynamic";
 
@@ -77,6 +78,7 @@ export async function POST(req: NextRequest) {
       contactName,
       email,
       instituteName,
+      city,
       designation,
       phone,
       workshopTitle,
@@ -131,6 +133,7 @@ export async function POST(req: NextRequest) {
         contactName,
         email,
         instituteName,
+        city,
         designation,
         phone,
         workshopTitle,
@@ -143,6 +146,23 @@ export async function POST(req: NextRequest) {
     if (error) {
       console.error("[workshopEmail] Resend error:", error);
       return NextResponse.json({ success: false, error: "Failed to send email." }, { status: 500 });
+    }
+
+    // 📊 Append to Google Sheets — Workshops tab
+    try {
+      await appendWorkshopRegistration({
+        name: contactName,
+        email,
+        phone,
+        institute: instituteName,
+        city: city,
+        workshopTitle,
+        participants: estimatedParticipants,
+        message,
+      });
+    } catch (sheetErr) {
+      // Non-fatal — log but don't fail the enquiry
+      console.error("[workshopEmail] Google Sheets append failed:", sheetErr);
     }
 
     return NextResponse.json({ success: true });

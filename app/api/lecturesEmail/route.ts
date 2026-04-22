@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { sanity } from "@/app/lib/sanity";
 import LectureEmail from "@/app/components/emails/LectureEmail";
+import { appendLectureRegistration } from "@/app/lib/googleapi";
 
 export const dynamic = "force-dynamic";
 
@@ -123,6 +124,20 @@ export async function POST(req: NextRequest) {
         { success: false, error: "Failed to send email" },
         { status: 500 }
       );
+    }
+
+    // 📊 Append to Google Sheets — Lectures tab
+    try {
+      await appendLectureRegistration({
+        name,
+        email,
+        lectureTitle,
+        selectedSlot,
+        transactionRef,
+      });
+    } catch (sheetErr) {
+      // Non-fatal — log but don't fail the registration
+      console.error("[lectureEmail] Google Sheets append failed:", sheetErr);
     }
 
     return NextResponse.json({ success: true, transactionRef });
