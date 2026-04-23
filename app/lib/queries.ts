@@ -47,6 +47,7 @@ export async function getServices() {
         priceLabel,
         discountPercent,
         instructor,
+        idealFor,
         content,
         includes,
         thumbnail{
@@ -66,6 +67,7 @@ export async function getServices() {
         discountedPrice,
         discountPercent,
         instructor,
+        idealFor,
         content,
         includes,
         thumbnail{

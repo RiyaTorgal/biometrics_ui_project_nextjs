@@ -1601,6 +1601,7 @@ export interface Workshop {
   duration: string;
   description: string;
   instructor: string;
+  idealFor: string;
   date?: string;
   thumbnail:string;
   originalPrice?: string;
@@ -2038,13 +2039,17 @@ export default function WorkshopDetailDialog({
           <DialogTitle>{workshop.title}</DialogTitle>
 
           <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
-              <span className="flex items-center gap-1">
+              {/* <span className="flex items-center gap-1">
                 <CalendarDays className="w-4 h-4" />
                 {workshop.date}
-              </span>
+              </span> */}
               <span className="flex items-center gap-1">
                 <Clock className="w-4 h-4" />
                 {workshop.duration}
+              </span>
+              <span className="flex items-center gap-1">
+                <Users className="w-4 h-4" />
+                {workshop.idealFor}
               </span>
             </div>
 

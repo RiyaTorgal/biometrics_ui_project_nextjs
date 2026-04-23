@@ -1,4 +1,4 @@
-import { FileText, Shield, UserCheck, AlertCircle, Scale, BookOpen, Globe, RefreshCw, Mail, Eye } from "lucide-react";
+import { FileText, Shield, UserCheck, AlertCircle, Scale, BookOpen, Globe, RefreshCw, Mail, Eye, AlertTriangle } from "lucide-react";
 import { Navbar } from "../components/Navbar";
 // import { Footer } from "../components/Footer";
 
@@ -113,8 +113,16 @@ const sections = [
     ),
   },
   {
-    icon: Mail,
+    icon: AlertTriangle,
     number: "9",
+    title: "AI-Generated Content Disclaimer",
+    content: (
+      <p>Some images on this website are generated using AI tools. Any resemblance to real individuals or events is purely coincidental. We do not claim or imply any real-world association, and we are not liable for unintended similaritiesWe reserve the right to update or modify these Terms of Service at any time. Changes will be effective immediately upon being posted on this page with an updated effective date. Continued use of the website constitutes acceptance of the revised terms.</p>
+    ),
+  },
+  {
+    icon: Mail,
+    number: "10",
     title: "Contact Us",
     content: (
       <p>If you have any questions or concerns about these Terms of Service, please contact us at: <a href="mailto:sukshmadarshini@gmail.com" className="text-secondary hover:underline font-medium">sukshmadarshini@gmail.com</a></p>

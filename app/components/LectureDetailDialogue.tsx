@@ -672,6 +672,10 @@ import {
   Pin,
   Clock3,
   CheckCircle,
+  Users,
+  UsersRound,
+  CircleUserRound,
+  CheckCheck,
 } from "lucide-react";
 import { Badge } from "../components/ui/badge";
 import { Separator } from "../components/ui/separator";
@@ -699,6 +703,7 @@ type Lecture = {
   date?: string;
   discountPercent?: number;
   instructor?: string;
+  idealFor?: string[];
   duration?: string;
   includes?: string[];
   mode?: string;
@@ -1014,6 +1019,10 @@ export default function LectureDetailDialog({ video, open, onOpenChange }: Props
                     year: "numeric",
                   })}
               </span>
+              {/* <span className="flex items-center gap-1">
+                <Users className="w-4 h-4" />
+                {video.idealFor}
+              </span> */}
               <span className="flex items-center gap-1">
                 <Clock className="w-4 h-4" />
                 {video.duration}
@@ -1025,6 +1034,20 @@ export default function LectureDetailDialog({ video, open, onOpenChange }: Props
               Duration: {video.duration} | Mode: {video.mode}
             </p>
 
+            <div>
+              <h3 className="font-semibold mb-3 flex items-center gap-2">
+                <UsersRound className="w-4 h-4" />
+                This lecture is ideal for: 
+              </h3>
+              <ul className="space-y-2">
+                {video.idealFor?.map((item, i) => (
+                  <li key={i} className="flex items-start gap-2 text-sm font-medium text-muted-foreground">
+                    <CheckCheck className="w-4 h-4 text-primary mt-0.5" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
             <Separator />
 
             {/* Pricing — uses priceLabel instead of discountedPrice */}
