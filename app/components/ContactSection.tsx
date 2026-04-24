@@ -302,218 +302,226 @@ export function ContactSection() {
 
   // ── Render ────────────────────────────────────────────────────────────────
   return (
-    <section id="contact" className="relative py-9  pb-24 bg-background overflow-hidden">
-      {/* Soft wave background */}
-      <div className="absolute inset-x-0 bottom-24 h-44 bg-gradient-to-t from-primary/10 to-transparent" />
+    <>
+      <section id="contact" className="relative py-10  pb-0 bg-background overflow-hidden">
+        {/* Soft wave background */}
+        <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-primary/30 to-transparent" />
+        {/* Background pattern */}
+        <div className="absolute inset-0 opacity-[0.05]">
+          <div className="absolute inset-0" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          }} />
+        </div>
 
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-16 items-start">
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-16 items-start">
 
-          {/* LEFT CONTENT */}
-          <div>
-            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-6">
-              <Mail className="w-4 h-4" />
-              Get in Touch
-            </span>
-            <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground leading-tight mb-6">
-              Let&apos;s <span className="text-gradient font-bold"> Connect </span>
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-xl mb-12 leading-relaxed">
-              Advance your biologics and omics pipeline with hands-on training,
-              experimental design expertise, and applied consultation tailored
-              to your research goals.
-            </p>
-            <div className="space-y-6">
-              {contactInfo.map((item) => (
-                <div key={item.label} className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                    <item.icon className="w-5 h-5 text-primary" />
+            {/* LEFT CONTENT */}
+            <div>
+              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-6">
+                <Mail className="w-4 h-4" />
+                Get in Touch
+              </span>
+              <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground leading-tight mb-6">
+                Let&apos;s <span className="text-gradient font-bold"> Connect </span>
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-xl mb-12 leading-relaxed">
+                Advance your biologics and omics pipeline with hands-on training,
+                experimental design expertise, and applied consultation tailored
+                to your research goals.
+              </p>
+              <div className="space-y-6">
+                {contactInfo.map((item) => (
+                  <div key={item.label} className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                      <item.icon className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <div className="text-sm text-muted-foreground">{item.label}</div>
+                      <div className="font-medium text-foreground">{item.value}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* RIGHT FORM */}
+            <div className="bg-background rounded-3xl p-8 md:p-10 shadow-soft border border-border">
+              <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+
+                {/* First / Last name */}
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-2">First Name</label>
+                    <Input
+                      placeholder="John"
+                      value={formData.firstName}
+                      onChange={(e) => handleChange("firstName", e.target.value)}
+                      onBlur={() => handleBlur("firstName")}
+                      className={touched.firstName && errors.firstName ? "border-destructive focus-visible:ring-destructive" : ""}
+                    />
+                    <FieldError field="firstName" />
                   </div>
                   <div>
-                    <div className="text-sm text-muted-foreground">{item.label}</div>
-                    <div className="font-medium text-foreground">{item.value}</div>
+                    <label className="block text-sm font-medium mb-2">Last Name</label>
+                    <Input
+                      placeholder="Doe"
+                      value={formData.lastName}
+                      onChange={(e) => handleChange("lastName", e.target.value)}
+                      onBlur={() => handleBlur("lastName")}
+                      className={touched.lastName && errors.lastName ? "border-destructive focus-visible:ring-destructive" : ""}
+                    />
+                    <FieldError field="lastName" />
                   </div>
                 </div>
-              ))}
+
+                {/* Email with live status indicator */}
+                <div>
+                  <label className="block text-sm font-medium mb-2">Email Address</label>
+                  <div className="relative">
+                    <Input
+                      type="email"
+                      placeholder="john@example.com"
+                      value={formData.email}
+                      onChange={(e) => handleChange("email", e.target.value)}
+                      onBlur={handleEmailBlur}
+                      className={`pr-9 ${emailBorderClass}`}
+                    />
+                    <EmailIndicator />
+                  </div>
+                  {touched.email && errors.email ? (
+                    <p className="flex items-center gap-1 mt-1 text-xs text-destructive">
+                      <AlertCircle className="w-3 h-3 shrink-0" /> {errors.email}
+                    </p>
+                  ) : emailCheckStatus === "checking" ? (
+                    <p className="mt-1 text-xs text-muted-foreground">Verifying email…</p>
+                  ) : emailCheckStatus === "valid" ? (
+                    <p className="flex items-center gap-1 mt-1 text-xs text-green-600">
+                      <CheckCircle2 className="w-3 h-3" /> Email verified
+                    </p>
+                  ) : null}
+                </div>
+
+                {/* Subject */}
+                <div>
+                  <label className="block text-sm font-medium mb-2">Subject</label>
+                  <Input
+                    placeholder="How can we help?"
+                    value={formData.subject}
+                    onChange={(e) => handleChange("subject", e.target.value)}
+                    onBlur={() => handleBlur("subject")}
+                    className={touched.subject && errors.subject ? "border-destructive focus-visible:ring-destructive" : ""}
+                  />
+                  <FieldError field="subject" />
+                </div>
+
+                {/* Message */}
+                <div>
+                  <label className="block text-sm font-medium mb-2">Message</label>
+                  <Textarea
+                    rows={5}
+                    placeholder="Tell us about your research needs..."
+                    className={`resize-none ${touched.message && errors.message ? "border-destructive focus-visible:ring-destructive" : ""}`}
+                    value={formData.message}
+                    onChange={(e) => handleChange("message", e.target.value)}
+                    onBlur={() => handleBlur("message")}
+                  />
+                  <FieldError field="message" />
+                </div>
+
+                <Button
+                  type="submit"
+                  size="lg"
+                  className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
+                  disabled={loading || emailCheckStatus === "checking"}
+                >
+                  {loading ? (
+                    <><Loader2 className="animate-spin w-4 h-4 mr-2" />Sending...</>
+                  ) : (
+                    <><Send className="w-4 h-4 mr-2" />Send Message</>
+                  )}
+                </Button>
+              </form>
             </div>
           </div>
+        </div>
 
-          {/* RIGHT FORM */}
-          <div className="bg-background rounded-3xl p-8 md:p-10 shadow-soft border border-border">
-            <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+        {/* Wave decoration */}
+        <div className="relative h-32 overflow-hidden">
+          <svg className="absolute bottom-0 w-full" viewBox="0 0 1440 120" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,60 C360,120 720,0 1080,60 C1260,90 1380,75 1440,60 L1440,120 L0,120 Z" fill="url(#waveGradient)" fillOpacity="0.3" />
+            <path d="M0,80 C360,40 720,100 1080,80 C1260,70 1380,85 1440,80 L1440,120 L0,120 Z" fill="url(#waveGradient)" fillOpacity="0.2" />
+            <defs>
+              <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="hsl(var(--primary))" />
+                <stop offset="50%" stopColor="hsl(var(--tertiary))" />
+                <stop offset="100%" stopColor="hsl(var(--tertiary-foreground))" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
 
-              {/* First / Last name */}
-              <div className="grid sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium mb-2">First Name</label>
-                  <Input
-                    placeholder="John"
-                    value={formData.firstName}
-                    onChange={(e) => handleChange("firstName", e.target.value)}
-                    onBlur={() => handleBlur("firstName")}
-                    className={touched.firstName && errors.firstName ? "border-destructive focus-visible:ring-destructive" : ""}
-                  />
-                  <FieldError field="firstName" />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">Last Name</label>
-                  <Input
-                    placeholder="Doe"
-                    value={formData.lastName}
-                    onChange={(e) => handleChange("lastName", e.target.value)}
-                    onBlur={() => handleBlur("lastName")}
-                    className={touched.lastName && errors.lastName ? "border-destructive focus-visible:ring-destructive" : ""}
-                  />
-                  <FieldError field="lastName" />
-                </div>
+        {/* Confirmation / Error Overlay */}
+        {overlay?.visible && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            style={{ backgroundColor: "rgba(0,0,0,0.55)", backdropFilter: "blur(4px)" }}
+            onClick={() => setOverlay(null)}
+          >
+            <div
+              className="relative bg-background rounded-3xl shadow-2xl border border-border p-10 max-w-md w-full flex flex-col items-center text-center"
+              style={{ animation: "overlayIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both" }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setOverlay(null)}
+                className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors rounded-full p-1"
+                aria-label="Close"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              <div className={`w-20 h-20 rounded-full flex items-center justify-center mb-6 ${
+                overlay.success ? "bg-green-100 dark:bg-green-900/30" : "bg-red-100 dark:bg-red-900/30"
+              }`}>
+                {overlay.success ? (
+                  <CheckCircle2 className="w-10 h-10 text-green-600 dark:text-green-400" />
+                ) : (
+                  <XCircle className="w-10 h-10 text-red-600 dark:text-red-400" />
+                )}
               </div>
 
-              {/* Email with live status indicator */}
-              <div>
-                <label className="block text-sm font-medium mb-2">Email Address</label>
-                <div className="relative">
-                  <Input
-                    type="email"
-                    placeholder="john@example.com"
-                    value={formData.email}
-                    onChange={(e) => handleChange("email", e.target.value)}
-                    onBlur={handleEmailBlur}
-                    className={`pr-9 ${emailBorderClass}`}
-                  />
-                  <EmailIndicator />
-                </div>
-                {touched.email && errors.email ? (
-                  <p className="flex items-center gap-1 mt-1 text-xs text-destructive">
-                    <AlertCircle className="w-3 h-3 shrink-0" /> {errors.email}
-                  </p>
-                ) : emailCheckStatus === "checking" ? (
-                  <p className="mt-1 text-xs text-muted-foreground">Verifying email…</p>
-                ) : emailCheckStatus === "valid" ? (
-                  <p className="flex items-center gap-1 mt-1 text-xs text-green-600">
-                    <CheckCircle2 className="w-3 h-3" /> Email verified
-                  </p>
-                ) : null}
-              </div>
-
-              {/* Subject */}
-              <div>
-                <label className="block text-sm font-medium mb-2">Subject</label>
-                <Input
-                  placeholder="How can we help?"
-                  value={formData.subject}
-                  onChange={(e) => handleChange("subject", e.target.value)}
-                  onBlur={() => handleBlur("subject")}
-                  className={touched.subject && errors.subject ? "border-destructive focus-visible:ring-destructive" : ""}
-                />
-                <FieldError field="subject" />
-              </div>
-
-              {/* Message */}
-              <div>
-                <label className="block text-sm font-medium mb-2">Message</label>
-                <Textarea
-                  rows={5}
-                  placeholder="Tell us about your research needs..."
-                  className={`resize-none ${touched.message && errors.message ? "border-destructive focus-visible:ring-destructive" : ""}`}
-                  value={formData.message}
-                  onChange={(e) => handleChange("message", e.target.value)}
-                  onBlur={() => handleBlur("message")}
-                />
-                <FieldError field="message" />
-              </div>
+              <h3 className="font-display text-2xl font-bold text-foreground mb-2">
+                {overlay.success ? "Message Sent!" : "Sending Failed"}
+              </h3>
+              <p className="text-muted-foreground text-base mb-8 leading-relaxed">
+                {overlay.success
+                  ? "Thank you for reaching out. We'll get back to you shortly."
+                  : "Something went wrong while sending your message. Please try again later."}
+              </p>
 
               <Button
-                type="submit"
                 size="lg"
-                className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
-                disabled={loading || emailCheckStatus === "checking"}
+                className={`w-full ${
+                  overlay.success
+                    ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                    : "bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                }`}
+                onClick={() => setOverlay(null)}
               >
-                {loading ? (
-                  <><Loader2 className="animate-spin w-4 h-4 mr-2" />Sending...</>
-                ) : (
-                  <><Send className="w-4 h-4 mr-2" />Send Message</>
-                )}
+                {overlay.success ? "Great, thanks!" : "Got it, I'll try again"}
               </Button>
-            </form>
-          </div>
-        </div>
-      </div>
-
-      {/* Wave decoration */}
-      <div className="relative h-32 overflow-hidden">
-        <svg className="absolute bottom-0 w-full" viewBox="0 0 1440 120" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0,60 C360,120 720,0 1080,60 C1260,90 1380,75 1440,60 L1440,120 L0,120 Z" fill="url(#waveGradient)" fillOpacity="0.3" />
-          <path d="M0,80 C360,40 720,100 1080,80 C1260,70 1380,85 1440,80 L1440,120 L0,120 Z" fill="url(#waveGradient)" fillOpacity="0.2" />
-          <defs>
-            <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="hsl(var(--primary))" />
-              <stop offset="50%" stopColor="hsl(var(--tertiary))" />
-              <stop offset="100%" stopColor="hsl(var(--tertiary-foreground))" />
-            </linearGradient>
-          </defs>
-        </svg>
-      </div>
-
-      {/* Confirmation / Error Overlay */}
-      {overlay?.visible && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4"
-          style={{ backgroundColor: "rgba(0,0,0,0.55)", backdropFilter: "blur(4px)" }}
-          onClick={() => setOverlay(null)}
-        >
-          <div
-            className="relative bg-background rounded-3xl shadow-2xl border border-border p-10 max-w-md w-full flex flex-col items-center text-center"
-            style={{ animation: "overlayIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both" }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              onClick={() => setOverlay(null)}
-              className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors rounded-full p-1"
-              aria-label="Close"
-            >
-              <X className="w-5 h-5" />
-            </button>
-
-            <div className={`w-20 h-20 rounded-full flex items-center justify-center mb-6 ${
-              overlay.success ? "bg-green-100 dark:bg-green-900/30" : "bg-red-100 dark:bg-red-900/30"
-            }`}>
-              {overlay.success ? (
-                <CheckCircle2 className="w-10 h-10 text-green-600 dark:text-green-400" />
-              ) : (
-                <XCircle className="w-10 h-10 text-red-600 dark:text-red-400" />
-              )}
             </div>
 
-            <h3 className="font-display text-2xl font-bold text-foreground mb-2">
-              {overlay.success ? "Message Sent!" : "Sending Failed"}
-            </h3>
-            <p className="text-muted-foreground text-base mb-8 leading-relaxed">
-              {overlay.success
-                ? "Thank you for reaching out. We'll get back to you shortly."
-                : "Something went wrong while sending your message. Please try again later."}
-            </p>
-
-            <Button
-              size="lg"
-              className={`w-full ${
-                overlay.success
-                  ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                  : "bg-destructive text-destructive-foreground hover:bg-destructive/90"
-              }`}
-              onClick={() => setOverlay(null)}
-            >
-              {overlay.success ? "Great, thanks!" : "Got it, I'll try again"}
-            </Button>
+            <style>{`
+              @keyframes overlayIn {
+                from { opacity: 0; transform: scale(0.88) translateY(16px); }
+                to   { opacity: 1; transform: scale(1) translateY(0); }
+              }
+            `}</style>
           </div>
-
-          <style>{`
-            @keyframes overlayIn {
-              from { opacity: 0; transform: scale(0.88) translateY(16px); }
-              to   { opacity: 1; transform: scale(1) translateY(0); }
-            }
-          `}</style>
-        </div>
-      )}
-    </section>
+        )}
+      </section>
+    </>
   );
 }

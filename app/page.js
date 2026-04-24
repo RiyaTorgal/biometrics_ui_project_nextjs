@@ -13,7 +13,7 @@ import {ContactSection} from "./components/ContactSection"
 import HeroSectionWrapper from "./components/HeroSectionWrapper"
 import AboutSectionWrapper from "./components/AboutSectionWrapper"
 import ExpertiseWrapper from "./components/ExpertiseWrapper"
-// import {PastAchievementsSection} from "./components/PastAchievementsSection"
+import PastAchievementsSectionWrapper from "./components/PastAchievementsSectionWrapper"
 // import { EuropeanAdvisory } from "./components/EuropeanAdvisory"
 // import { CoreFocusSection } from "./components/CoreFocus"
 
@@ -26,7 +26,7 @@ export default function HomePage() {
       <AboutSectionWrapper />
       <ExpertiseWrapper />
       <TrainingsSection />
-      {/* <PastAchievementsSection /> */}
+      <PastAchievementsSectionWrapper />
       <ContactSection />
       {/* <EventsSection /> */}
       {/* <GallerySection /> */}

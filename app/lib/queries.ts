@@ -92,3 +92,39 @@ export async function getServices() {
     }
   `);
 }
+
+export async function getPastAchievements() {
+  return sanity.fetch(`
+    *[_type == "pastAchievements"][0]{
+      sectionTitle,
+      sectionSubtitle,
+
+      subsections[]{
+        title,
+        subtitle,
+        description,
+        icon{
+          asset->{url}
+        },
+        links[]{
+          label,
+          url
+        }
+      },
+
+      talksHeading,
+      talks[]{
+        year,
+        title,
+        description,
+        image{
+          asset->{url}
+        },
+        links[]{
+          label,
+          url
+        }
+      }
+    }
+  `);
+}
