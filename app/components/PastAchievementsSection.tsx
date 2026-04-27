@@ -685,9 +685,9 @@ export function PastAchievementsSection({ data }: PastAchievementsProps) {
                 ))}
               </CarouselContent>
 
-              <div className="flex justify-center gap-4 mt-6">
-                <CarouselPrevious />
-                <CarouselNext />
+              <div className="flex justify-center gap-4">
+                <CarouselPrevious className="static translate-y-0" />
+                <CarouselNext className="static translate-y-0" />
               </div>
             </Carousel>
           </div>

@@ -1860,6 +1860,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 import { Clock, Users, Briefcase, CheckCircle, BookOpenText } from "lucide-react";
@@ -1886,11 +1887,16 @@ function getTabFromHash(hash: string): TabValue {
     : "lectures";
 }
 
+const navLinks = [
+  { label: "About us", href: "/#about" },
+  { label: "Our Services", href: "/#trainings" },
+];
+
 /* ------------------ PAGE ------------------ */
 
 export default function ServicesPage() {
   const [activeTab, setActiveTab] = useState<TabValue>("lectures");
-
+  const [isOpen, setIsOpen] = useState(false);
   const [lectures, setLectures] = useState<any[]>([]);
   const [workshops, setWorkshops] = useState<any[]>([]);
   const [consultationServices, setConsultationServices] = useState<any[]>([]);
@@ -1906,6 +1912,32 @@ export default function ServicesPage() {
   });
 
   const pathname = usePathname();
+
+  const handleNavClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    href: string
+  ) => {
+    const hash = href.startsWith("/#")
+      ? href.slice(1)
+      : href.startsWith("#")
+      ? href
+      : null;
+
+    if (!hash) return;
+    if (window.location.pathname !== "/") return;
+
+    e.preventDefault();
+    const target = document.querySelector(hash);
+    if (!target) return;
+
+    const navbarHeight = 80;
+    const offsetPosition =
+      target.getBoundingClientRect().top +
+      window.scrollY -
+      navbarHeight;
+
+    window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+  };
 
   /* ------------------ FETCH SANITY ------------------ */
 
@@ -1997,7 +2029,7 @@ export default function ServicesPage() {
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30">
 
       {/* NAV */}
-      <nav className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur-xl shadow-sm">
+      {/* <nav className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur-xl shadow-sm">
         <div className="container mx-auto flex h-16 md:h-20 items-center justify-between px-4">
           <Link href="/" className="flex items-center gap-3 group">
             <Image
@@ -2017,7 +2049,94 @@ export default function ServicesPage() {
             </div>
           </Link>
         </div>
-      </nav>
+      </nav> */}
+      <nav className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur-xl shadow-sm">
+      <div className="container mx-auto flex h-16 md:h-20 items-center justify-between px-4">
+        
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-3 group">
+          <Image
+            src="/official logo.svg"
+            alt="EyeIcon Navbar Logo"
+            width={56}
+            height={40}
+            className="object-contain"
+          />
+          <div className="flex flex-col">
+            <span className="font-display text-lg font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+              Sukshmadarshini Services
+            </span>
+            <span className="text-xs text-muted-foreground">
+              Insight Beyond Vision
+            </span>
+          </div>
+        </Link>
+
+        {/* Desktop Links */}
+        <div className="hidden md:flex items-center gap-8">
+          {navLinks.map((link) => (
+            <a
+              key={link.label}
+              href={link.href}
+              onClick={(e) => handleNavClick(e, link.href)}
+              className="text-muted-foreground hover:text-primary transition-colors text-sm font-medium"
+            >
+              {link.label}
+            </a>
+          ))}
+
+          <Link
+            href="/#contact"
+            onClick={(e) => handleNavClick(e, "/#contact")}
+          >
+            <Button className="rounded-full px-4 bg-secondary hover:bg-secondary/90 text-secondary-foreground">
+              Enquire Today
+            </Button>
+          </Link>
+        </div>
+
+        {/* Mobile Menu Button */}
+        <button
+          className="md:hidden p-2"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          {isOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+      </div>
+
+      {/* Mobile Menu */}
+      {isOpen && (
+        <div className="md:hidden border-t bg-background px-4 py-4">
+          <div className="flex flex-col gap-4">
+            {navLinks.map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                onClick={(e) => {
+                  handleNavClick(e, link.href);
+                  setIsOpen(false);
+                }}
+                className="text-muted-foreground hover:text-primary font-medium"
+              >
+                {link.label}
+              </a>
+            ))}
+
+            <Link
+              href="/#contact"
+              onClick={(e) => {
+                handleNavClick(e, "/#contact");
+                setIsOpen(false);
+              }}
+            >
+              <Button className="w-full mt-2 rounded-full bg-secondary hover:bg-secondary/90 text-secondary-foreground">
+                Enquire Today
+              </Button>
+            </Link>
+          </div>
+        </div>
+      )}
+    </nav>
 
       {/* HEADER */}
       <section className="container mx-auto px-4 py-14 text-center">

@@ -128,3 +128,49 @@ export async function getPastAchievements() {
     }
   `);
 }
+
+export async function getPrivacyPolicy() {
+  return sanity.fetch(`
+    *[_type == "privacy"][0]{
+      SectionIcon{
+        asset->{url}
+      },
+      SectionTag,
+      SectionTitle,
+      SectionDescription,
+      SectionDate,
+
+      privacyPolicy[]{
+        title,
+        description,
+        descriptionPoints,
+        icon{
+          asset->{url}
+        }
+      }
+    }
+  `);
+}
+
+export async function getTermsOfService() {
+  return sanity.fetch(`
+    *[_type == "termsOfService"][0]{
+      SectionIcon{
+        asset->{url}
+      },
+      SectionTag,
+      SectionTitle,
+      SectionDescription,
+      SectionDate,
+
+      terms[]{
+        title,
+        description,
+        descriptionPoints,
+        icon{
+          asset->{url}
+        }
+      }
+    }
+  `);
+}
