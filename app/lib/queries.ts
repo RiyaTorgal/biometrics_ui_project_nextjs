@@ -93,6 +93,44 @@ export async function getServices() {
   `);
 }
 
+export async function getCareersPage() {
+  return sanity.fetch(`
+    *[_type == "careers"][0]{
+      SectionTitle,
+      SectionDescription,
+      SectionTag,
+      SectionIcon{
+        asset->{url}
+      },
+
+      careersSections[]{
+        title,
+        tag,
+        description,
+        points[],
+        icon{
+          asset->{url}
+        },
+        jobs[]{
+          title,
+          department,
+          type,
+          location,
+          description,
+          responsibilities,
+          requirements,
+          compensation
+        }
+      },
+
+      application{
+        email,
+        note
+      }
+    }
+  `);
+}
+
 export async function getPastAchievements() {
   return sanity.fetch(`
     *[_type == "pastAchievements"][0]{

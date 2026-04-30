@@ -88,6 +88,8 @@ body {
 
     --radius: 0.75rem;
 
+    --initial: 235, 46% 45%;
+
     /* ================== Custom Tokens ================== */
 
     --gradient-hero: radial-gradient(
