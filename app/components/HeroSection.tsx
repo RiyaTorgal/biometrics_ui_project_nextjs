@@ -226,7 +226,7 @@ const selectedImage = isMobile
               {/* Mobile */}
               {mobileUrl && (
                 <source
-                  media="(max-width: 768px)"
+                  media="(max-width: 500px)"
                   srcSet={mobileUrl}
                 />
               )}
