@@ -404,6 +404,7 @@ import {
   Clock,
   Shield,
   CircleCheckBig,
+  Upload,
 } from "lucide-react";
 
 import { Navbar } from "../components/Navbar";
@@ -417,8 +418,14 @@ import {
   DialogFooter,
 } from "../components/ui/dialog";
 
+import { z } from "zod";
+
 import { useState } from "react";
 import Image from "next/image";
+import { Label } from "../components/ui/label";
+import { Textarea } from "../components/ui/textarea";
+import { Input } from "../components/ui/input";
+import { useToast } from "../hooks/use-toast";
 
 /* ================= TYPES ================= */
 
@@ -466,8 +473,20 @@ type CareersData = {
 
 export default function CareersComponent({ data }: { data: CareersData }) {
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+  const [applyJob, setApplyJob] = useState<Job | null>(null);
+  const [form, setForm] = useState({ name: "", email: "", whyHire: "", extracurriculars: "" });
+  const [resumeFile, setResumeFile] = useState<File | null>(null);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const { toast } = useToast();
 
   console.log("CareersComponent data:", data);
+
+  const applicationSchema = z.object({
+  name: z.string().trim().min(1, "Name is required").max(100, "Name must be less than 100 characters"),
+  email: z.string().trim().email("Invalid email address").max(255, "Email must be less than 255 characters"),
+  whyHire: z.string().trim().min(20, "Please write at least 20 characters").max(2000, "Must be less than 2000 characters"),
+  extracurriculars: z.string().trim().max(1000, "Must be less than 1000 characters").optional(),
+});
 
   const sections = data?.careersSections || [];
 
@@ -486,6 +505,52 @@ export default function CareersComponent({ data }: { data: CareersData }) {
   // );
 
   const jobs = jobsSection?.jobs || [];
+
+  const openApply = (job: Job) => {
+    setSelectedJob(null);
+    setApplyJob(job);
+    setForm({ name: "", email: "", whyHire: "", extracurriculars: "" });
+    setResumeFile(null);
+    setErrors({});
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const result = applicationSchema.safeParse(form);
+    if (!result.success) {
+      const fieldErrors: Record<string, string> = {};
+      result.error.errors.forEach((err) => {
+        if (err.path[0]) fieldErrors[err.path[0] as string] = err.message;
+      });
+      setErrors(fieldErrors);
+      return;
+    }
+    if (!resumeFile) {
+      setErrors({ resume: "Please attach your resume" });
+      return;
+    }
+    const data = result.data;
+    const subject = `Application: ${applyJob?.title ?? ""}`;
+    const body = [
+      `Name: ${data.name}`,
+      `Email: ${data.email}`,
+      `Position: ${applyJob?.title ?? ""}`,
+      "",
+      "Why we should hire me:",
+      data.whyHire,
+      "",
+      "Extracurricular activities / shareable links:",
+      data.extracurriculars || "—",
+      "",
+      `Resume: ${resumeFile.name} (please find attached)`,
+    ].join("\n");
+    window.location.href = `mailto:sukshmadarshini@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    toast({
+      title: "Opening your email client",
+      description: "Please attach your resume file before sending.",
+    });
+    setApplyJob(null);
+  };
 
   return (
     <>
@@ -565,29 +630,30 @@ export default function CareersComponent({ data }: { data: CareersData }) {
                 className="glass-card rounded-2xl p-6 md:p-8 shadow-soft hover:shadow-glow transition-all duration-300 animate-fade-up"
                 style={{ animationDelay: `${index * 0.05}s` }}
               >
-                <div className="flex items-start gap-4 mb-0">
-                  
-                  {/* Icon */}
-                  <div className="w-9 h-9 rounded-xl gradient-accent flex items-center justify-center flex-shrink-0">
-                    {section.icon?.asset?.url ? (
-                      <Image
-                        src={section.icon.asset.url}
-                        alt="icon"
-                        width={20}
-                        height={20}
-                        className="w-5 h-5 object-contain"
-                      />
-                    ) : (
-                      <Shield className="w-5 h-5 text-primary-foreground" />
-                    )}
-                  </div>
+                <div className="flex items-start gap-4 mb-3">
+                  <div className="flex items-center gap-4">
+                    {/* Icon */}
+                    <div className="w-9 h-9 rounded-xl gradient-accent flex items-center justify-center flex-shrink-0">
+                      {section.icon?.asset?.url ? (
+                        <Image
+                          src={section.icon.asset.url}
+                          alt="icon"
+                          width={20}
+                          height={20}
+                          className="w-5 h-5 object-contain"
+                        />
+                      ) : (
+                        <Shield className="w-5 h-5 text-primary-foreground" />
+                      )}
+                    </div>
 
-                  {/* Title */}
-                  <div>
-                    <span className="text-xs text-muted-foreground font-medium tracking-wider uppercase">{section.tag}</span>
-                    <h2 className="font-display text-xl font-semibold text-foreground">
-                      {section.title}
-                    </h2>
+                    {/* Title */}
+                    <div>
+                      <span className="text-xs text-muted-foreground font-medium tracking-wider uppercase">{section.tag}</span>
+                      <h2 className="font-display text-xl font-semibold text-foreground">
+                        {section.title}
+                      </h2>
+                    </div>
                   </div>
                 </div>
 
@@ -604,7 +670,7 @@ export default function CareersComponent({ data }: { data: CareersData }) {
                       <ul className="space-y-2 ml-1">
                         {section.points.map((point, i) => (
                           <li key={i} className="flex items-center gap-2">
-                            <CircleCheckBig className="w-4 h-4 rounded-full flex-shrink-0" />
+                            <CircleCheckBig className="w-4 h-4 rounded-full text-secondary mt-0.5 flex-shrink-0" />
                             {point}
                           </li>
                         ))}
@@ -615,14 +681,22 @@ export default function CareersComponent({ data }: { data: CareersData }) {
             ))}
           </div>
           <div className="mt-8 glass-card rounded-2xl p-6 md:p-8 shadow-soft hover:shadow-glow transition-all duration-300 animate-fade-up">
-                <div className=" flex items-center gap-2 mb-2 ">
+                <div className="flex items-start gap-4 mb-3">
+                  <div className="flex items-center gap-4">
                   <div className="w-9 h-9 rounded-xl gradient-accent flex items-center justify-center flex-shrink-0">
                     <JobIcon className="w-4 h-4 text-white" />
                   </div>
-                  <span className="text-xs uppercase">Open Roles</span>
+                  <div>
+                    <span className="text-xs text-muted-foreground font-medium tracking-wider uppercase">Open Roles</span>
+                    <h2 className="font-display text-xl font-semibold text-foreground">
+                      Available Jobs
+                    </h2>
+                  </div>
+                  </div>
+                  {/* <span className="text-xs uppercase">Open Roles</span>
                   <h3 className="text-lg font-semibold mb-4">
                   Available Jobs
-                </h3>
+                </h3> */}
                 </div>
 
 
@@ -633,9 +707,9 @@ export default function CareersComponent({ data }: { data: CareersData }) {
                         key={i}
                         className="glass-card rounded-2xl p-6 md:p-8 shadow-soft hover:shadow-glow transition-all duration-300 animate-fade-up"
                       >
-                        <div className="flex justify-between mb-2 text-xs">
-                          <span>{job.department}</span>
-                          <span>{job.type}</span>
+                        <div className="flex justify-between mb-3">
+                          <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-accent/10 text-accent text-[10px] font-semibold tracking-wider uppercase">{job.department}</span>
+                          <span className="text-[10px] text-muted-foreground font-medium tracking-wider uppercase">{job.type}</span>
                         </div>
 
                         <h4 className="font-semibold">{job.title}</h4>
@@ -645,18 +719,19 @@ export default function CareersComponent({ data }: { data: CareersData }) {
                         </p>
 
                         <div className="flex justify-between mt-4">
-                          <span className="flex items-center gap-1 text-xs">
-                            <MapPin className="w-3 h-3" />
+                          <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
+                            <MapPin className="w-3.5 h-3.5" />
                             {job.location}
                           </span>
 
                           <Button
                             size="sm"
                             variant="ghost"
+                            className="h-8 px-2 text-secondary hover:text-secondary hover:bg-secondary/10"
                             onClick={() => setSelectedJob(job)}
                           >
                             View
-                            <ArrowRight className="w-3 h-3 ml-1" />
+                            <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
                           </Button>
                         </div>
                       </div>
@@ -667,60 +742,178 @@ export default function CareersComponent({ data }: { data: CareersData }) {
                 </div>
               </div>
       </section>
-      {/* DIALOG */}
-      <Dialog
-        open={!!selectedJob}
-        onOpenChange={(open) => !open && setSelectedJob(null)}
-      >
-        <DialogContent className="max-w-2xl">
+
+      <Dialog open={!!selectedJob} onOpenChange={(open) => !open && setSelectedJob(null)}>
+        <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
           {selectedJob && (
             <>
               <DialogHeader>
-                <DialogTitle>{selectedJob.title}</DialogTitle>
-                <DialogDescription>
+                <div className="flex flex-wrap items-center gap-2 mb-2">
+                  <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-accent/10 text-accent text-[10px] font-semibold tracking-wider uppercase">
+                    {selectedJob.department}
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
+                    <Clock className="w-3.5 h-3.5" />
+                    {selectedJob.type}
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
+                    <MapPin className="w-3.5 h-3.5" />
+                    {selectedJob.location}
+                  </span>
+                </div>
+                <DialogTitle className="font-display text-2xl">{selectedJob.title}</DialogTitle>
+                <DialogDescription className="text-foreground/70 leading-relaxed pt-1">
                   {selectedJob.description}
                 </DialogDescription>
               </DialogHeader>
 
-              {/* Responsibilities */}
-              <h4 className="mt-4 font-semibold">Responsibilities</h4>
-              {selectedJob.responsibilities?.map((r, i) => (
-                <div key={i} className="flex gap-2 text-sm">
-                  <CheckCircle2 className="w-4 h-4" />
-                  {r}
+              <div className="space-y-5 mt-2">
+                <div>
+                  <h4 className="font-display text-sm font-semibold text-foreground mb-2 uppercase tracking-wider">
+                    Responsibilities
+                  </h4>
+                  <ul className="space-y-2">
+                    {selectedJob.responsibilities?.map((item) => (
+                      <li key={item} className="flex items-start gap-2 text-sm text-foreground/80">
+                        <CheckCircle2 className="w-4 h-4 text-secondary mt-0.5 flex-shrink-0" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              ))}
 
-              {/* Requirements */}
-              <h4 className="mt-4 font-semibold">Requirements</h4>
-              {selectedJob.requirements?.map((r, i) => (
-                <div key={i} className="flex gap-2 text-sm">
-                  <CheckCircle2 className="w-4 h-4" />
-                  {r}
+                <div>
+                  <h4 className="font-display text-sm font-semibold text-foreground mb-2 uppercase tracking-wider">
+                    Requirements
+                  </h4>
+                  <ul className="space-y-2">
+                    {selectedJob.requirements?.map((item) => (
+                      <li key={item} className="flex items-start gap-2 text-sm text-foreground/80">
+                        <CheckCircle2 className="w-4 h-4 text-accent mt-0.5 flex-shrink-0" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              ))}
 
-              <p className="mt-4 text-sm">
-                <strong>Compensation:</strong>{" "}
-                {selectedJob.compensation}
-              </p>
+                <div className="rounded-lg bg-muted/40 border border-border/60 p-4">
+                  <span className="text-[10px] text-muted-foreground font-semibold tracking-wider uppercase">
+                    Compensation
+                  </span>
+                  <p className="text-sm text-foreground/80 mt-1">{selectedJob.compensation}</p>
+                </div>
+              </div>
 
-              <DialogFooter>
-                <Button onClick={() => setSelectedJob(null)}>
+              <DialogFooter className="mt-4">
+                <Button variant="outline" onClick={() => setSelectedJob(null)}>
                   Close
                 </Button>
-
-                <Button asChild>
-                  <a
-                    href={`mailto:${data?.application?.email}?subject=Application: ${encodeURIComponent(
-                      selectedJob.title || ""
-                    )}`}
-                  >
-                    Apply
-                  </a>
+                <Button onClick={() => openApply(selectedJob)}>
+                    <Mail className="w-4 h-4" />
+                    Apply Now
                 </Button>
               </DialogFooter>
             </>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={!!applyJob} onOpenChange={(open) => !open && setApplyJob(null)}>
+        <DialogContent className="max-w-xl max-h-[90vh] overflow-y-auto">
+          {applyJob && (
+            <form onSubmit={handleSubmit}>
+              <DialogHeader>
+                <DialogTitle className="font-display text-xl">Apply: {applyJob.title}</DialogTitle>
+                <DialogDescription>
+                  Fill in your details below. Your email client will open to send the application — please attach your resume before sending.
+                </DialogDescription>
+              </DialogHeader>
+
+              <div className="space-y-4 mt-4">
+                <div className="space-y-1.5">
+                  <Label htmlFor="apply-name">Full name <span className="text-destructive">*</span></Label>
+                  <Input
+                    id="apply-name"
+                    value={form.name}
+                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                    maxLength={100}
+                    required
+                  />
+                  {errors.name && <p className="text-xs text-destructive">{errors.name}</p>}
+                </div>
+
+                <div className="space-y-1.5">
+                  <Label htmlFor="apply-email">Email <span className="text-destructive">*</span></Label>
+                  <Input
+                    id="apply-email"
+                    type="email"
+                    value={form.email}
+                    onChange={(e) => setForm({ ...form, email: e.target.value })}
+                    maxLength={255}
+                    required
+                  />
+                  {errors.email && <p className="text-xs text-destructive">{errors.email}</p>}
+                </div>
+
+                <div className="space-y-1.5">
+                  <Label htmlFor="apply-why">Why should we hire you <span className="text-destructive">*</span></Label>
+                  <Textarea
+                    id="apply-why"
+                    rows={5}
+                    value={form.whyHire}
+                    onChange={(e) => setForm({ ...form, whyHire: e.target.value })}
+                    maxLength={2000}
+                    placeholder="Tell us about your strengths, motivation, and fit for this role…"
+                    required
+                  />
+                  {errors.whyHire && <p className="text-xs text-destructive">{errors.whyHire}</p>}
+                </div>
+
+                <div className="space-y-1.5">
+                  <Label htmlFor="apply-resume">Resume <span className="text-destructive">*</span></Label>
+                  <label
+                    htmlFor="apply-resume"
+                    className="flex items-center gap-3 px-3 py-2.5 rounded-md border border-dashed border-input bg-background hover:bg-muted/40 cursor-pointer transition-colors"
+                  >
+                    <Upload className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-sm text-foreground/80 truncate">
+                      {resumeFile ? resumeFile.name : "Choose a PDF / DOC / DOCX file"}
+                    </span>
+                  </label>
+                  <Input
+                    id="apply-resume"
+                    type="file"
+                    accept=".pdf,.doc,.docx"
+                    className="hidden"
+                    onChange={(e) => setResumeFile(e.target.files?.[0] ?? null)}
+                  />
+                  {errors.resume && <p className="text-xs text-destructive">{errors.resume}</p>}
+                </div>
+
+                <div className="space-y-1.5">
+                  <Label htmlFor="apply-extra">Extracurricular activities (shareable links)</Label>
+                  <Textarea
+                    id="apply-extra"
+                    rows={3}
+                    value={form.extracurriculars}
+                    onChange={(e) => setForm({ ...form, extracurriculars: e.target.value })}
+                    maxLength={1000}
+                    placeholder="LinkedIn, GitHub, portfolio, publications, volunteer work…"
+                  />
+                  {errors.extracurriculars && <p className="text-xs text-destructive">{errors.extracurriculars}</p>}
+                </div>
+              </div>
+
+              <DialogFooter className="mt-6">
+                <Button type="button" variant="outline" onClick={() => setApplyJob(null)}>
+                  Cancel
+                </Button>
+                <Button type="submit">
+                  <Mail className="w-4 h-4" />
+                  Send Application
+                </Button>
+              </DialogFooter>
+            </form>
           )}
         </DialogContent>
       </Dialog>
