@@ -212,3 +212,30 @@ export async function getTermsOfService() {
     }
   `);
 }
+
+export async function getTeamSection() {
+  return sanity.fetch(`
+    *[_type == "teamSection"][0]{
+      founder{
+        name,
+        role,
+        bio,
+        initials,
+        image{
+          asset->{url}
+        }
+      },
+
+      members[]{
+        name,
+        role,
+        bio,
+        initials,
+        iconName,
+        image{
+          asset->{url}
+        }
+      }
+    }
+  `);
+}
