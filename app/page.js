@@ -14,6 +14,7 @@ import HeroSectionWrapper from "./components/HeroSectionWrapper"
 import AboutSectionWrapper from "./components/AboutSectionWrapper"
 import ExpertiseWrapper from "./components/ExpertiseWrapper"
 import PastAchievementsSectionWrapper from "./components/PastAchievementsSectionWrapper"
+import TeamSectionWrapper from "./components/TeamSectionWrapper"
 // import { EuropeanAdvisory } from "./components/EuropeanAdvisory"
 // import { CoreFocusSection } from "./components/CoreFocus"
 
@@ -27,6 +28,7 @@ export default function HomePage() {
       <ExpertiseWrapper />
       <TrainingsSection />
       <PastAchievementsSectionWrapper />
+      <TeamSectionWrapper />
       <ContactSection />
       {/* <EventsSection /> */}
       {/* <GallerySection /> */}
