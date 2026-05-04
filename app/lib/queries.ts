@@ -34,6 +34,22 @@ export async function getHomepage() {
 export async function getServices() {
   return sanity.fetch(`
     {
+      "complementaryLectures": *[_type == "complementaryLecture"]{
+        _id,
+        title,
+        description,
+        date,
+        category,
+        duration,
+        mode,
+        instructor,
+        idealFor,
+        content,
+        includes,
+        thumbnail{
+          asset->{url}
+        }
+      },
       "lectures": *[_type == "lecture"]{
         _id,
         title,
@@ -233,6 +249,24 @@ export async function getTeamSection() {
         initials,
         iconName,
         image{
+          asset->{url}
+        }
+      }
+    }
+  `);
+}
+
+export async function getCollaborations() {
+  return sanity.fetch(`
+    *[_type == "collaborations"][0]{
+      collaborations[]{
+        title,
+        collaboratedWith,
+        dateFrom,
+        dateTo,
+        duration,
+        description,
+        photos[]{
           asset->{url}
         }
       }

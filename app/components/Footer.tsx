@@ -190,12 +190,14 @@ import Link from "next/link";
 
 const footerLinks = {
   services: [
+    // { label: "Complementary Lectures", href: "/services#complementary" },
     { label: "Lectures", href: "/services#lectures" },
     { label: "Workshop", href: "/services#workshops" },
     { label: "Consultations", href: "/services#consulting" },
   ],
   company: [
     { label: "Careers", href: "/careers" },
+    { label: "Collaborations", href: "/collaborations" },
     { label: "Contact", href: "/#contact" },
   ],
   legal: [
