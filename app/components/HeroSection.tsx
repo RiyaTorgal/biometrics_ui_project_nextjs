@@ -262,7 +262,7 @@ const selectedImage = isMobile
 
       {/* Feature Cards — unchanged */}
       <div className="container mx-auto px-4 py-16">
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((feature, index) => (
             <div key={feature.title} className="bg-card rounded-2xl p-6 shadow-soft hover:shadow-lg transition-all duration-300 animate-fade-up" style={{ animationDelay: `${index * 0.1}s` }}>
               <div className="flex items-center gap-4 mb-4">

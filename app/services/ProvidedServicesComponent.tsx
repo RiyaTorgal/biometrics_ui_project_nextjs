@@ -1860,7 +1860,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Menu, X } from "lucide-react";
+import { Gift, Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 import { Clock, Users, Briefcase, CheckCircle, BookOpenText } from "lucide-react";
@@ -1875,14 +1875,15 @@ import LectureDetailDialog from "../components/LectureDetailDialogue";
 import ConsultationDetailDialog from "../components/ConsultationDetailDialogue";
 
 import { getServices } from "@/app/lib/queries";
+import ComplementaryLectureDetailDialog from "../components/ComplementaryLectureDetailDialogue";
 
 /* ------------------ TYPES ------------------ */
 
-type TabValue = "lectures" | "workshops" | "consulting";
+type TabValue = "complementary" | "lectures" | "workshops" | "consulting";
 
 function getTabFromHash(hash: string): TabValue {
   const clean = hash.replace("#", "") as TabValue;
-  return ["lectures", "workshops", "consulting"].includes(clean)
+  return ["complementary", "lectures", "workshops", "consulting"].includes(clean)
     ? clean
     : "lectures";
 }
@@ -1895,14 +1896,16 @@ const navLinks = [
 /* ------------------ PAGE ------------------ */
 
 export default function ServicesPage() {
-  const [activeTab, setActiveTab] = useState<TabValue>("lectures");
+  const [activeTab, setActiveTab] = useState<TabValue>("complementary");
   const [isOpen, setIsOpen] = useState(false);
   const [lectures, setLectures] = useState<any[]>([]);
+    const [complementaryLectures, setComplementaryLectures] = useState<any[]>([]);
   const [workshops, setWorkshops] = useState<any[]>([]);
   const [consultationServices, setConsultationServices] = useState<any[]>([]);
 
   const [selectedWorkshop, setSelectedWorkshop] = useState<any>(null);
   const [selectedLecture, setSelectedLecture] = useState<any>(null);
+    const [selectedComplementaryLecture, setSelectedComplementaryLecture] = useState<any>(null);
   const [selectedConsultation, setSelectedConsultation] = useState<any>(null);
 
   const [formData, setFormData] = useState({
@@ -1946,6 +1949,24 @@ export default function ServicesPage() {
       try {
         const data = await getServices();
 
+        setComplementaryLectures(
+          (data.complementaryLectures || []).map((item: any) => ({
+            id: item._id,
+            _id: item._id,
+            title: item.title,
+            duration: item.duration,
+            date: item.date,
+            mode: item.mode,
+            description: item.description,
+            category: item.category,
+            instructor: item.instructor,
+            idealFor: item.idealFor,
+            content: item.content || [],
+            includes: item.includes || [],
+            thumbnail: item.thumbnail?.asset?.url || "",
+          }))
+        );
+        
         setLectures(
           (data.lectures || []).map((item: any) => ({
             _id: item._id,               // ← Sanity document ID for API route
@@ -2152,7 +2173,12 @@ export default function ServicesPage() {
       <main className="container mx-auto px-4 pb-16">
         {/* TABS */}
         <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as TabValue)}>
-          <TabsList className="grid grid-cols-1 sm:grid-cols-3 max-w-2xl mx-auto h-auto">
+          <TabsList className="grid grid-cols-1 sm:grid-cols-4 max-w-4xl mx-auto h-auto">
+            <TabsTrigger value="complementary">
+              <Gift className="w-4 h-4 mr-2" />
+              Complementary Lectures
+            </TabsTrigger>
+            
             <TabsTrigger value="lectures">
               <BookOpenText className="w-4 h-4 mr-2" />
               Lectures Provided
@@ -2169,6 +2195,74 @@ export default function ServicesPage() {
             </TabsTrigger>
           </TabsList>
 
+          {/* ----------------COMPLEMENTARY LECTURES ---------------- */}
+          <TabsContent value="complementary" className="mt-10 text-center">
+            <h3 className="font-display text-3xl md:text-4xl font-bold text-gradient mb-10">
+              Complementary Lectures
+            </h3>
+
+            {/* <span className="italic text-gray-500"> Complementary Lectures Coming soon....</span> */}
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
+              {complementaryLectures.map((l) => (
+                <Card
+                  className="overflow-hidden transition-all duration-300 cursor-pointer hover:shadow-lg hover:-translate-y-1 flex flex-col"
+                  key={l._id}
+                  onClick={() => setSelectedComplementaryLecture(l)}
+                >
+                  <div className="relative h-48">
+                    <Image
+                      src={l.thumbnail || "/placeholder.png"}
+                      alt={l.title}
+                      fill
+                      className="object-cover transition-transform duration-300 hover:scale-105 rounded-t-lg"
+                    />
+                    <div className="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded flex items-center gap-1">
+                      <Clock className="w-3 h-3" />
+                      {l.duration}
+                    </div>
+                  </div>
+                  <CardContent className="pt-4 flex flex-col flex-1">
+                    <div className="flex-1 space-y-3">
+                      <Badge variant="outline">{l.category}</Badge>
+                      <h3 className="font-semibold">{l.title}</h3>
+                      <p className="text-sm text-muted-foreground">
+                        <strong>Mode:</strong> {l.mode ?? "N/A"}
+                      </p>
+                      <ul className="space-y-2 text-sm text-muted-foreground">
+                        {(l.content ?? []).slice(0, 3).map((c: string, i: number) => (
+                          <li key={i} className="flex items-start gap-2">
+                            <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 shrink-0" />
+                            <span>{c}</span>
+                          </li>
+                        ))}
+                        {l.content && l.content.length > 3 && (
+                          <li className="italic text-xs text-muted-foreground">+ more</li>
+                        )}
+                      </ul>
+                      {/* Show priceLabel instead of discountedPrice
+                      {l.priceLabel && (
+                        <p className="text-sm font-semibold text-foreground">
+                          {l.priceLabel}
+                          {l.originalPrice && (
+                            <span className="ml-2 line-through text-xs text-muted-foreground font-normal">
+                              {l.originalPrice}
+                            </span>
+                          )}
+                        </p>
+                      )} */}
+                      {/* <p className="text-xs italic text-muted-foreground">
+                        {l.priceNote}
+                      </p> */}
+                    </div>
+                    <Button variant="secondary" className="w-full mt-4">
+                      View Details
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+          
           {/* ---------------- LECTURES ---------------- */}
           <TabsContent value="lectures" className="mt-10 text-center">
             <h3 className="font-display text-3xl md:text-4xl font-bold text-gradient mb-10">
@@ -2341,6 +2435,12 @@ export default function ServicesPage() {
       </main>
 
       {/* ---------------- DIALOGS ---------------- */}
+      <ComplementaryLectureDetailDialog
+        video={selectedComplementaryLecture}
+        open={!!selectedComplementaryLecture}
+        onOpenChange={() => setSelectedComplementaryLecture(null)}
+      />
+
       <LectureDetailDialog
         video={selectedLecture}
         open={!!selectedLecture}

@@ -41,6 +41,58 @@ export async function appendLectureRegistration(opts: {
   ]);
 }
 
+// export async function appendLectureRegistration(data: {
+//   name: string;
+//   email: string;
+//   lectureTitle: string;
+//   selectedSlot: string;
+//   mode: string;
+//   duration: string;
+//   transactionRef: string;
+// }) {
+//   const auth = await getAuth();
+//   const sheets = google.sheets({ version: "v4", auth });
+ 
+//   const timestamp = new Date().toLocaleString("en-IN", {
+//     timeZone: "Asia/Kolkata",
+//     year:     "numeric",
+//     month:    "2-digit",
+//     day:      "2-digit",
+//     hour:     "2-digit",
+//     minute:   "2-digit",
+//     second:   "2-digit",
+//   });
+ 
+//   const slotFormatted = new Date(data.selectedSlot).toLocaleString("en-IN", {
+//     timeZone: "Asia/Kolkata",
+//     weekday:  "short",
+//     month:    "short",
+//     day:      "numeric",
+//     year:     "numeric",
+//     hour:     "2-digit",
+//     minute:   "2-digit",
+//   });
+ 
+//   await sheets.spreadsheets.values.append({
+//     spreadsheetId: process.env.GOOGLE_SHEET_ID!,
+//     range:         "Lectures!A:I",
+//     valueInputOption: "USER_ENTERED",
+//     requestBody: {
+//       values: [[
+//         timestamp,            // A: Timestamp (IST)
+//         data.name,            // B: Name
+//         data.email,           // C: Email
+//         data.lectureTitle,    // D: Lecture Title
+//         slotFormatted,        // E: Slot (IST)
+//         data.mode,            // F: Mode
+//         data.duration,        // G: Duration
+//         data.transactionRef,  // H: Transaction Ref
+//         "Pending",            // I: Payment Status
+//       ]],
+//     },
+//   });
+// }
+
 // ─── Workshops tab ───────────────────────────────────────────
 // Columns: Date | Name | Email | Phone No | Institute | City | Event | Participants | Message | Timestamp | Paid/Unpaid
 export async function appendWorkshopRegistration(opts: {
@@ -89,4 +141,95 @@ export async function appendConsultationRegistration(opts: {
     opts.transactionRef,                                             // Transaction Ref
     "Unpaid",                                                        // Paid/Unpaid — default
   ]);
+}
+
+// ─── Complementary Lecture Registrations ─────────────────────────────────────
+ 
+export async function appendComplementaryLectureRegistration(data: {
+  name: string;
+  email: string;
+  lectureTitle: string;
+  selectedSlot: string;
+  mode: string;
+  duration: string;
+  registrationRef: string;
+}) {
+  const auth = await getAuth();
+  const sheets = google.sheets({ version: "v4", auth });
+ 
+  const timestamp = new Date().toLocaleString("en-IN", {
+    timeZone: "Asia/Kolkata",
+    year:     "numeric",
+    month:    "2-digit",
+    day:      "2-digit",
+    hour:     "2-digit",
+    minute:   "2-digit",
+    second:   "2-digit",
+  });
+ 
+  const slotFormatted = new Date(data.selectedSlot).toLocaleString("en-IN", {
+    timeZone: "Asia/Kolkata",
+    weekday:  "short",
+    month:    "short",
+    day:      "numeric",
+    year:     "numeric",
+    hour:     "2-digit",
+    minute:   "2-digit",
+  });
+ 
+  await sheets.spreadsheets.values.append({
+    spreadsheetId: process.env.GOOGLE_SHEET_ID!,
+    range:         "Complementary Lectures!A:H",
+    valueInputOption: "USER_ENTERED",
+    requestBody: {
+      values: [[
+        timestamp,              // A: Timestamp (IST)
+        data.name,              // B: Name
+        data.email,             // C: Email
+        data.lectureTitle,      // D: Lecture Title
+        slotFormatted,          // E: Slot (IST)
+        data.mode,              // F: Mode
+        data.duration,          // G: Duration
+        data.registrationRef,   // H: Registration Ref
+      ]],
+    },
+  });
+}
+
+// ─── Contact Submissions ─────────────────────────────────────────────────────
+ 
+export async function appendContactSubmission(data: {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}) {
+  const auth = await getAuth(); // reuse your existing helper
+  const sheets = google.sheets({ version: "v4", auth });
+ 
+  const timestamp = new Date().toLocaleString("en-IN", {
+    timeZone: "Asia/Kolkata",
+    year:     "numeric",
+    month:    "2-digit",
+    day:      "2-digit",
+    hour:     "2-digit",
+    minute:   "2-digit",
+    second:   "2-digit",
+  });
+ 
+  await sheets.spreadsheets.values.append({
+    spreadsheetId: process.env.GOOGLE_SHEET_ID!,
+    range:         "ContactForms!A:F",
+    valueInputOption: "USER_ENTERED",
+    requestBody: {
+      values: [[
+        timestamp,         // A: Timestamp (IST)
+        data.name,         // B: Name
+        data.email,        // C: Email
+        data.subject,      // D: Subject
+        data.message,      // E: Message
+        "Website Contact Form", // F: Source
+      ]],
+    },
+  });
 }
