@@ -17,13 +17,29 @@ export const DISPOSABLE_DOMAINS = new Set([
 ]);
 
 export const KNOWN_GOOD_DOMAINS = new Set([
-  "gmail.com","yahoo.com","outlook.com","hotmail.com","icloud.com",
-  "protonmail.com","proton.me","me.com","mac.com","live.com",
-  "msn.com","googlemail.com","ymail.com","aol.com","zoho.com",
+  // Global
+  "gmail.com","googlemail.com",
+  "yahoo.com","yahoo.in","ymail.com",
+  "outlook.com","hotmail.com","live.com","msn.com",
+  "icloud.com","me.com","mac.com",
+  "protonmail.com","proton.me",
+  "aol.com",
+  "zoho.com",
+  "mail.com",
+  // German providers
+  "gmx.de","gmx.com",
+  "web.de",
+  "t-online.de",
+  "freenet.de",
+  "arcor.de",
+  "posteo.de",
+  "tutanota.com",
+  // Indian providers
+  "rediffmail.com",
 ]);
 
 const GIBBERISH_DOMAIN_PATTERNS = [
-  /^[^aeiou]{2,}\.[a-z]{2,}$/i,
+  // REMOVED /^[^aeiou]{2,}\.[a-z]{2,}$/i — was a false positive for gmx.de, web.de, etc.
   /^(.)\1{2,}\.[a-z]{2,}$/i,
   /^(foo|bar|baz|qux|test|fake|dummy|example|sample|blah|asdf|xyz|abc)\.[a-z]{2,}$/i,
 ];
@@ -49,7 +65,6 @@ const cache = new Map<string, { valid: boolean; reason?: string }>();
 async function checkMx(domain: string): Promise<"valid" | "nomx" | "parked" | "unknown"> {
   try {
     const mx = await dns.resolveMx(domain);
-
     if (!mx || mx.length === 0) return "nomx";
 
     const topMx = mx.sort((a, b) => a.priority - b.priority)[0].exchange;
@@ -62,7 +77,6 @@ async function checkMx(domain: string): Promise<"valid" | "nomx" | "parked" | "u
       if (err.code === "ENODATA" || err.code === "ENOTFOUND") return "parked";
       return "unknown";
     }
-
   } catch (err: any) {
     if (["ENODATA", "ENOTFOUND", "ESERVFAIL"].includes(err.code)) return "nomx";
     return "unknown";
@@ -72,13 +86,11 @@ async function checkMx(domain: string): Promise<"valid" | "nomx" | "parked" | "u
 async function isParked(domain: string) {
   try {
     const ns = await dns.resolveNs(domain);
-
     return ns.some((server) =>
       PARKING_NAMESERVERS.some((parking) =>
         server.toLowerCase().includes(parking)
       )
     );
-
   } catch {
     return false;
   }
@@ -95,7 +107,6 @@ export async function validateEmail(email: string) {
   if (cache.has(normalized)) return cache.get(normalized)!;
 
   /* Format check */
-
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(normalized)) {
     const result = { valid: false, reason: "Please use a valid email address." };
     cache.set(normalized, result);
@@ -105,7 +116,6 @@ export async function validateEmail(email: string) {
   const [local, domain] = normalized.split("@");
 
   /* Disposable domain */
-
   if (DISPOSABLE_DOMAINS.has(domain)) {
     const result = { valid: false, reason: "Temporary emails are not allowed." };
     cache.set(normalized, result);
@@ -113,13 +123,11 @@ export async function validateEmail(email: string) {
   }
 
   /* Fake local parts */
-
   const fakePatterns = [
     /^(test|fake|asdf|qwerty|noreply|no-reply|donotreply|spam|trash|throwaway|temp)\d*$/i,
     /^(.)\1{4,}$/,
     /^\d+$/,
   ];
-
   for (const pattern of fakePatterns) {
     if (pattern.test(local)) {
       const result = { valid: false, reason: "Please use a real email address." };
@@ -128,8 +136,7 @@ export async function validateEmail(email: string) {
     }
   }
 
-  /* Trusted domains */
-
+  /* Trusted domains — skip DNS entirely */
   if (KNOWN_GOOD_DOMAINS.has(domain)) {
     const result = { valid: true };
     cache.set(normalized, result);
@@ -137,42 +144,31 @@ export async function validateEmail(email: string) {
   }
 
   /* Gibberish domain */
-
   for (const pattern of GIBBERISH_DOMAIN_PATTERNS) {
     if (pattern.test(domain)) {
-      const result = {
-        valid: false,
-        reason: "This email domain doesn't look real."
-      };
+      const result = { valid: false, reason: "This email domain doesn't look real." };
       cache.set(normalized, result);
       return result;
     }
   }
 
   /* MX check */
-
   const mx = await checkMx(domain);
 
   if (mx === "nomx") {
-    const result = {
-      valid: false,
-      reason: "This email domain can't receive emails."
-    };
+    const result = { valid: false, reason: "This email domain can't receive emails." };
     cache.set(normalized, result);
     return result;
   }
 
   if (mx === "parked") {
-
     const parked = await isParked(domain);
-
     const result = {
       valid: false,
       reason: parked
         ? "This domain appears parked."
-        : "This email domain cannot receive emails."
+        : "This email domain cannot receive emails.",
     };
-
     cache.set(normalized, result);
     return result;
   }
