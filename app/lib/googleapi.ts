@@ -233,3 +233,41 @@ export async function appendContactSubmission(data: {
     },
   });
 }
+
+export async function appendCollaborationInquiry(data: {
+  name: string;
+  email: string;
+  organization: string;
+  collaborationType: string;
+  message: string;
+}) {
+  const auth = await getAuth();
+  const sheets = google.sheets({ version: "v4", auth });
+ 
+  const timestamp = new Date().toLocaleString("en-IN", {
+    timeZone: "Asia/Kolkata",
+    year:     "numeric",
+    month:    "2-digit",
+    day:      "2-digit",
+    hour:     "2-digit",
+    minute:   "2-digit",
+    second:   "2-digit",
+  });
+ 
+  await sheets.spreadsheets.values.append({
+    spreadsheetId: process.env.GOOGLE_SHEET_ID!,
+    range:         "Collaboration Inquiries!A:F",
+    valueInputOption: "USER_ENTERED",
+    requestBody: {
+      values: [[
+        timestamp,               // A: Timestamp (IST)
+        data.name,               // B: Name
+        data.email,              // C: Email
+        data.organization,       // D: Organization
+        data.collaborationType,  // E: Collaboration Type
+        data.message,            // F: Message
+      ]],
+    },
+  });
+}
+ 

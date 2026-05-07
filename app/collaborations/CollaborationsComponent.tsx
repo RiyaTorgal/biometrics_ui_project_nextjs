@@ -329,6 +329,7 @@ const inquirySchema = z.object({
 
 export default function Collaborations({ collaborations = [] }: CollaborationsProps) {
   const { toast } = useToast();
+  const [loading, setLoading] = useState(false);   // add this state
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -342,7 +343,34 @@ export default function Collaborations({ collaborations = [] }: CollaborationsPr
     setForm((p) => ({ ...p, [field]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // const handleSubmit = (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   const result = inquirySchema.safeParse(form);
+  //   if (!result.success) {
+  //     const newErrors: Record<string, string> = {};
+  //     result.error.issues.forEach((i) => {
+  //       if (i.path[0]) newErrors[i.path[0] as string] = i.message;
+  //     });
+  //     setErrors(newErrors);
+  //     return;
+  //   }
+  //   setErrors({});
+
+  //   const subject = encodeURIComponent(`Collaboration Inquiry — ${form.organization}`);
+  //   const body = encodeURIComponent(
+  //     `Name: ${form.name}\nEmail: ${form.email}\nOrganization: ${form.organization}\nCollaboration Type: ${form.collaborationType}\n\nMessage:\n${form.message}`
+  //   );
+  //   window.location.href = `mailto:contact@sukshmadarshini.com?subject=${subject}&body=${body}`;
+
+  //   toast({
+  //     title: "Inquiry ready to send",
+  //     description: "Your email client should open with the message pre-filled.",
+  //   });
+
+  //   setForm({ name: "", email: "", organization: "", collaborationType: "", message: "" });
+  // };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const result = inquirySchema.safeParse(form);
     if (!result.success) {
@@ -354,19 +382,42 @@ export default function Collaborations({ collaborations = [] }: CollaborationsPr
       return;
     }
     setErrors({});
-
-    const subject = encodeURIComponent(`Collaboration Inquiry — ${form.organization}`);
-    const body = encodeURIComponent(
-      `Name: ${form.name}\nEmail: ${form.email}\nOrganization: ${form.organization}\nCollaboration Type: ${form.collaborationType}\n\nMessage:\n${form.message}`
-    );
-    window.location.href = `mailto:contact@sukshmadarshini.com?subject=${subject}&body=${body}`;
-
-    toast({
-      title: "Inquiry ready to send",
-      description: "Your email client should open with the message pre-filled.",
-    });
-
-    setForm({ name: "", email: "", organization: "", collaborationType: "", message: "" });
+    setLoading(true);
+ 
+    try {
+      const res = await fetch("/api/collaborationEmail", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+ 
+      const data = await res.json();
+ 
+      if (!res.ok || !data.success) {
+        toast({
+          title: "Submission failed",
+          description: data.error ?? "Something went wrong. Please try again.",
+          variant: "destructive",
+        });
+        return;
+      }
+ 
+      toast({
+        title: "Inquiry sent!",
+        description: "We've received your collaboration inquiry and will be in touch shortly.",
+      });
+ 
+      setForm({ name: "", email: "", organization: "", collaborationType: "", message: "" });
+ 
+    } catch {
+      toast({
+        title: "Network error",
+        description: "Could not reach the server. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const hasPastCollaborations = (collaborations ?? []).length > 0;
@@ -538,11 +589,18 @@ export default function Collaborations({ collaborations = [] }: CollaborationsPr
                 {errors.message && <p className="text-sm text-destructive">{errors.message}</p>}
               </div>
 
-              <Button
+              {/* <Button
                 type="submit"
                 className="w-full rounded-full bg-secondary hover:bg-secondary/90 text-secondary-foreground"
               >
                 Send Inquiry
+              </Button> */}
+              <Button
+                type="submit"
+                disabled={loading}
+                className="w-full rounded-full bg-secondary hover:bg-secondary/90 text-secondary-foreground"
+              >
+                {loading ? "Sending…" : "Send Inquiry"}
               </Button>
             </form>
           </div>
