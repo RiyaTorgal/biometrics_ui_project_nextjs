@@ -236,7 +236,7 @@ type TermsOfServiceData = {
 };
 
 export default function TermsOfService({ data }: { data: TermsOfServiceData }) {
-  console.log("TermsOfServiceComponent:", data);
+  // console.log("TermsOfServiceComponent:", data);
   return (
     <div className="min-h-screen bg-background">
       <Navbar />

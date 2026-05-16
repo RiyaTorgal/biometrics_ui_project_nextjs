@@ -192,8 +192,8 @@ export function HeroSection({
 
 const desktopUrl = heroImage ? urlFor(heroImage).width(1600).url() : undefined;
 const mobileUrl = heroImageMobile ? urlFor(heroImageMobile).width(600).url() : undefined;
-console.log(heroImage);
-console.log(heroImageMobile);
+// console.log(heroImage);
+// console.log(heroImageMobile);
 
 
 const selectedImage = isMobile

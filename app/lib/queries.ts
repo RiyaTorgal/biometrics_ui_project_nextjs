@@ -255,21 +255,19 @@ export async function getTeamSection() {
     }
   `);
 }
-
 export async function getCollaborations() {
   return sanity.fetch(`
-    *[_type == "collaborations"][0]{
-      collaborations[]{
-        title,
-        collaboratedWith,
-        dateFrom,
-        dateTo,
-        duration,
-        description,
-        photos[]{
-          asset->{url}
-        }
+    *[_type == "collaborations"][0].collaborations[]{
+      title,
+      collaboratedWith,
+      dateFrom,
+      dateTo,
+      duration,
+      description,
+      photos[]{
+        asset->{url}
       }
     }
   `);
 }
+

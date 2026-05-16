@@ -216,7 +216,7 @@ type PrivacyData = {
 
 export default function PrivacyPolicy({ data }: { data: PrivacyData }) {
   
-  console.log("PrivacyPolicyComponent rendered with data:", data);
+  // console.log("PrivacyPolicyComponent rendered with data:", data);
   return (
     <>
       <Navbar />

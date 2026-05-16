@@ -498,7 +498,7 @@ export function PastAchievementsSection({ data }: PastAchievementsProps) {
   const talks = data?.talks || [];
   const subsections = data?.subsections || [];
 
-  console.log("Past Achievements Data:", data);
+  // console.log("Past Achievements Data:", data);
 
   useEffect(() => {
     if (!api) return;

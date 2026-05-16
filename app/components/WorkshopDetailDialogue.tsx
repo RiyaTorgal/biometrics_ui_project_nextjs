@@ -1787,7 +1787,7 @@ export default function WorkshopDetailDialog({
     estimatedParticipants: "",
     message: "",
   });
-  console.log("VIDEO DATA:", workshop);
+  // console.log("VIDEO DATA:", workshop);
 
   if (!workshop) return null;
 
