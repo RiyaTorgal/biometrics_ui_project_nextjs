@@ -271,3 +271,32 @@ export async function getCollaborations() {
   `);
 }
 
+export async function getBlogs() {
+  return sanity.fetch(`
+    *[_type == "blog"] | order(date desc){
+      "id": id.current,
+      title,
+      excerpt,
+      content,
+      author,
+      date,
+      readTime,
+      likes,
+      thumbnail{
+        asset->{url}
+      }
+    }
+  `);
+}
+
+export async function getTestimonies() {
+  return sanity.fetch(`
+    *[_type == "testimony"] | order(order asc){
+      quote,
+      name,
+      role,
+      organization
+    }
+  `);
+}
+
