@@ -701,7 +701,7 @@ const BlogsAndTestimonies = ({
         </DialogContent>
       </Dialog>
 
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };
