@@ -1,5 +1,6 @@
 import { sanity } from "./sanity";
 
+
 export async function getHomepage() {
   return sanity.fetch(`
     *[_type == "homepage"][0]{
@@ -298,5 +299,25 @@ export async function getTestimonies() {
       organization
     }
   `);
+}
+
+export type PastIntern = {
+  name: string;
+  role: string;
+  university: string;
+  year: number;
+};
+
+export async function getPastInterns() {
+  return sanity.fetch<PastIntern[]>(
+    `*[_type == "pastIntern"] | order(year desc, university asc) {
+      name,
+      role,
+      university,
+      year
+    }`,
+    {},
+    { next: { revalidate: 30 } }
+  );
 }
 

@@ -684,7 +684,7 @@
 
 import { useState, useRef } from "react";
 import { z } from "zod";
-import { Handshake, Calendar, Clock, Users, Mail, AlertCircle, CheckCircle2, Loader2 } from "lucide-react";
+import { Handshake, Calendar, Clock, Users, Mail, AlertCircle, CheckCircle2, Loader2, GraduationCap, User } from "lucide-react";
 import { Navbar } from "@/app/components/Navbar";
 import { Button } from "@/app/components/ui/button";
 import { Input } from "@/app/components/ui/input";
@@ -707,8 +707,16 @@ type Collaboration = {
   description?: string;
 };
 
+type PastIntern = {
+  name: string;
+  role: string;
+  university: string;
+  year: number;
+};
+
 type CollaborationsProps = {
   collaborations: Collaboration[];
+  pastInterns: PastIntern[];
 };
 
 type FormFields = {
@@ -754,7 +762,42 @@ const inquirySchema = z.object({
   message: z.string().trim().min(20, "Please write at least 20 characters").max(2000),
 });
 
-export default function Collaborations({ collaborations = [] }: CollaborationsProps) {
+type Intern = {
+  name: string;
+  role: string;
+};
+
+type UniversityGroup = {
+  university: string;
+  interns: Intern[];
+};
+
+// const internGroups: UniversityGroup[] = [
+//   {
+//     university: "University of Cambridge",
+//     interns: [
+//       { name: "Dr. Emily Carter", role: "Research Intern — Proteomics" },
+//       { name: "James Miller", role: "Bioinformatics Intern" },
+//     ],
+//   },
+//   {
+//     university: "Wageningen University",
+//     interns: [
+//       { name: "Sofia van Dijk", role: "Plant Science Intern" },
+//       { name: "Lars de Vries", role: "Data Analysis Intern" },
+//       { name: "Anouk Jansen", role: "Lab Operations Intern" },
+//     ],
+//   },
+//   {
+//     university: "Indian Institute of Science",
+//     interns: [
+//       { name: "Arjun Reddy", role: "Proteomics Research Intern" },
+//       { name: "Priya Sharma", role: "Computational Biology Intern" },
+//     ],
+//   },
+// ];
+
+export default function Collaborations({ collaborations = [], pastInterns = []  }: CollaborationsProps) {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState<FormFields>({
@@ -1051,6 +1094,86 @@ export default function Collaborations({ collaborations = [] }: CollaborationsPr
             </div>
           </section>
         )}
+
+        {/* Past Interns */}
+         {/* <section className="container mx-auto px-4 py-12">
+           <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-10 text-center">
+             Past Interns
+           </h2>
+
+           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+             {internGroups.map((group, idx) => (
+               <article
+                 key={idx}
+                 className="border border-border rounded-2xl p-6 bg-card hover:shadow-lg transition-shadow"
+               >
+                 <div className="flex items-center gap-2 mb-5">
+                   <GraduationCap className="w-5 h-5 text-primary" />
+                   <h3 className="font-display text-lg font-semibold text-foreground">
+                     {group.university}
+                   </h3>
+                 </div>
+
+                 <div className="space-y-4">
+                   {group.interns.map((intern, i) => (
+                     <div key={i} className="flex items-start gap-3">
+                       <User className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
+                       <div>
+                         <p className="text-sm font-medium text-foreground">{intern.name}</p>
+                         <p className="text-sm text-muted-foreground">{intern.role}</p>
+                       </div>
+                     </div>
+                   ))}
+                 </div>
+               </article>
+             ))}
+           </div>
+         </section> */}
+         {/* Past Interns */}
+        {pastInterns.length > 0 && (() => {
+          // Group by university
+          const grouped = pastInterns.reduce<Record<string, PastIntern[]>>((acc, intern) => {
+            if (!acc[intern.university]) acc[intern.university] = [];
+            acc[intern.university].push(intern);
+            return acc;
+          }, {});
+
+          return (
+            <section className="container mx-auto px-4 py-12">
+              <h2 className="font-display text-3xl md:text-4xl font-bold text-gradient mb-10 text-center">
+                Past Interns
+              </h2>
+
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                {Object.entries(grouped).map(([university, interns]) => (
+                  <article
+                    key={university}
+                    className="border border-border rounded-2xl p-6 bg-card hover:shadow-lg transition-shadow"
+                  >
+                    <div className="flex items-center gap-2 mb-5">
+                      <GraduationCap className="w-5 h-5 text-primary" />
+                      <h3 className="font-display text-lg font-semibold text-foreground">
+                        {university}
+                      </h3>
+                    </div>
+
+                    <div className="space-y-4">
+                      {interns.map((intern, i) => (
+                        <div key={i} className="flex items-start gap-3">
+                          <User className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
+                          <div>
+                            <p className="text-sm font-medium text-foreground">{intern.name}</p>
+                            <p className="text-sm text-muted-foreground">{intern.role}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </section>
+          );
+        })()}
 
         {/* Get in Touch — always visible */}
         <section className="container mx-auto px-4 py-16">
