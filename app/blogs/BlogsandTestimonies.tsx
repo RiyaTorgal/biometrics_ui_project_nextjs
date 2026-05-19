@@ -447,7 +447,7 @@ const BlogsAndTestimonies = ({
   useEffect(() => {
     async function fetchComments() {
       try {
-        const res = await fetch("/api/blog/comments");
+        const res = await fetch("/api/blog/comment");
         if (!res.ok) return;
         const data: Record<string, Comment[]> = await res.json();
         setCommentsMap(data);
